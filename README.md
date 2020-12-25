@@ -1,2 +1,2 @@
 # xcoinch
-A clearing house to exchange cross blockchains. https://www.xcoinch.com
+A clearing house to exchange tokens(cryptocurrencies) cross blockchains. https://www.xcoinch.com
