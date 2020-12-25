@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <title>DEX - XCOINCH</title>
+  <meta name="description" content="XCOINCH provides the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety." />
+  <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta property="og:title" content="DEX - XCOINCH" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="XCOINCH provides the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety." />
+  <meta property="og:url" content="https://www.xcoinch.com/dex.html" />
+  <meta property="og:site_name" content="XCOINCH">
+  <meta property="og:image" content="https://www.xcoinch.com/xcoinch.png" />
+  <meta property="og:image:secure_url" content="https://www.xcoinch.com/xcoinch.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="145" />
+  <meta property="og:image:height" content="250" />
+  <meta property="og:image:alt" content="XCOINCH: the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety" />
+  <meta property="og:video" content="https://youtu.be/N73Zh3oKrbg" />
+  <meta property="og:video:secure_url" content="https://youtu.be/N73Zh3oKrbg" />
+  <meta property="og:video:width" content="1280" />
+  <meta property="og:video:height" content="720" />
+  <meta property="og:updated_time" content="2020-01-16T00:00:00+00:00">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DEX - XCOINCH">
+  <meta name="twitter:description" content="XCOINCH provides the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety.">
+  <meta name="twitter:image" content="https://www.xcoinch.com/xcoinch.png">
+  <link rel="icon" href="/favicon.ico" type="image/ico" />
+  <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+  <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+  <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+  <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+  <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+  <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+  <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+  <link href="../vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+  <link href="../build/css/custom.min.css" rel="stylesheet">
+  <style>
+    .table {
+      margin-bottom: 0px;
+    }
+
+    .dataTables_filter {
+      text-align: right;
+    }
+
+    ::placeholder {
+      color: #555 !important;
+    }
+
+    :-ms-input-placeholder {
+      color: #555 !important;
+    }
+
+    ::-ms-input-placeholder {
+      color: #555 !important;
+    }
+
+    .nav.side-menu>li>a {
+      margin-bottom: 0px;
+    }
+
+    .main_container {
+      background: #212b46;
+    }
+
+    .left_col {
+      background: #212b46;
+    }
+
+    .sidebar-footer {
+      background: #212b46;
+    }
+
+    body {
+      background: #151a30;
+    }
+
+    body .container.body .right_col {
+      background: #151a30;
+    }
+
+    footer {
+      background: #151a30;
+    }
+
+    ul.msg_list li {
+      background: #212b46;
+    }
+
+    .nav_menu {
+      background: #212b46;
+      border-bottom: 1px solid #222943;
+    }
+
+    .navbar-nav .open .dropdown-menu {
+      background: #212b46;
+      border: 1px solid #222943;
+      box-shadow: 0 0.5rem 1rem 0 #1a1f33;
+    }
+
+    .navbar-nav .open .dropdown-menu:hover {
+      background: #212b46;
+      border: 1px solid #222943;
+    }
+
+    .dropdown-item {
+      color: #fff;
+      background: #212b46;
+    }
+
+    .dropdown-item:hover {
+      color: #fff;
+      background: #212b46;
+    }
+
+    .dropdown-menu.msg_list span {
+      color: #fff;
+    }
+
+    .nav_title {
+      background: #212b46;
+    }
+
+    .panel_toolbox>li>a:hover {
+      background: inherit;
+    }
+
+    .x_panel {
+      background: #212b46;
+      border: 1px solid #222943;
+      border-radius: 5px;
+    }
+
+    .x_title {
+      border-bottom: 2px solid #151a30;
+    }
+
+    .ln_solid {
+      border-top: 1px solid #151a30;
+    }
+
+    .form-control {
+      background: #1a2038;
+      color: #fff;
+      border: 1px solid #222943;
+      border-radius: 5px;
+    }
+
+    .form-control:focus {
+      background: #1a2038;
+      color: #fff;
+      box-shadow: none !important;
+    }
+
+    .form-control:disabled,
+    .form-control[readonly] {
+      background-color: #222222;
+    }
+
+    .table thead th {
+      color: #73879C;
+      border: 2px solid #151a30;
+    }
+
+    .table tbody td {
+      color: #fff;
+      border: 2px solid #151a30;
+    }
+
+    .table-striped tbody td {
+      border: 2px solid #151a30;
+      background-color: #151a30;
+    }
+
+    .table-bordered {
+      border: 1px solid #151a30;
+    }
+
+    .dataTables_paginate a {
+      background: #212b46 !important;
+      border-color: #222943 !important;
+      box-shadow: 0 0.5rem 1rem 0 #1a1f33;
+    }
+
+    table td {
+      max-width: 120px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      overflow: hidden;
+    }
+
+    .page-title .title_left {
+      width: 100%;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #1a2038 inset !important;
+      -webkit-text-fill-color: #fff !important;
+    }
+  </style>
+</head>
+
+<body class="nav-md">
+  <div class="container body">
+    <div class="main_container">
+      <div class="col-md-3 left_col">
+        <div class="left_col scroll-view">
+          <div class="navbar nav_title" style="border:0;"> <a href="/index.html" class="site_title"><img src="/xcoinch.png" style="width:100px"><span>XCOINCH</span></a> </div>
+          <div class="clearfix"></div>
+          <div class="profile clearfix">
+            <div class="profile_info"> <span>Welcome, Fintechees!</span> </div>
+          </div> <br />
+          <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+              <h3>General</h3>
+              <ul class="nav side-menu">
+                <li id="menu_chains" class="active"><a><i class="fa fa-line-chart"></i> Chains (TestNet) <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu" style="display:block;">
+                    <li id="menuitem_eth_eth" class="active"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth')">ETH</a></li>
+                    <li id="menuitem_eos_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eos')">EOS</a></li>
+                    <li id="menuitem_eth_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eos')">ETH X EOS</a></li>
+                    <li id="menuitem_eos_eth"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eth')">EOS X ETH</a></li>
+                  </ul>
+                </li>
+                <li id="menu_market_cap"><a><i class="fa fa-newspaper-o"></i> Market Cap <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li id="menuitem_market_cap"><a href="javascript:void(0);" onclick="showMarketCap()">Data Ticker</a></li>
+                  </ul>
+                </li>
+                <li id="menu_listing_request"><a><i class="fa fa-edit"></i> Listing <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li id="menuitem_listing_request"><a href="javascript:void(0);" onclick="showListingRequest()">Request</a></li>
+                  </ul>
+                </li>
+                <li id="menu_dex_request"><a><i class="fa fa-file-word-o"></i> White Label <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li id="menuitem_dex_request"><a href="javascript:void(0);" onclick="showDexRequest()">Request</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="sidebar-footer hidden-small"> <a data-toggle="tooltip" data-placement="top" title="Settings" href="javascript:void(0);" onclick="showSetting()"> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> </a> <a
+              data-toggle="tooltip" data-placement="top" title="Chains" href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth')"> <span class="glyphicon glyphicon-signal" aria-hidden="true"></span> </a> <a data-toggle="tooltip"
+              data-placement="top" title="Listing" href="javascript:void(0);" onclick="showListingRequest()"> <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span> </a> <a data-toggle="tooltip" data-placement="top"
+              title="Market Cap" href="javascript:void(0);" onclick="showMarketCap()"> <span class="glyphicon glyphicon glyphicon-th-list" aria-hidden="true"></span> </a> </div>
+        </div>
+      </div>
+      <div class="top_nav">
+        <div class="nav_menu">
+          <div class="nav toggle"> <a id="menu_toggle"><i class="fa fa-bars"></i></a> </div>
+          <nav class="nav navbar-nav">
+            <ul class="navbar-right">
+              <li class="nav-item dropdown open" style="padding-left:15px;"> <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false"> Account </a>
+                <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="javascript:void(0);" onclick="showSetting()" id="setting" style="display:none"> Profile</a> <a
+                    class="dropdown-item" href="/login.html" id="log_in" style="display:none">Log in</a> <a class="dropdown-item" href="javascript:void(0);" onclick="logout()" id="log_out" style="display:none"><i
+                      class="fa fa-sign-out pull-right"></i> Log out</a> </div>
+              </li>
+              <li role="presentation" class="nav-item dropdown open"> <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false"> <i class="fa fa-envelope-o"></i> <span
+                    class="badge bg-green" id="transactions_num" style="display:none"></span> </a>
+                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1" id="transactions_list"> </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="right_col" role="main">
+        <div class="">
+          <div class="page-title">
+            <div class="title_left">
+              <h3>DEX <small id="crypto_platform"></small></h3>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="cryptohopper-web-widget" data-id="2" data-text_color="#ffffff" data-background_color="#151a30" data-theme="custom" style="pointer-events:none" id="data_ticker"></div>
+          <section id="section_chains">
+            <div class="row">
+              <div class="col-md-12 ">
+                <div class="x_panel">
+                  <div class="x_content">
+                    <form class="form-label-left input_mask">
+                      <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control" id="base_cryptocurrency_search" placeholder="Base Cryptocurrency"> <span class="fa fa-chevron-left form-control-feedback right"
+                          aria-hidden="true"></span> </div>
+                      <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control has-feedback-left" id="term_cryptocurrency_search" placeholder="Term Cryptocurrency"> <span
+                          class="fa fa-chevron-left form-control-feedback left" aria-hidden="true"></span> </div>
+                      <div class="col-md-3 col-sm-3 form-group has-feedback"> <button type="button" class="btn btn-success" id="show_orders">Search</button> </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Latest Trades</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="col-md-12 col-sm-12 ">
+                      <div class="demo-container" style="height:280px">
+                        <div id="chart_plot" class="demo-placeholder"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Send Order <small>Buy base cryptocurrency by term cryptocurrency</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content"> <br />
+                    <form class="form-label-left input_mask">
+                      <div class="col-md-6 col-sm-6 form-group has-feedback"> <input type="hidden" id="base_platform"> <input type="hidden" id="old_base_platform"> <input type="hidden" id="old_base_cryptocurrency"> <input type="hidden"
+                          id="old_expiration"> <input type="text" class="form-control" id="base_cryptocurrency" placeholder="Base Cryptocurrency"> <span class="fa fa-chevron-left form-control-feedback right" aria-hidden="true"></span> </div>
+                      <div class="col-md-6 col-sm-6 form-group has-feedback"> <input type="hidden" id="term_platform"> <input type="text" class="form-control has-feedback-left" id="term_cryptocurrency" placeholder="Term Cryptocurrency"> <span
+                          class="fa fa-chevron-left form-control-feedback left" aria-hidden="true"></span> </div>
+                      <div class="col-md-6 col-sm-6 form-group has-feedback"> <input type="text" class="form-control" id="base_amount" placeholder="Base Amount"> <span class="fa fa-chevron-left form-control-feedback right" aria-hidden="true"></span>
+                      </div>
+                      <div class="col-md-6 col-sm-6 form-group has-feedback"> <input type="text" class="form-control has-feedback-left" id="term_amount" placeholder="Term Amount"> <span class="fa fa-chevron-left form-control-feedback left"
+                          aria-hidden="true"></span> </div>
+                      <div class="clearfix"></div>
+                      <div class="form-group row" id="mail_address_div"> <label class="col-form-label col-md-3 col-sm-3 ">Get Notified </label>
+                        <div class="col-md-9 col-sm-9 "> <input type="text" class="form-control" placeholder="Mail Address" id="mail_address"> </div>
+                      </div>
+                      <div class="form-group row"> <label class="col-form-label col-md-3 col-sm-3 ">Send to </label>
+                        <div class="col-md-9 col-sm-9 "> <input type="text" class="form-control" id="base_account"> </div>
+                      </div>
+                      <div class="form-group row"> <label class="col-form-label col-md-3 col-sm-3 ">Exchange Fee </label>
+                        <div class="col-md-9 col-sm-9 "> <input type="text" class="form-control" id="fee_amount"> </div>
+                      </div>
+                      <div class="form-group row"> <label class="col-form-label col-md-3 col-sm-3 ">Expiration </label>
+                        <div class="col-md-9 col-sm-9 "> <input type="text" class="form-control" placeholder="Expires in X Hours" id="order_expiration"> </div>
+                      </div>
+                      <div class="form-group row" style="display:none" id="trx_id_div"> <label class="col-form-label col-md-3 col-sm-3 ">Transaction ID </label>
+                        <div class="col-md-9 col-sm-9 "> <input type="text" class="form-control" id="trx_id"> </div>
+                      </div>
+                      <div class="form-group row" style="display:none" id="block_num_div"> <label class="col-form-label col-md-3 col-sm-3 ">Block Number </label>
+                        <div class="col-md-9 col-sm-9 "> <input type="text" class="form-control" id="block_num"> </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="form-group row">
+                        <div class="col-md-9 col-sm-9 offset-md-3"> <button class="btn btn-primary" type="button" id="new_order">Reset</button> <button type="button" class="btn btn-success" id="send_order">Send New Order</button> <button
+                            type="button" class="btn btn-success" id="modify_order" style="display:none">Modify Order</button> <button type="button" class="btn btn-success" id="cancel_order" style="display:none">Cancel Order</button> <button
+                            type="button" class="btn btn-success" id="notify_orderbook" style="display:none">Done</button> </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Order Book<small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content"> <canvas id="crypto_dex_orderbook"></canvas> </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>My Orders <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="card-box table-responsive">
+                          <p class="text-muted font-13 m-b-30"> </p>
+                          <table id="crypto_dex_myorders" class="table table-hover table-striped table-bordered dt-responsive nowrap" style="width:100%"> </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="section_listing_request" style="display:none">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Request for DEX Listing <small>We will revert to you as soon as possible</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content"> <br />
+                    <form id="form_listing_request" data-parsley-validate class="form-horizontal form-label-left">
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="lq_chain_name">Chain <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="lq_chain_name" required="required" class="form-control "> </div>
+                      </div>
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="lq_cryptocurrency">Cryptocurrency (Token) <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="lq_cryptocurrency" name="lq_cryptocurrency" required="required" class="form-control"> </div>
+                      </div>
+                      <div class="item form-group"> <label for="lq_smart_contract" class="col-form-label col-md-3 col-sm-3 label-align">Smart Contract <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 "> <input id="lq_smart_contract" class="form-control" type="text" name="lq_smart_contract" required="required"> </div>
+                      </div>
+                      <div class="item form-group"> <label for="lq_action_name" class="col-form-label col-md-3 col-sm-3 label-align">ABI(ETH) or Action Name(EOS) <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 "> <textarea id="lq_action_name" class="form-control" name="lq_action_name" required="required"></textarea> </div>
+                      </div>
+                      <div class="item form-group"> <label for="lq_accuracy" class="col-form-label col-md-3 col-sm-3 label-align">Accuracy <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 "> <input id="lq_accuracy" class="form-control" type="text" name="lq_accuracy" required="required"> </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3"> <button class="btn btn-primary" type="reset">Reset</button> <button type="button" class="btn btn-success" id="request_listing">Submit</button> </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" id="crypto_dex_listing_req_div" style="display:none">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Listing Requests <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="card-box table-responsive">
+                          <p class="text-muted font-13 m-b-30"> </p>
+                          <table id="crypto_dex_listing_req" class="table table-hover table-striped table-bordered dt-responsive nowrap" style="width:100%"> </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="section_dex_request" style="display:none">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Request for DEX White Label <small>We will revert to you as soon as possible</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content"> <br />
+                    <form id="form_dex_request" data-parsley-validate class="form-horizontal form-label-left">
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="dq_site_url">Site URL <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="dq_site_url" required="required" class="form-control "> </div>
+                      </div>
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="dq_eth_fee_recipient">ETH Fee Recipient (Address) <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="dq_eth_fee_recipient" name="dq_eth_fee_recipient" required="required" class="form-control"> </div>
+                      </div>
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="dq_eth_recipient">ETH Collateral Recipient (Address) <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="dq_eth_recipient" name="dq_eth_recipient" required="required" class="form-control"> </div>
+                      </div>
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="dq_eth_fee_required">ETH Fee Amount Required <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="dq_eth_fee_required" name="dq_eth_fee_required" required="required" class="form-control"> </div>
+                      </div>
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="dq_eos_fee_recipient">EOS Fee Recipient (Account) <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="dq_eos_fee_recipient" name="dq_eos_fee_recipient" required="required" class="form-control"> </div>
+                      </div>
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="dq_eos_recipient">EOS Collateral Recipient (Account) <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="dq_eos_recipient" name="dq_eos_recipient" required="required" class="form-control"> </div>
+                      </div>
+                      <div class="item form-group"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="dq_eos_fee_required">EOS Fee Amount Required <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="dq_eos_fee_required" name="dq_eos_fee_required" required="required" class="form-control"> </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3"> <button class="btn btn-primary" type="reset">Reset</button> <button type="button" class="btn btn-success" id="request_dex">Submit</button> </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" id="crypto_dex_req_div" style="display:none">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>DEX Requests <small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="card-box table-responsive">
+                          <p class="text-muted font-13 m-b-30"> </p>
+                          <table id="crypto_dex_req" class="table table-hover table-striped table-bordered dt-responsive nowrap" style="width:100%"> </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="section_setting" style="display:none">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Change Password</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content"> <br />
+                    <form id="form_setting" data-parsley-validate class="form-horizontal form-label-left">
+                      <div class="item form-group" id="verification_code_div" style="display:none"> <label class="col-form-label col-md-3 col-sm-3 label-align" for="verification_code">Verification Code <span class="required">*</span> </label>
+                        <div class="col-md-6 col-sm-6 "> <input type="text" id="verification_code" required="required" class="form-control "> </div>
+                      </div>
+                      <div class="item form-group"> <label for="new_password" class="col-form-label col-md-3 col-sm-3 label-align">New Password <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 "> <input id="new_password" class="form-control" type="password" name="new_password" required="required"> </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3"> <button type="button" class="btn btn-primary" id="send_veri_code" style="display:none">Send Verification Code</button> <button type="button" class="btn btn-success"
+                            id="change_password">Change</button> </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="section_market_cap" style="display:none"> <iframe src="/marketcap.html" style="width:100%;height:1000px;border:none"></iframe> </section>
+        </div>
+      </div>
+      <footer>
+        <div class="pull-right"> XCOINCH - Powered by <a href="https://www.fintechee.com">Fintechee</a> </div>
+        <div class="clearfix"></div>
+      </footer>
+    </div>
+  </div>
+  <script src="../vendors/jquery/dist/jquery.min.js"> </script>
+  <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"> </script>
+  <script src="../vendors/fastclick/lib/fastclick.js"> </script>
+  <script src="../vendors/nprogress/nprogress.js"> </script>
+  <script src="../vendors/Chart.js/dist/Chart.min.js"> </script>
+  <script src="../vendors/gauge.js/dist/gauge.min.js"> </script>
+  <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"> </script>
+  <script src="../vendors/iCheck/icheck.min.js"> </script>
+  <script src="../vendors/Flot/jquery.flot.js"> </script>
+  <script src="../vendors/Flot/jquery.flot.time.js"> </script>
+  <script src="../vendors/Flot/jquery.flot.stack.js"> </script>
+  <script src="../vendors/Flot/jquery.flot.resize.js"> </script>
+  <script src="../vendors/DateJS/build/date.js"> </script>
+  <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"> </script>
+  <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"> </script>
+  <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"> </script>
+  <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"> </script>
+  <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"> </script>
+  <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"> </script>
+  <script src="../vendors/pnotify/dist/pnotify.js"> </script>
+  <script src="../vendors/pnotify/dist/pnotify.buttons.js"> </script>
+  <script src="../vendors/pnotify/dist/pnotify.nonblock.js"> </script>
+  <script src="../build/js/custom.min.js"> </script>
+  <script src="/js/main.js"> </script>
+  <script defer>
+    var contactId = "0";
+    $(document).ready(function() {
+      $(".ui-pnotify").remove();
+      main()
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <title>DEX - XCOINCH</title>
+  <meta name="description" content="XCOINCH provides the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety." />
+  <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta property="og:title" content="DEX - XCOINCH" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="XCOINCH provides the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety." />
+  <meta property="og:url" content="https://www.xcoinch.com/login.html" />
+  <meta property="og:site_name" content="XCOINCH">
+  <meta property="og:image" content="https://www.xcoinch.com/xcoinch.png" />
+  <meta property="og:image:secure_url" content="https://www.xcoinch.com/xcoinch.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="145" />
+  <meta property="og:image:height" content="250" />
+  <meta property="og:image:alt" content="XCOINCH: the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety" />
+  <meta property="og:video" content="https://youtu.be/N73Zh3oKrbg" />
+  <meta property="og:video:secure_url" content="https://youtu.be/N73Zh3oKrbg" />
+  <meta property="og:video:width" content="1280" />
+  <meta property="og:video:height" content="720" />
+  <meta property="og:updated_time" content="2020-01-16T00:00:00+00:00">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DEX - XCOINCH">
+  <meta name="twitter:description" content="XCOINCH provides the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety.">
+  <meta name="twitter:image" content="https://www.xcoinch.com/xcoinch.png">
+  <link rel="icon" href="/favicon.ico" type="image/ico" />
+  <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+  <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
+  <link href="../build/css/custom.min.css" rel="stylesheet">
+  <style>
+    .login {
+      background: #151a30;
+    }
+
+    .login_content form input[type="text"] {
+      background: #1a2038;
+      color: #fff;
+      border: 1px solid #222943;
+      border-radius: 5px;
+      box-shadow: none;
+    }
+
+    .login_content form input[type="text"]:focus {
+      background: #1a2038;
+      color: #fff;
+      border-radius: 5px;
+      box-shadow: none;
+    }
+
+    .login_content form input[type="text"],
+    .login_content form input[type="email"],
+    .login_content form input[type="password"] {
+      background: #1a2038;
+      color: #fff;
+      box-shadow: none;
+      border: 1px solid #222943;
+      border-radius: 5px;
+    }
+
+    .login_content form input[type="text"],
+    .login_content form input[type="email"],
+    .login_content form input[type="password"]:focus {
+      background: #1a2038 !important;
+      color: #fff;
+      border: 1px solid #222943;
+      border-radius: 5px;
+      box-shadow: none;
+    }
+
+    .login_content {
+      text-shadow: none !important;
+    }
+
+    .separator {
+      border-top: 1px solid #222943;
+    }
+
+    .verification_form {
+      z-index: 23;
+      opacity: 0;
+      width: 100%;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #1a2038 inset !important;
+      -webkit-text-fill-color: #fff !important;
+    }
+
+    #signup:target~.login_wrapper .registration_form,
+    #activate:target~.login_wrapper .verification_form {
+      z-index: 23;
+      animation-name: fadeInLeft;
+      animation-delay: .1s;
+    }
+
+    #signup:target~.login_wrapper .verification_form,
+    #activate:target~.login_wrapper .registration_form {
+      animation-name: fadeOutLeft;
+    }
+
+    #activate:target~.login_wrapper .verification_form,
+    #signin:target~.login_wrapper .login_form {
+      z-index: 23;
+      animation-name: fadeInLeft;
+      animation-delay: .1s;
+    }
+
+    #activate:target~.login_wrapper .login_form,
+    #signin:target~.login_wrapper .verification_form {
+      animation-name: fadeOutLeft;
+    }
+  </style>
+</head>
+
+<body class="login">
+  <div> <a class="hiddenanchor" id="signup"></a> <a class="hiddenanchor" id="signin"></a> <a class="hiddenanchor" id="activate"></a>
+    <div class="login_wrapper">
+      <div class="animate form login_form">
+        <section class="login_content">
+          <form>
+            <h1>XCOINCH</h1>
+            <div> <input type="text" class="form-control" placeholder="Mail Address" id="si_mail_address" /> </div>
+            <div> <input type="password" class="form-control" placeholder="Password" id="si_password" /> </div>
+            <div> <button class="btn btn-success" id="btn_sign_in">Log in</button> <button class="btn btn-primary" id="btn_guest">Guest</button> </div>
+            <div class="clearfix"></div>
+            <div class="separator">
+              <p class="change_link">New to site? <a href="#signup" class="to_register"> Create Account </a> </p>
+              <p id="send_mail_div" class="change_link" style="display:none">Forget your password? <a href="#activate" class="to_register"> Send Reset Mail </a> </p>
+              <div class="clearfix"></div> <br />
+              <div> <img src="/xcoinch.png" style="width:100px">
+                <p>©2020 XCOINCH All Rights Reserved. Powered by <a href="https://www.fintechee.com">Fintechee</a></p>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div class="animate form registration_form">
+        <section class="login_content">
+          <form>
+            <h1>XCOINCH</h1>
+            <div> <input type="email" class="form-control" placeholder="Email Address" required="" id="su_mail_address" /> </div>
+            <div> <input type="password" class="form-control" placeholder="Password" required="" id="su_password" /> </div>
+            <div> <button class="btn btn-success" id="btn_sign_up">Sign up</button> </div>
+            <div class="clearfix"></div>
+            <div class="separator">
+              <p class="change_link">Already a member ? <a href="#signin" class="to_register"> Log in </a> </p>
+              <div class="clearfix"></div> <br />
+              <div> <img src="/xcoinch.png" style="width:100px">
+                <p>©2020 XCOINCH All Rights Reserved. Powered by <a href="https://www.fintechee.com">Fintechee</a></p>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div class="animate form verification_form">
+        <section class="login_content">
+          <form>
+            <h1>XCOINCH</h1>
+            <div> <input type="text" class="form-control" placeholder="Mail Address" required="" id="vf_mail_address" /> </div>
+            <div> <input type="password" class="form-control" placeholder="Verification Code" id="vf_code" /> </div>
+            <div> <button class="btn btn-success" id="btn_activate">Activate</button> <button class="btn btn-primary" id="btn_send_mail">Send Verification Code</button> </div>
+            <div class="clearfix"></div>
+            <div class="separator">
+              <p class="change_link">New to site? <a href="#signup" class="to_register"> Create Account </a> </p>
+              <div class="clearfix"></div> <br />
+              <div> <img src="/xcoinch.png" style="width:100px">
+                <p>©2020 XCOINCH All Rights Reserved. Powered by <a href="https://www.fintechee.com">Fintechee</a></p>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script src="../vendors/jquery/dist/jquery.min.js"> </script>
+  <script defer>
+    const contactId = "0";
+    const serverUrl = "https://lmk2m8udud.execute-api.eu-central-1.amazonaws.com/v1";
+    const sandbox = true;
+    if (!sandbox) {
+      $("#send_mail_div").show()
+    }
+    $("#btn_guest").on("click", function() {
+      localStorage.credential = JSON.stringify({
+        mailAddr: "guest",
+        credentialToken: "guest"
+      });
+      window.open("/dex.html", "_self");
+      return false
+    });
+    $("#btn_sign_in").on("click", function() {
+      var mailAddr = $("#si_mail_address").val();
+      var password = $("#si_password").val();
+      if (mailAddr == "" || password == "") return false;
+      $.ajax({
+        type: "POST",
+        headers: {
+          "Authorization": "Basic " + btoa(mailAddr + ":" + password + ":")
+        },
+        url: serverUrl + "/users/login",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({
+          contactId: contactId
+        }),
+        success: function(data) {
+          localStorage.credential = JSON.stringify({
+            mailAddr: data.res.mailAddr,
+            credentialToken: data.res.credentialToken,
+            loginPage: true
+          });
+          window.open("/dex.html", "_self")
+        }
+      });
+      return false
+    });
+    $("#btn_activate").on("click", function() {
+      var mailAddr = $("#vf_mail_address").val();
+      var verificationCode = $("#vf_code").val();
+      if (mailAddr == "" || verificationCode == "") return false;
+      $.ajax({
+        type: "POST",
+        headers: {
+          "Authorization": "Basic " + btoa(mailAddr + "::" + verificationCode)
+        },
+        url: serverUrl + "/users/login",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({
+          contactId: contactId
+        }),
+        success: function(data) {
+          localStorage.credential = JSON.stringify({
+            mailAddr: data.res.mailAddr,
+            credentialToken: data.res.credentialToken,
+            activated: true
+          });
+          window.open("/dex.html", "_self")
+        }
+      });
+      return false
+    });
+    $("#btn_sign_up").on("click", function() {
+      var mailAddr = $("#su_mail_address").val();
+      var password = $("#su_password").val();
+      if (mailAddr == "" || password == "") return false;
+      $.ajax({
+        type: "POST",
+        headers: {
+          "Authorization": "Basic " + btoa(mailAddr + ":" + password)
+        },
+        url: serverUrl + "/users/register",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({
+          contactId: contactId
+        }),
+        success: function(data) {
+          if (sandbox) {
+            window.open("/login.html#signin", "_self")
+          } else {
+            window.open("/login.html#activate", "_self")
+          }
+        }
+      });
+      return false
+    });
+    $("#btn_send_mail").on("click", function() {
+      var mailAddr = $("#ac_mail_address").val();
+      if (mailAddr == "") return false;
+      $.ajax({
+        type: "POST",
+        headers: {
+          "Authorization": "Basic " + btoa(mailAddr)
+        },
+        url: serverUrl + "/users/activation",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({
+          contactId: contactId
+        }),
+        success: function(data) {}
+      });
+      return false
+    })
+  </script>
+</body>
+
+</html>
