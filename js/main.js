@@ -360,6 +360,7 @@ function changePassword(verificationCode, newPassword) {
         crd.mailAddr = data.res.mailAddr;
         crd.credentialToken = data.res.credentialToken;
         localStorage.credential = JSON.stringify(crd)
+        notifySuccess("Your password has been reset successfully!")
       }
     }
   })
