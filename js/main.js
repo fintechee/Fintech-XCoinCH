@@ -1862,6 +1862,7 @@ function renderDex(dex) {
   $("#crypto_dex_req").DataTable().clear().draw();
   for (var i in dex) {
     var dx = dex[i];
+    if (typeof dx.contactId == "undefined") continue
     var state = null;
     if (dx.dState) {
       if (dx.dState == "P") {
