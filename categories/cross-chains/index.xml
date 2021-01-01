@@ -7,15 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; 2020 XCOINCH Powered by [Fintechee](https://www.fintechee.com)</copyright>
-    <lastBuildDate>Wed, 30 Dec 2020 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 01 Jan 2021 10:00:00 +0800</lastBuildDate>
     
 	<atom:link href="https://www.xcoinch.com/categories/cross-chains/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Exchange Tokens Cross Chains</title>
+      <link>https://www.xcoinch.com/blog/exchange-tokens-cross-chains/</link>
+      <pubDate>Fri, 01 Jan 2021 10:00:00 +0800</pubDate>
+      
+      <guid>https://www.xcoinch.com/blog/exchange-tokens-cross-chains/</guid>
+      <description>Exchange Tokens Cross Chains   This tutorial explained how to use XCoinCH to exchange tokens cross chains.</description>
+    </item>
+    
+    <item>
       <title>Traditional Exchange</title>
       <link>https://www.xcoinch.com/blog/traditional-exchange/</link>
-      <pubDate>Wed, 30 Dec 2020 10:00:00 +0800</pubDate>
+      <pubDate>Fri, 01 Jan 2021 10:00:00 +0800</pubDate>
       
       <guid>https://www.xcoinch.com/blog/traditional-exchange/</guid>
       <description>Traditional exchanges before 2017 I think the readers who opened this article have got the same experiences to spend time with the traditional exchanges.</description>
