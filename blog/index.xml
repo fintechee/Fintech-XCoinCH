@@ -7,17 +7,35 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; 2020 XCOINCH Powered by [Fintechee](https://www.fintechee.com)</copyright>
-    <lastBuildDate>Wed, 30 Dec 2020 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 01 Jan 2021 09:00:00 +0800</lastBuildDate>
     
 	<atom:link href="https://www.xcoinch.com/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Traditional Exchange</title>
+      <link>https://www.xcoinch.com/blog/traditional-exchange/</link>
+      <pubDate>Fri, 01 Jan 2021 09:00:00 +0800</pubDate>
+      
+      <guid>https://www.xcoinch.com/blog/traditional-exchange/</guid>
+      <description>Traditional exchanges before 2017 I think the readers who opened this article have got the same experiences to spend time with the traditional exchanges.</description>
+    </item>
+    
+    <item>
       <title>XCoinCH v1.0 Released</title>
-      <link>https://www.xcoinch.com/blog/blog-post-1/</link>
+      <link>https://www.xcoinch.com/blog/blg-pst-100/</link>
       <pubDate>Wed, 30 Dec 2020 10:00:00 +0800</pubDate>
       
-      <guid>https://www.xcoinch.com/blog/blog-post-1/</guid>
+      <guid>https://www.xcoinch.com/blog/blg-pst-100/</guid>
+      <description>XCoinCH, a clearing house to facilitate the exchange token, cryptocurrencies cross chains is released XCoinCH, a clearing house to facilitate the exchange tokens, cryptocurrencies cross chains is released</description>
+    </item>
+    
+    <item>
+      <title>XCoinCH v1.0 Released</title>
+      <link>https://www.xcoinch.com/blog/v1-released/</link>
+      <pubDate>Wed, 30 Dec 2020 10:00:00 +0800</pubDate>
+      
+      <guid>https://www.xcoinch.com/blog/v1-released/</guid>
       <description>XCoinCH, a clearing house to facilitate the exchange token, cryptocurrencies cross chains is released XCoinCH, a clearing house to facilitate the exchange tokens, cryptocurrencies cross chains is released</description>
     </item>
     
