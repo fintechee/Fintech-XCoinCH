@@ -226,7 +226,7 @@
     });
     $("#btn_activate").on("click", function() {
       var mailAddr = $("#vf_mail_address").val();
-      var verificationCode = $("#vf_code").val();
+      var verificationCode = $("#vf_code").val().trim();
       if (mailAddr == "" || verificationCode == "") return false;
       $.ajax({
         type: "POST",
