@@ -1048,7 +1048,7 @@ window.platforms["eth"].checkBlock = function(context, callback) {
           if (Array.isArray(result)) {
             for (var i in result) {
               var receipt = result[i];
-              if (receipt.from.toLowerCase() == window.eth_api.givenProvider.selectedAddress.toLowerCase() && receipt.to.toLowerCase() == context.that.exchange.toLowerCase()) {
+              if (typeof receipt.from != "undefined" && receipt.from.toLowerCase() == window.eth_api.givenProvider.selectedAddress.toLowerCase() && receipt.to.toLowerCase() == context.that.exchange.toLowerCase()) {
                 var memo = window.eth_api.utils.toUtf8(result[i].input).split(":");
                 var nonce = memo[memo.length - 1];
                 if (context.nonce == nonce) {
