@@ -337,9 +337,12 @@ function sendVerificationCode(mailAddr) {
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     data: JSON.stringify({
-      contactId: contactId
+      contactId: contactId,
+      siteUrl: document.location.origin
     }),
-    success: function(data) {}
+    success: function(data) {
+      notifySuccess("The verification code has been sent successfully! Please check your email.")
+    }
   })
 };
 
