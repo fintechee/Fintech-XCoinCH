@@ -2977,7 +2977,7 @@ function main() {
     sendVerificationCode(crd.mailAddr)
   });
   $("#change_password").on("click", function() {
-    var verificationCode = $("#verification_code").val();
+    var verificationCode = $("#verification_code").val().trim();
     var newPassword = $("#new_password").val();
     if (!sandbox && verificationCode == "") {
       notifyError("The verification code should not be empty.");
