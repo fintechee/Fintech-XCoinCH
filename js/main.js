@@ -6,7 +6,7 @@ const refreshInterval = 60000;
 const priceNum = 21;
 const latestTradesLimit = 30;
 const serverUrl = "https://lmk2m8udud.execute-api.eu-central-1.amazonaws.com/v1";
-const sandbox = true;
+const sandbox = false;
 
 function generateNonce() {
   return Math.floor(Math.random() * 10000000000) + ""
