@@ -1082,7 +1082,7 @@ function notifyOrderbook() {
   for (var i in window.platforms["eth"].notifications) {
     var notification = window.platforms["eth"].notifications[i];
     var context = notification.context;
-    if (!notification.done) {
+    if (!notification.done && typeof context != "undefined") {
       if (context.mode == "sendOrder") {
         context.that.checkBlock(context, function(ctx) {
           var notification2 = window.platforms["eth"].notifications[ctx.nonce];
