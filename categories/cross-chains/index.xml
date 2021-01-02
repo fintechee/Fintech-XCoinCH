@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright &amp;copy; 2020 XCOINCH Powered by [Fintechee](https://www.fintechee.com)</copyright>
-    <lastBuildDate>Fri, 01 Jan 2021 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 02 Jan 2021 08:00:00 +0800</lastBuildDate>
     
 	<atom:link href="https://www.xcoinch.com/categories/cross-chains/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>External Wallet</title>
+      <link>https://www.xcoinch.com/blog/external-wallet/</link>
+      <pubDate>Sat, 02 Jan 2021 08:00:00 +0800</pubDate>
+      
+      <guid>https://www.xcoinch.com/blog/external-wallet/</guid>
+      <description>XCoinCH supports external wallets to sign transactions for exchanging cryptocurrencies cross chains.</description>
+    </item>
+    
+    <item>
+      <title>TestNet Setting</title>
+      <link>https://www.xcoinch.com/blog/testnet-setting/</link>
+      <pubDate>Sat, 02 Jan 2021 08:00:00 +0800</pubDate>
+      
+      <guid>https://www.xcoinch.com/blog/testnet-setting/</guid>
+      <description>Scatter(EOS-based wallet) and Metamask(Ethereum-based wallet) are applied on XCoinCH. Let&amp;rsquo;s see how to configure the settings.</description>
+    </item>
     
     <item>
       <title>Exchange Tokens Cross Chains</title>
@@ -18,7 +36,7 @@
       <pubDate>Fri, 01 Jan 2021 10:00:00 +0800</pubDate>
       
       <guid>https://www.xcoinch.com/blog/exchange-tokens-cross-chains/</guid>
-      <description>Exchange Tokens Cross Chains   This tutorial explained how to use XCoinCH to exchange tokens cross chains.</description>
+      <description>This tutorial explained how to use XCoinCH to exchange tokens cross chains.</description>
     </item>
     
     <item>
@@ -27,7 +45,7 @@
       <pubDate>Fri, 01 Jan 2021 10:00:00 +0800</pubDate>
       
       <guid>https://www.xcoinch.com/blog/traditional-exchange/</guid>
-      <description>Traditional exchanges before 2017 I think the readers who opened this article have got the same experiences to spend time with the traditional exchanges.</description>
+      <description>I think the readers who opened this article have got the same experiences to spend time with the traditional exchanges.</description>
     </item>
     
     <item>
