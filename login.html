@@ -276,7 +276,7 @@
       return false
     });
     $("#btn_send_mail").on("click", function() {
-      var mailAddr = $("#ac_mail_address").val();
+      var mailAddr = $("#vf_mail_address").val();
       if (mailAddr == "") return false;
       $.ajax({
         type: "POST",
