@@ -2974,7 +2974,7 @@ function main() {
       notifyWarning("You need to sign in first. If you forgot your password, you can send verification code to your mailbox on the login page. After that, you can sign in and then change password here.");
       return
     }
-    sendVerificationCode(mailAddr)
+    sendVerificationCode(crd.mailAddr)
   });
   $("#change_password").on("click", function() {
     var verificationCode = $("#verification_code").val();
