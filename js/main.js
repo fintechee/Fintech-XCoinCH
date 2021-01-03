@@ -362,7 +362,7 @@ function changePassword(verificationCode, newPassword) {
       if (typeof data.res == "object" && data.res != null && typeof data.res.mailAddr == "string" && typeof data.res.credentialToken == "string" && data.res.mailAddr != "" && data.res.credentialToken != "") {
         crd.mailAddr = data.res.mailAddr;
         crd.credentialToken = data.res.credentialToken;
-        localStorage.credential = JSON.stringify(crd)
+        localStorage.credential = JSON.stringify(crd);
         notifySuccess("Your password has been reset successfully!")
       }
     }
@@ -1866,7 +1866,7 @@ function renderDex(dex) {
   $("#crypto_dex_req").DataTable().clear().draw();
   for (var i in dex) {
     var dx = dex[i];
-    if (typeof dx.contactId == "undefined") continue
+    if (typeof dx.contactId == "undefined") continue;
     var state = null;
     if (dx.dState) {
       if (dx.dState == "P") {
@@ -2054,11 +2054,19 @@ function renderMyTransactions(transactions) {
 
 function loadMyOrders() {
   if (crd.mailAddr != "guest") {
-    getMyOrders().then(function(orders) {
-      if (orders.length > 0) {
-        var dexOrders = storeMyOrders(orders);
-        renderMyOrders(dexOrders);
-        loadMyTransactions()
+    getMyOrders().then(function(ordersTmp) {
+      if (ordersTmp.length > 0) {
+        var orders = [];
+        for (var i in ordersTmp) {
+          if (typeof ordersTmp[i].price != "undefined") {
+            orders.push(ordersTmp[i])
+          }
+        }
+        if (orders.length > 0) {
+          var dexOrders = storeMyOrders(orders);
+          renderMyOrders(dexOrders);
+          loadMyTransactions()
+        }
       }
     }).catch(function() {})
   } else if (crd.mailAddr == "guest") {
@@ -2074,12 +2082,20 @@ function loadMyOrders() {
 
 function loadMyTransactions() {
   if (crd.mailAddr != "guest") {
-    getMyTransactions().then(function(transactions) {
-      if (transactions.length > 0) {
-        notifyNews("You have new messages.");
-        renderMyTransactions(transactions);
-        var orders = storeMyTransactions(transactions);
-        renderMyOrders(orders)
+    getMyTransactions().then(function(transactionsTmp) {
+      if (transactionsTmp.length > 0) {
+        var transactions = [];
+        for (var i in transactionsTmp) {
+          if (typeof transactionsTmp[i].price != "undefined") {
+            transactions.push(transactionsTmp[i])
+          }
+        }
+        if (transactions.length > 0) {
+          notifyNews("You have new messages.");
+          renderMyTransactions(transactions);
+          var orders = storeMyTransactions(transactions);
+          renderMyOrders(orders)
+        }
       }
     }).catch(function() {})
   }
@@ -2242,15 +2258,21 @@ function getOrdersTrades(bNotify) {
   var termPlatform = $("#term_platform").val();
   var termCryptocurrency = $("#term_cryptocurrency_search").val();
   if (basePlatform != "" && baseCryptocurrency != "" && termPlatform != "" && termCryptocurrency != "" && typeof window.platforms[basePlatform].cryptocurrencies[baseCryptocurrency] != "undefined" && typeof window.platforms[termPlatform].cryptocurrencies[termCryptocurrency] != "undefined") {
-    getOrders(basePlatform, baseCryptocurrency, termPlatform, termCryptocurrency).then(function(orders) {
+    getOrders(basePlatform, baseCryptocurrency, termPlatform, termCryptocurrency).then(function(ordersTmp) {
       $("#base_cryptocurrency").val(baseCryptocurrency);
       $("#term_cryptocurrency").val(termCryptocurrency);
-      if (orders.length <= 0) {
+      if (ordersTmp.length <= 0) {
         lineChart.data.labels = initLabelsData;
         lineChart.data.datasets[0].data = initBidsData;
         lineChart.data.datasets[1].data = initAsksData;
         lineChart.update();
         return
+      }
+      var orders = [];
+      for (var i in ordersTmp) {
+        if (typeof ordersTmp[i].price != "undefined") {
+          orders.push(ordersTmp[i])
+        }
       }
       var asksBids = genOrderBook(orders);
       lineChart.data.labels = asksBids.interpolation;
@@ -2258,13 +2280,19 @@ function getOrdersTrades(bNotify) {
       lineChart.data.datasets[1].data = asksBids.asks;
       lineChart.update()
     }).catch(function() {});
-    getTrades(basePlatform, baseCryptocurrency, termPlatform, termCryptocurrency).then(function(trades) {
-      if (trades.length <= 0) {
+    getTrades(basePlatform, baseCryptocurrency, termPlatform, termCryptocurrency).then(function(tradesTmp) {
+      if (tradesTmp.length <= 0) {
         chartPlotParams[0].data = initChartPlotData;
         chartPlotSettings.xaxis.min = initChartPlotData[0][0];
         chartPlotSettings.xaxis.max = initChartPlotData[initChartPlotData.length - 1][0];
         $.plot($("#chart_plot"), chartPlotParams, chartPlotSettings);
         return
+      }
+      var trades = [];
+      for (var i in tradesTmp) {
+        if (typeof tradesTmp[i].price != "undefined") {
+          trades.push(tradesTmp[i])
+        }
       }
       var chartPlotData = [];
       var cursor = 0;
