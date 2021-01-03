@@ -1457,7 +1457,10 @@ function sendOrder() {
   }
   var expiration = Math.round(new Date().getTime() + orderExpiration);
   var memo = baseCryptocurrency + ":" + baseAmount + ":" + termCryptocurrency + ":" + termAmount + ":" + expiration + ":" + basePlatform + ":" + baseAccount;
-  termPlatformObj.sendOrder(mailAddr, smartContract, actionName, termAmount, termCryptocurrency, feeAmount, platformCurrency, memo, basePlatform, baseAccount, baseCryptocurrency, baseAmount, termPlatform, termAmountTmp / baseAmountTmp, Math.round(feeAmountTmp / termPlatformObj.getFeeAmountRequiredForOperation()), expiration, baseAmountTmp, termAmountTmp)
+  termPlatformObj.sendOrder(mailAddr, smartContract, actionName, termAmount, termCryptocurrency, feeAmount, platformCurrency, memo, basePlatform, baseAccount, baseCryptocurrency, baseAmount, termPlatform, termAmountTmp / baseAmountTmp, Math.round(feeAmountTmp / termPlatformObj.getFeeAmountRequiredForOperation()), expiration, baseAmountTmp, termAmountTmp);
+  $("#base_cryptocurrency_search").val(baseCryptocurrency);
+  $("#term_cryptocurrency_search").val(termCryptocurrency);
+  getOrdersTrades(false)
 };
 
 function modifyOrder() {
@@ -2843,6 +2846,8 @@ function main() {
       if (data[10] == "Open") {
         var baseCryptocurrency = data[1].split(".");
         var termCryptocurrency = data[3].split(".");
+        $("#base_cryptocurrency_search").val(baseCryptocurrency[1]);
+        $("#term_cryptocurrency_search").val(termCryptocurrency[1]);
         $("#fee_amount").val("");
         $("#order_expiration").val("");
         $("#trx_id").val(data[8]);
@@ -2867,7 +2872,8 @@ function main() {
         $("#modify_order").prop("disabled", false);
         $("#modify_order").show();
         $("#cancel_order").prop("disabled", false);
-        $("#cancel_order").show()
+        $("#cancel_order").show();
+        getOrdersTrades(false)
       }
     }
   });
