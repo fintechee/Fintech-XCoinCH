@@ -1050,6 +1050,7 @@ window.platforms["eth"].checkBlock = function(context, callback) {
           var result = data.result;
           if (Array.isArray(result)) {
             for (var i in result) {
+              if (isNaN(i)) continue;
               var receipt = result[i];
               if (typeof receipt.from != "undefined" && receipt.from.toLowerCase() == window.eth_api.givenProvider.selectedAddress.toLowerCase() && receipt.to.toLowerCase() == context.that.exchange.toLowerCase()) {
                 var memo = window.eth_api.utils.toUtf8(result[i].input).split(":");
@@ -1083,6 +1084,7 @@ window.platforms["eth"].checkBlock = function(context, callback) {
 
 function notifyOrderbook() {
   for (var i in window.platforms["eth"].notifications) {
+    if (isNaN(i)) continue;
     var notification = window.platforms["eth"].notifications[i];
     var context = notification.context;
     if (!notification.done && typeof context != "undefined") {
@@ -1566,6 +1568,7 @@ function cancelOrder() {
 function storeMyOrders(orders) {
   var dexOrders = [];
   for (var i in orders) {
+    if (isNaN(i)) continue;
     var odr = orders[i];
     var order = {
       price: odr.price,
@@ -1610,6 +1613,7 @@ function storeUpdatedOrder(order) {
   if (typeof localStorage.dexOrders != "undefined") {
     var dexOrders = JSON.parse(localStorage.dexOrders);
     for (var i in dexOrders) {
+      if (isNaN(i)) continue;
       var oldOrder = dexOrders[i];
       if (oldOrder.trxId == order.oldTrxId && oldOrder.blockNum == order.oldBlockNum) {
         oldOrder.price = order.price;
@@ -1634,6 +1638,7 @@ function storeRemovedOrder(oldTrxId, oldBlockNum, cancellationFeeTrxId, cancella
   if (typeof localStorage.dexOrders != "undefined") {
     var dexOrders = JSON.parse(localStorage.dexOrders);
     for (var i in dexOrders) {
+      if (isNaN(i)) continue;
       var oldOrder = dexOrders[i];
       if (oldOrder.trxId == oldTrxId && oldOrder.blockNum == oldBlockNum) {
         oldOrder.cancellationFeeTrxId = cancellationFeeTrxId;
@@ -1810,6 +1815,7 @@ function renderCryptocurrencies(cryptocurrencies) {
   $("#crypto_dex_listing_req_div").show();
   $("#crypto_dex_listing_req").DataTable().clear().draw();
   for (var i in cryptocurrencies) {
+    if (isNaN(i)) continue;
     var cryptocurrency = cryptocurrencies[i];
     if (!cryptocurrency.cryptocurrencyKey) continue;
     var accuracy = null;
@@ -1865,6 +1871,7 @@ function renderDex(dex) {
   $("#crypto_dex_req_div").show();
   $("#crypto_dex_req").DataTable().clear().draw();
   for (var i in dex) {
+    if (isNaN(i)) continue;
     var dx = dex[i];
     if (typeof dx.contactId == "undefined") continue;
     var state = null;
@@ -2004,6 +2011,7 @@ function genOrderBook(orders) {
 function renderMyOrders(orders) {
   $("#crypto_dex_myorders").DataTable().clear().draw();
   for (var i in orders) {
+    if (isNaN(i)) continue;
     var order = orders[i];
     var state = null;
     if (order.state == "O") {
@@ -2032,6 +2040,7 @@ function renderMyTransactions(transactions) {
   var trxHtml = "";
   var dt = new Date().getTime();
   for (var i in transactions) {
+    if (isNaN(i)) continue;
     var transaction = transactions[i];
     var symbolName = null;
     var desc = null;
@@ -2054,19 +2063,11 @@ function renderMyTransactions(transactions) {
 
 function loadMyOrders() {
   if (crd.mailAddr != "guest") {
-    getMyOrders().then(function(ordersTmp) {
-      if (ordersTmp.length > 0) {
-        var orders = [];
-        for (var i in ordersTmp) {
-          if (typeof ordersTmp[i].price != "undefined") {
-            orders.push(ordersTmp[i])
-          }
-        }
-        if (orders.length > 0) {
-          var dexOrders = storeMyOrders(orders);
-          renderMyOrders(dexOrders);
-          loadMyTransactions()
-        }
+    getMyOrders().then(function(orders) {
+      if (orders.length > 0) {
+        var dexOrders = storeMyOrders(orders);
+        renderMyOrders(dexOrders);
+        loadMyTransactions()
       }
     }).catch(function() {})
   } else if (crd.mailAddr == "guest") {
@@ -2082,20 +2083,12 @@ function loadMyOrders() {
 
 function loadMyTransactions() {
   if (crd.mailAddr != "guest") {
-    getMyTransactions().then(function(transactionsTmp) {
-      if (transactionsTmp.length > 0) {
-        var transactions = [];
-        for (var i in transactionsTmp) {
-          if (typeof transactionsTmp[i].price != "undefined") {
-            transactions.push(transactionsTmp[i])
-          }
-        }
-        if (transactions.length > 0) {
-          notifyNews("You have new messages.");
-          renderMyTransactions(transactions);
-          var orders = storeMyTransactions(transactions);
-          renderMyOrders(orders)
-        }
+    getMyTransactions().then(function(transactions) {
+      if (transactions.length > 0) {
+        notifyNews("You have new messages.");
+        renderMyTransactions(transactions);
+        var orders = storeMyTransactions(transactions);
+        renderMyOrders(orders)
       }
     }).catch(function() {})
   }
@@ -2112,6 +2105,7 @@ function renderUpdatedOrder(order) {
     if (index == 8) {
       var column = table.column(index).data();
       for (var i in column) {
+        if (isNaN(i)) continue;
         var rowId = parseInt(i);
         if (column[i] == order.oldTrxId) {
           tb.fnUpdate(order.price, rowId, 0, false, false);
@@ -2135,6 +2129,7 @@ function renderUpdatedState(trxId, state) {
     if (index == 8) {
       var column = table.column(index).data();
       for (var i in column) {
+        if (isNaN(i)) continue;
         var rowId = parseInt(i);
         if (column[i] == trxId) {
           tb.fnUpdate(state, rowId, 10, false, false);
@@ -2150,6 +2145,7 @@ function storeUpdatedState(state) {
   if (typeof localStorage.dexOrders != "undefined") {
     var orders = JSON.parse(localStorage.dexOrders);
     for (var i in orders) {
+      if (isNaN(i)) continue;
       var order = orders[i];
       if (state.platform == order.termPlatform) {
         if (state.trxId == order.trxId && state.oldState == "PO") {
@@ -2177,8 +2173,10 @@ function storeMyTransactions(transactions) {
   if (typeof localStorage.dexOrders != "undefined") {
     orders = JSON.parse(localStorage.dexOrders);
     for (var i in transactions) {
+      if (isNaN(i)) continue;
       var transaction = transactions[i];
       for (var j in orders) {
+        if (isNaN(j)) continue;
         var order = orders[j];
         if (transaction.orderId == order.termPlatform + "-" + order.trxId) {
           if (transaction.state == "F") {
@@ -2208,6 +2206,7 @@ function refreshOrderState() {
   if (typeof localStorage.dexOrders != "undefined") {
     var orders = JSON.parse(localStorage.dexOrders);
     for (var i in orders) {
+      if (isNaN(i)) continue;
       var order = orders[i];
       var platform = order.termPlatform;
       var trxId = null;
@@ -2258,21 +2257,15 @@ function getOrdersTrades(bNotify) {
   var termPlatform = $("#term_platform").val();
   var termCryptocurrency = $("#term_cryptocurrency_search").val();
   if (basePlatform != "" && baseCryptocurrency != "" && termPlatform != "" && termCryptocurrency != "" && typeof window.platforms[basePlatform].cryptocurrencies[baseCryptocurrency] != "undefined" && typeof window.platforms[termPlatform].cryptocurrencies[termCryptocurrency] != "undefined") {
-    getOrders(basePlatform, baseCryptocurrency, termPlatform, termCryptocurrency).then(function(ordersTmp) {
+    getOrders(basePlatform, baseCryptocurrency, termPlatform, termCryptocurrency).then(function(orders) {
       $("#base_cryptocurrency").val(baseCryptocurrency);
       $("#term_cryptocurrency").val(termCryptocurrency);
-      if (ordersTmp.length <= 0) {
+      if (orders.length <= 0) {
         lineChart.data.labels = initLabelsData;
         lineChart.data.datasets[0].data = initBidsData;
         lineChart.data.datasets[1].data = initAsksData;
         lineChart.update();
         return
-      }
-      var orders = [];
-      for (var i in ordersTmp) {
-        if (typeof ordersTmp[i].price != "undefined") {
-          orders.push(ordersTmp[i])
-        }
       }
       var asksBids = genOrderBook(orders);
       lineChart.data.labels = asksBids.interpolation;
@@ -2280,19 +2273,13 @@ function getOrdersTrades(bNotify) {
       lineChart.data.datasets[1].data = asksBids.asks;
       lineChart.update()
     }).catch(function() {});
-    getTrades(basePlatform, baseCryptocurrency, termPlatform, termCryptocurrency).then(function(tradesTmp) {
-      if (tradesTmp.length <= 0) {
+    getTrades(basePlatform, baseCryptocurrency, termPlatform, termCryptocurrency).then(function(trades) {
+      if (trades.length <= 0) {
         chartPlotParams[0].data = initChartPlotData;
         chartPlotSettings.xaxis.min = initChartPlotData[0][0];
         chartPlotSettings.xaxis.max = initChartPlotData[initChartPlotData.length - 1][0];
         $.plot($("#chart_plot"), chartPlotParams, chartPlotSettings);
         return
-      }
-      var trades = [];
-      for (var i in tradesTmp) {
-        if (typeof tradesTmp[i].price != "undefined") {
-          trades.push(tradesTmp[i])
-        }
       }
       var chartPlotData = [];
       var cursor = 0;
@@ -3134,6 +3121,7 @@ function main() {
   }).catch(function() {});
   getCryptocurrencies("A").then(function(cryptocurrencies) {
     for (var i in cryptocurrencies) {
+      if (isNaN(i)) continue;
       var cryptocurrency = cryptocurrencies[i];
       var platform = window.platforms[cryptocurrency.platform];
       if (cryptocurrency.platform == "eth") {
