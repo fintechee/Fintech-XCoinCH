@@ -2297,7 +2297,7 @@ function getOrdersTrades(bNotify) {
       for (var i = 1; i <= latestTradesLimit; i++) {
         var price = 0;
         var cnt = 0;
-        var time = startTime + i * step;
+        var time = Math.round(startTime + i * step)
         for (var j = cursor; j < tradesLength; j++) {
           var trade = trades[j];
           if (trade.updatedTime < time) {
