@@ -200,6 +200,31 @@
       width: 100%;
     }
 
+    .timeline .block {
+      border-color: #1a1f33;
+    }
+
+    ul.timeline li {
+      border-bottom-color: #1a1f33;
+    }
+
+    .timeline h2.title::before {
+      border-color: #1a1f33;
+      background: #1a1f33;
+    }
+
+    .trx_sp {
+      background: #2e4356;
+      color: #fff;
+      padding: 3px;
+    }
+
+    .trx_v {
+      background: #c57f81;
+      color: #000;
+      padding: 3px;
+    }
+
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus,
@@ -230,6 +255,11 @@
                     <li id="menuitem_eos_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eos')">EOS</a></li>
                     <li id="menuitem_eth_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eos')">ETH X EOS</a></li>
                     <li id="menuitem_eos_eth"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eth')">EOS X ETH</a></li>
+                  </ul>
+                </li>
+                <li id="menu_trxs"><a><i class="fa fa-newspaper-o"></i> Transactions <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li id="menuitem_trxs"><a href="javascript:void(0);" onclick="showTrxs()">Search</a></li>
                   </ul>
                 </li>
                 <li id="menu_market_cap" style="display:none"><a><i class="fa fa-newspaper-o"></i> Market Cap <span class="fa fa-chevron-down"></span></a>
@@ -285,7 +315,7 @@
           <div class="cryptohopper-web-widget" data-id="2" data-text_color="#ffffff" data-background_color="#151a30" data-theme="custom" style="pointer-events:none" id="data_ticker"></div>
           <section id="section_chains">
             <div class="row">
-              <div class="col-md-12 ">
+              <div class="col-md-12">
                 <div class="x_panel">
                   <div class="x_content">
                     <form class="form-label-left input_mask">
@@ -311,7 +341,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <div class="col-md-12 col-sm-12 ">
+                    <div class="col-md-12 col-sm-12">
                       <div class="demo-container" style="height:280px">
                         <div id="chart_plot" class="demo-placeholder"></div>
                       </div>
@@ -383,7 +413,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12 col-sm-12 ">
+              <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>My Orders <small></small></h2>
@@ -406,9 +436,37 @@
               </div>
             </div>
           </section>
+          <section id="section_trxs" style="display:none">
+            <div class="col-md-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Search Transactions</h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a> </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <form class="form-label-left input_mask">
+                    <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control" id="mail_address_search" placeholder="Mail Address"> </div>
+                    <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control" id="trx_id_search" placeholder="Transaction ID"> </div>
+                    <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control" id="a_debug_id_search" placeholder="Internal ID (Only for Administrators)"> </div>
+                    <div class="col-md-3 col-sm-3 form-group has-feedback"> <button type="button" class="btn btn-success" id="search_trxs">Search</button> </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" id="transactions_div" style="display:none">
+              <div class="x_panel">
+                <div class="x_content">
+                  <ul class="list-unstyled timeline" id="transactions"> </ul>
+                </div>
+              </div>
+            </div>
+          </section>
           <section id="section_listing_request" style="display:none">
             <div class="row">
-              <div class="col-md-12 col-sm-12 ">
+              <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Request for DEX Listing <small>We will revert to you as soon as possible</small></h2>
@@ -444,7 +502,7 @@
               </div>
             </div>
             <div class="row" id="crypto_dex_listing_req_div" style="display:none">
-              <div class="col-md-12 col-sm-12 ">
+              <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Listing Requests <small></small></h2>
@@ -469,7 +527,7 @@
           </section>
           <section id="section_dex_request" style="display:none">
             <div class="row">
-              <div class="col-md-12 col-sm-12 ">
+              <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Request for DEX White Label <small>We will revert to you as soon as possible</small></h2>
@@ -511,7 +569,7 @@
               </div>
             </div>
             <div class="row" id="crypto_dex_req_div" style="display:none">
-              <div class="col-md-12 col-sm-12 ">
+              <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>DEX Requests <small></small></h2>
@@ -536,7 +594,7 @@
           </section>
           <section id="section_setting" style="display:none">
             <div class="row">
-              <div class="col-md-12 col-sm-12 ">
+              <div class="col-md-12 col-sm-12">
                 <div class="x_panel">
                   <div class="x_title">
                     <h2>Change Password</h2>
@@ -564,11 +622,11 @@
               </div>
             </div>
           </section>
-          <section id="section_market_cap" style="display:none">  </section>
+          <section id="section_market_cap" style="display:none"> </section>
         </div>
       </div>
       <footer>
-        <div class="pull-right">©2020 XCOINCH All Rights Reserved. Powered by <a href="https://www.fintechee.com">Fintechee</a> </div>
+        <div class="pull-right"> ©2020 XCOINCH All Rights Reserved. Powered by <a href="https://www.fintechee.com">Fintechee</a> </div>
         <div class="clearfix"></div>
       </footer>
     </div>
@@ -595,7 +653,6 @@
   <script src="../vendors/pnotify/dist/pnotify.js"> </script>
   <script src="../vendors/pnotify/dist/pnotify.buttons.js"> </script>
   <script src="../vendors/pnotify/dist/pnotify.nonblock.js"> </script>
-  <script src="https://www.cryptohopper.com/widgets/js/script"></script>
   <script src="../build/js/custom.min.js"> </script>
   <script src="/js/main.js"> </script>
   <script defer>
