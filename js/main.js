@@ -7,6 +7,7 @@ const priceNum = 21;
 const latestTradesLimit = 30;
 const serverUrl = "https://lmk2m8udud.execute-api.eu-central-1.amazonaws.com/v1";
 const sandbox = false;
+var trxs = [];
 
 function generateNonce() {
   return Math.floor(Math.random() * 10000000000) + ""
@@ -263,6 +264,41 @@ function getOrderState(platform, trxId, state) {
       success: function(data) {
         if (typeof data.res == "object") {
           res(data.res)
+        } else {
+          rej()
+        }
+      }
+    })
+  })
+};
+
+function getTransactions(mailAddr, aDebugId, trxId) {
+  var params = {
+    mailAddr: mailAddr,
+    contactId: contactId
+  };
+  if (aDebugId != null) {
+    params.aDebugId = aDebugId
+  } else {
+    params.trxId = trxId
+  }
+  return new Promise((res, rej) => {
+    $.ajax({
+      type: "POST",
+      url: serverUrl + "/transactions/listing",
+      headers: {
+        "Authorization": "Basic " + btoa(crd.mailAddr + ":" + crd.credentialToken)
+      },
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      data: JSON.stringify(params),
+      success: function(data) {
+        if (Array.isArray(data.res)) {
+          if (data.res.length > 0) {
+            res(data.res)
+          } else {
+            res([])
+          }
         } else {
           rej()
         }
@@ -966,8 +1002,8 @@ window.platforms["eos"].cancelOrder = function(feeAmount, platformCurrency, memo
         };
         await funcTmp();
         notifyTransactionForCancellation("eos", context2.feeTrxId, context2.feeBlockNum, function() {
-          storeRemovedOrder(context3.oldTrxId, context3.oldBlockNum, context3.feeTrxId, context3.feeBlockNum);
-          renderUpdatedState(context3.oldTrxId, "Pending(C)")
+          var currentAllowedTimesToTransfer = storeRemovedOrder(context3.oldTrxId, context3.oldBlockNum, context3.feeTrxId, context3.feeBlockNum);
+          renderUpdatedState(context3.oldTrxId, "Pending(C)", currentAllowedTimesToTransfer)
         })
       } catch (e) {
         notifyError("Caught exception while sending transaction(EOS platform): " + e);
@@ -1157,8 +1193,8 @@ function notifyOrderbook() {
           if (!notification2.done) {
             notifyTransactionForCancellation("eth", ctx.feeTrxId, ctx.feeBlockNum, function() {
               notifySuccess("Transaction to cancel the order is pushed! Pending to remove the order from the orderbook.");
-              storeRemovedOrder(ctx.oldTrxId, ctx.oldBlockNum, ctx.feeTrxId, ctx.feeBlockNum);
-              renderUpdatedState(ctx.oldTrxId, "Pending(C)")
+              var currentAllowedTimesToTransfer = storeRemovedOrder(ctx.oldTrxId, ctx.oldBlockNum, ctx.feeTrxId, ctx.feeBlockNum);
+              renderUpdatedState(ctx.oldTrxId, "Pending(C)", currentAllowedTimesToTransfer)
             });
             notification2.done = true
           }
@@ -1446,7 +1482,7 @@ function sendOrder() {
     notifyError("The expiration of the order should be an integer.");
     return
   }
-  var orderExpiration = Math.floor(parseInt($("#order_expiration").val())) * oneHour;
+  var orderExpiration = Math.floor(parseInt($("#order_expiration").val()) * oneHour);
   if (orderExpiration < oneHour) {
     notifyError("The expiration of the order should be greater than or equal to one hour.");
     return
@@ -1527,7 +1563,7 @@ function modifyOrder() {
     notifyError("The expiration of the order should be an integer.");
     return
   }
-  var orderExpiration = Math.floor(parseInt($("#order_expiration").val())) * oneHour;
+  var orderExpiration = Math.floor(parseInt($("#order_expiration").val()) * oneHour);
   if (orderExpiration < oneHour) {
     notifyError("The expiration of the order should be greater than or equal to one hour.");
     return
@@ -1565,7 +1601,7 @@ function cancelOrder() {
     return
   }
   var memo = basePlatform + ":" + baseCryptocurrency + ":" + termCryptocurrency + ":" + trxId + ":" + blockNum;
-  termPlatformObj.cancelOrder(feeAmount, platformCurrency, memo)
+  termPlatformObj.cancelOrder(feeAmount, platformCurrency, memo, trxId, blockNum)
 };
 
 function storeMyOrders(orders) {
@@ -1624,7 +1660,9 @@ function storeUpdatedOrder(order) {
         oldOrder.baseCryptocurrency = order.baseCryptocurrency;
         oldOrder.baseAmount = order.baseAmount;
         oldOrder.accuBaseAmountTraded = order.accuBaseAmountTraded;
-        oldOrder.currentAllowedTimesToTransfer = order.currentAllowedTimesToTransfer;
+        var currentAllowedTimesToTransfer = oldOrder.currentAllowedTimesToTransfer + order.currentAllowedTimesToTransfer;
+        oldOrder.currentAllowedTimesToTransfer = currentAllowedTimesToTransfer;
+        order.currentAllowedTimesToTransfer = currentAllowedTimesToTransfer;
         oldOrder.expiration = order.expiration;
         oldOrder.baseAccount = order.baseAccount;
         oldOrder.modificationFeeTrxId = order.modificationFeeTrxId;
@@ -1638,6 +1676,7 @@ function storeUpdatedOrder(order) {
 };
 
 function storeRemovedOrder(oldTrxId, oldBlockNum, cancellationFeeTrxId, cancellationFeeBlockNum) {
+  var currentAllowedTimesToTransfer = null;
   if (typeof localStorage.dexOrders != "undefined") {
     var dexOrders = JSON.parse(localStorage.dexOrders);
     for (var i in dexOrders) {
@@ -1646,12 +1685,15 @@ function storeRemovedOrder(oldTrxId, oldBlockNum, cancellationFeeTrxId, cancella
       if (oldOrder.trxId == oldTrxId && oldOrder.blockNum == oldBlockNum) {
         oldOrder.cancellationFeeTrxId = cancellationFeeTrxId;
         oldOrder.cancellationFeeBlockNum = cancellationFeeBlockNum;
+        oldOrder.currentAllowedTimesToTransfer--;
+        currentAllowedTimesToTransfer = oldOrder.currentAllowedTimesToTransfer;
         oldOrder.state = "PC";
         localStorage.dexOrders = JSON.stringify(dexOrders);
         break
       }
     }
   }
+  return currentAllowedTimesToTransfer
 };
 
 function requestDex() {
@@ -1802,6 +1844,7 @@ function changeCrossPlatforms(basePlatform, termPlatform) {
   }
   $("#fee_amount").attr("placeholder", "Amount (Unit: " + termPlatform.toUpperCase() + ")");
   $("#section_chains").show();
+  $("#section_trxs").hide();
   $("#section_listing_request").hide();
   $("#section_dex_request").hide();
   $("#section_market_cap").hide();
@@ -1857,6 +1900,7 @@ function showListingRequest() {
   currentPanel = "menuitem_listing_request";
   $("#crypto_platform").text("for Coin Founders");
   $("#section_chains").hide();
+  $("#section_trxs").hide();
   $("#section_listing_request").show();
   $("#section_dex_request").hide();
   $("#section_market_cap").hide();
@@ -1903,6 +1947,7 @@ function showDexRequest() {
   currentPanel = "menuitem_dex_request";
   $("#crypto_platform").text("for Coin Institutions");
   $("#section_chains").hide();
+  $("#section_trxs").hide();
   $("#section_listing_request").hide();
   $("#section_dex_request").show();
   $("#section_market_cap").hide();
@@ -1911,12 +1956,26 @@ function showDexRequest() {
   loadDex()
 };
 
+function showTrxs() {
+  $("#" + currentPanel).removeClass("active");
+  $("#menuitem_trxs").addClass("active");
+  currentPanel = "menuitem_trxs";
+  $("#crypto_platform").text("for Tracking Orders");
+  $("#section_chains").hide();
+  $("#section_trxs").show();
+  $("#section_listing_request").hide();
+  $("#section_dex_request").hide();
+  $("#section_market_cap").hide();
+  $("#section_setting").hide()
+};
+
 function showMarketCap() {
   $("#" + currentPanel).removeClass("active");
   $("#menuitem_market_cap").addClass("active");
   currentPanel = "menuitem_market_cap";
-  $("#crypto_platform").text(" Data Ticker");
+  $("#crypto_platform").text("Data Ticker");
   $("#section_chains").hide();
+  $("#section_trxs").hide();
   $("#section_listing_request").hide();
   $("#section_dex_request").hide();
   $("#section_market_cap").show();
@@ -1930,8 +1989,9 @@ function showSetting() {
     return false
   }
   $("#" + currentPanel).removeClass("active");
-  $("#crypto_platform").text(" Profile");
+  $("#crypto_platform").text("Profile");
   $("#section_chains").hide();
+  $("#section_trxs").hide();
   $("#section_listing_request").hide();
   $("#section_dex_request").hide();
   $("#section_market_cap").hide();
@@ -2034,11 +2094,12 @@ function renderMyOrders(orders) {
     } else if (order.state == "PC") {
       state = "Pending(C)"
     }
-    $("#crypto_dex_myorders").DataTable().row.add([!order.price ? "" : order.price, (!order.basePlatform || !order.baseCryptocurrency) ? "" : (order.basePlatform + "." + order.baseCryptocurrency), !order.baseAmount ? "" : (order.accuBaseAmountTraded + " / " + order.baseAmount), (!order.termPlatform || !order.termCryptocurrency) ? "" : (order.termPlatform + "." + order.termCryptocurrency), !order.termAmount ? "" : (order.termCurrentAmount + " / " + order.termAmount), !order.currentAllowedTimesToTransfer ? "" : order.currentAllowedTimesToTransfer, !order.expiration ? "" : new Date(order.expiration), !order.baseAccount ? "" : order.baseAccount, !order.trxId ? "" : order.trxId, !order.blockNum ? "" : order.blockNum, !state ? "" : state]).draw(false)
+    $("#crypto_dex_myorders").DataTable().row.add([!order.price ? "" : order.price, (!order.basePlatform || !order.baseCryptocurrency) ? "" : (order.basePlatform + "." + order.baseCryptocurrency), !order.baseAmount ? "" : (order.accuBaseAmountTraded + " / " + order.baseAmount), (!order.termPlatform || !order.termCryptocurrency) ? "" : (order.termPlatform + "." + order.termCryptocurrency), !order.termAmount ? "" : (order.termCurrentAmount + " / " + order.termAmount), !order.currentAllowedTimesToTransfer ? "" : order.currentAllowedTimesToTransfer, !order.expiration ? "" : new Date(order.expiration).toString("M/d HH:mm"), !order.baseAccount ? "" : order.baseAccount, !order.trxId ? "" : order.trxId, !order.blockNum ? "" : order.blockNum, !state ? "" : state]).draw(false)
   }
 };
 
-function renderMyTransactions(transactions) {
+function renderMyTransactions() {
+  var transactions = trxs;
   var transactionsNum = transactions.length;
   var trxHtml = "";
   var dt = new Date().getTime();
@@ -2055,13 +2116,14 @@ function renderMyTransactions(transactions) {
       desc = "Refunded, volume: " + transaction.termAmountTraded
     } else if (transaction.state == "C") {
       symbolName = transaction.termPlatform + "." + transaction.termCryptocurrency;
-      desc = "Cancelled, volume: " + transaction.taseAmountTraded
+      desc = "Cancelled, volume: " + transaction.termAmountTraded
     }
-    trxHtml += '<li class="nav-item">' + '<a class="dropdown-item">' + '<span>' + '<span>' + symbolName + '</span>' + '<span class="time">' + Math.round((dt - transaction.time) / 60000) + 'min ago</span>' + '</span>' + '<span class="message">' + desc + '</span>' + '</a>' + '</li>'
+    trxHtml += '<li class="nav-item">' + '<a class="dropdown-item">' + '<span>' + '<span>' + symbolName + '</span>' + '<span class="time">' + Math.round((dt - transaction.time) / 60000) + ' min ago</span>' + '</span>' + '<span class="message">' + desc + '</span>' + '</a>' + '</li>'
   }
   $("#transactions_num").html(transactionsNum);
   $("#transactions_num").show();
-  $("#transactions_list").html(trxHtml)
+  $("#transactions_list").html(trxHtml);
+  setTimeout(renderMyTransactions, refreshInterval)
 };
 
 function loadMyOrders() {
@@ -2089,7 +2151,8 @@ function loadMyTransactions() {
     getMyTransactions().then(function(transactions) {
       if (transactions.length > 0) {
         notifyNews("You have new messages.");
-        renderMyTransactions(transactions);
+        trxs = transactions;
+        renderMyTransactions();
         var orders = storeMyTransactions(transactions);
         renderMyOrders(orders)
       }
@@ -2098,7 +2161,7 @@ function loadMyTransactions() {
 };
 
 function renderAddedOrder(order) {
-  $("#crypto_dex_myorders").DataTable().row.add([order.price, (order.basePlatform + "." + order.baseCryptocurrency), order.accuBaseAmountTraded + " / " + order.baseAmount, (order.termPlatform + "." + order.termCryptocurrency), order.termCurrentAmount + " / " + order.termAmount, order.currentAllowedTimesToTransfer, new Date(order.expiration), order.baseAccount, order.trxId, order.blockNum, "Pending(O)"]).draw(false)
+  $("#crypto_dex_myorders").DataTable().row.add([order.price, (order.basePlatform + "." + order.baseCryptocurrency), order.accuBaseAmountTraded + " / " + order.baseAmount, (order.termPlatform + "." + order.termCryptocurrency), order.termCurrentAmount + " / " + order.termAmount, order.currentAllowedTimesToTransfer, new Date(order.expiration).toString("M/d HH:mm"), order.baseAccount, order.trxId, order.blockNum, "Pending(O)"]).draw(false)
 };
 
 function renderUpdatedOrder(order) {
@@ -2115,7 +2178,7 @@ function renderUpdatedOrder(order) {
           tb.fnUpdate((order.basePlatform + "." + order.baseCryptocurrency), rowId, 1, false, false);
           tb.fnUpdate(order.accuBaseAmountTraded + " / " + order.baseAmount, rowId, 2, false, false);
           tb.fnUpdate(order.currentAllowedTimesToTransfer, rowId, 5, false, false);
-          tb.fnUpdate(new Date(order.expiration), rowId, 6, false, false);
+          tb.fnUpdate(new Date(order.expiration).toString("M/d HH:mm"), rowId, 6, false, false);
           tb.fnUpdate(order.baseAccount, rowId, 7, false, false);
           tb.fnUpdate("Pending(U)", rowId, 10, false, false);
           break
@@ -2125,7 +2188,7 @@ function renderUpdatedOrder(order) {
   })
 };
 
-function renderUpdatedState(trxId, state) {
+function renderUpdatedState(trxId, state, currentAllowedTimesToTransfer) {
   var table = $('#crypto_dex_myorders').DataTable();
   var tb = $('#crypto_dex_myorders').dataTable();
   table.columns().eq(0).each(function(index) {
@@ -2135,6 +2198,9 @@ function renderUpdatedState(trxId, state) {
         if (isNaN(i)) continue;
         var rowId = parseInt(i);
         if (column[i] == trxId) {
+          if (currentAllowedTimesToTransfer != null) {
+            tb.fnUpdate(currentAllowedTimesToTransfer, rowId, 5, false, false)
+          }
           tb.fnUpdate(state, rowId, 10, false, false);
           break
         }
@@ -2157,11 +2223,11 @@ function storeUpdatedState(state) {
           break
         } else if (state.trxId == order.modificationFeeTrxId && state.oldState == "PU") {
           order.state = "O";
-          trxId = order.modificationFeeTrxId;
+          trxId = order.trxId;
           break
         } else if (state.trxId == order.cancellationFeeTrxId && state.oldState == "PC") {
           order.state = "C";
-          trxId = order.cancellationFeeTrxId;
+          trxId = order.trxId;
           break
         }
       }
@@ -2193,7 +2259,6 @@ function storeMyTransactions(transactions) {
             order.currentAllowedTimesToTransfer--;
             order.state = "R"
           } else if (transaction.state == "C") {
-            order.currentAllowedTimesToTransfer--;
             order.state = "C"
           }
           break
@@ -2235,13 +2300,82 @@ function refreshOrderState() {
             } else if (state.oldState == "PC") {
               newState = "Cancelled"
             }
-            renderUpdatedState(transactionId, newState);
+            renderUpdatedState(transactionId, newState, null);
             notifySuccess("Your transaction pushed has been confirmed by the server side.")
           }
         }
       }).catch(() => {})
     }
   }
+};
+
+function renderTransactions(transactions) {
+  var trxHtml = "";
+  for (var i in transactions) {
+    if (isNaN(i)) continue;
+    var transaction = transactions[i];
+    var symbolName = null;
+    var desc = null;
+    var accounts = null;
+    var trxId = null;
+    var feeTrxId = null;
+    var modificationTrxId = null;
+    var cancellationTrxId = null;
+    var state = null;
+    symbolName = transaction.basePlatform + "." + transaction.baseCryptocurrency + " / " + transaction.termPlatform + "." + transaction.termCryptocurrency + " (Internal ID: " + transaction.aDebugId + ")";
+    desc = '<span class="trx_sp">Price:</span> <span class="trx_v">' + transaction.price + '</span> <span class="trx_sp">Fee:</span> <span class="trx_v">' + transaction.feeAmount + '</span> <span class="trx_sp">Expiration:</span> <span class="trx_v">' + new Date(transaction.expiration).toString("M/d/yyyy HH:mm") + '</span> <span class="trx_sp">Base Amount:</span> <span class="trx_v">' + (transaction.baseAmount - transaction.baseCurrentAmount) + " / " + transaction.baseAmount + '</span> <span class="trx_sp">Term Amount:</span> <span class="trx_v">' + transaction.termCurrentAmount + " / " + transaction.termAmount + '<span>';
+    accounts = '<span class="trx_sp">Account:</span> ' + transaction.account + ' <span class="trx_sp">To Account:</span> ' + transaction.toAccount;
+    trxId = '<span class="trx_sp">Transaction ID:</span> ' + transaction.trxId + ", " + transaction.blockNum;
+    feeTrxId = '<span class="trx_sp">Fee Trx ID:</span> ' + transaction.feeTrxId + ", " + transaction.feeBlockNum;
+    modificationTrxId = transaction.modificationFeeBlockNum == -1 ? "" : ('<span class="trx_sp">Modification Trx ID:</span> ' + transaction.modificationFeeTrxId + ", " + transaction.modificationFeeBlockNum);
+    cancellationTrxId = transaction.cancellationFeeBlockNum == -1 ? "" : ('<span class="trx_sp">Cancellation Trx ID:</span> ' + transaction.cancellationFeeTrxId + ", " + transaction.cancellationFeeBlockNum);
+    if (transaction.state == "O") {
+      state = "Open"
+    } else if (transaction.state == "M") {
+      state = "Processing"
+    } else if (transaction.state == "P") {
+      state = "Ready for Settlement"
+    } else if (transaction.state == "R") {
+      state = "Refunded"
+    } else if (transaction.state == "C") {
+      state = "Cancelled"
+    } else if (transaction.state == "D") {
+      state = "Filled"
+    } else if (transaction.state == "S") {
+      state = "Settled"
+    }
+    trxHtml += '<li>' + '<div class="block" style="overflow:hidden">' + '<div class="tags">' + '<a href="" class="tag">' + '<span>' + state + '</span>' + '</a>' + '</div>' + '<div class="block_content">' + '<h2 class="title">' + symbolName + '</h2>' + '<div class="byline">' + '<span>' + new Date(transaction.time).toString("M/d/yyyy HH:mm") + '</a>' + '</div>' + '<p class="excerpt">' + desc + '</p>' + '<p class="excerpt">' + accounts + '</p>' + '<p class="excerpt">' + trxId + '</p>' + '<p class="excerpt">' + feeTrxId + '</p>' + (modificationTrxId == "" ? "" : ('<p class="excerpt">' + modificationTrxId + '</p>')) + (cancellationTrxId == "" ? "" : ('<p class="excerpt">' + cancellationTrxId + '</p>')) + '</div>' + '</div>' + '</li>'
+  }
+  $("#transactions").html(trxHtml);
+  $("#transactions_div").show()
+};
+
+function searchTrxs() {
+  var mailAddr = $("#mail_address_search").val();
+  var aDebugIdTmp = $("#a_debug_id_search").val();
+  var trxId = $("#trx_id_search").val();
+  if (mailAddr == "") {
+    notifyError("The mail address should not be empty.");
+    return
+  }
+  if (aDebugIdTmp == "" && trxId == "") {
+    notifyError("Either the internal ID or the transaction ID should be filled in.");
+    return
+  }
+  var aDebugId = null;
+  if (aDebugIdTmp != "") {
+    if (isNaN(aDebugId)) {
+      notifyError("The internal ID is not correct.");
+      return
+    } else {
+      aDebugId = parseInt(aDebugIdTmp)
+    }
+  }
+  getTransactions(mailAddr, aDebugId, trxId).then(function(transactions) {
+    if (transactions.length > 0) {
+      renderTransactions(transactions)
+    }
+  }).catch(function() {})
 };
 
 function renderUpdatedDexReq(rowId, state) {
@@ -2297,7 +2431,7 @@ function getOrdersTrades(bNotify) {
       for (var i = 1; i <= latestTradesLimit; i++) {
         var price = 0;
         var cnt = 0;
-        var time = Math.round(startTime + i * step)
+        var time = Math.round(startTime + i * step);
         for (var j = cursor; j < tradesLength; j++) {
           var trade = trades[j];
           if (trade.updatedTime < time) {
@@ -2987,6 +3121,9 @@ function main() {
   $("#notify_orderbook").on("click", function() {
     notifyOrderbook()
   });
+  $("#search_trxs").on("click", function() {
+    searchTrxs()
+  });
   $("#request_dex").on("click", function() {
     requestDex()
   });
@@ -3014,6 +3151,10 @@ function main() {
     changePassword(verificationCode, newPassword)
   });
   $("#menu_chains").on("click", function() {
+    $("#" + currentPanel).removeClass("active");
+    $("#" + currentPanel).addClass("active")
+  });
+  $("#menu_trxs").on("click", function() {
     $("#" + currentPanel).removeClass("active");
     $("#" + currentPanel).addClass("active")
   });
