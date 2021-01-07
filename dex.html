@@ -19,8 +19,8 @@
   <meta property="og:image:width" content="145" />
   <meta property="og:image:height" content="250" />
   <meta property="og:image:alt" content="XCOINCH: the best DEX solutions to help cryptocurrency traders enhance the cryptocurrency trading safety" />
-  <meta property="og:video" content="https://youtu.be/N73Zh3oKrbg" />
-  <meta property="og:video:secure_url" content="https://youtu.be/N73Zh3oKrbg" />
+  <meta property="og:video" content="https://youtu.be/1mlzEMOEc34" />
+  <meta property="og:video:secure_url" content="https://youtu.be/1mlzEMOEc34" />
   <meta property="og:video:width" content="1280" />
   <meta property="og:video:height" content="720" />
   <meta property="og:updated_time" content="2020-01-16T00:00:00+00:00">
@@ -260,6 +260,11 @@
                 <li id="menu_trxs"><a><i class="fa fa-newspaper-o"></i> Transactions <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
                     <li id="menuitem_trxs"><a href="javascript:void(0);" onclick="showTrxs()">Search</a></li>
+                  </ul>
+                </li>
+                <li id="menu_fintechee"><a><i class="fa fa-laptop"></i> Fintechee <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li id="menuitem_fintechee"><a href="javascript:void(0);" onclick="showFintechee()">Automated Trading</a></li>
                   </ul>
                 </li>
                 <li id="menu_market_cap" style="display:none"><a><i class="fa fa-newspaper-o"></i> Market Cap <span class="fa fa-chevron-down"></span></a>
@@ -622,6 +627,7 @@
               </div>
             </div>
           </section>
+          <section id="section_fintechee" style="display:none"> <iframe src="/trade.html" style="width:100%;height:500px;border:none" id="section_fintechee_iframe"></iframe> </section>
           <section id="section_market_cap" style="display:none"> </section>
         </div>
       </div>
@@ -653,12 +659,16 @@
   <script src="../vendors/pnotify/dist/pnotify.js"> </script>
   <script src="../vendors/pnotify/dist/pnotify.buttons.js"> </script>
   <script src="../vendors/pnotify/dist/pnotify.nonblock.js"> </script>
-  <script src="https://www.cryptohopper.com/widgets/js/script"></script>
+  <script src="https://www.cryptohopper.com/widgets/js/script"> </script>
   <script src="../build/js/custom.min.js"> </script>
   <script src="/js/main.js"> </script>
   <script defer>
     var contactId = "0";
     $(document).ready(function() {
+      $("#section_fintechee_iframe").height(window.innerHeight - 150);
+      $(window).resize(function() {
+        $("#section_fintechee_iframe").height(window.innerHeight - 150)
+      });
       $(".ui-pnotify").remove();
       main()
     })
