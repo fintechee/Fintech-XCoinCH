@@ -249,20 +249,20 @@
             <div class="menu_section">
               <h3>General</h3>
               <ul class="nav side-menu">
+                <li id="menu_chains0" style="color:#FAE2BE"><a><i class="fa fa-line-chart"></i> Chains (MainNet) <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu" id="menuitem_plactforms0">
+                    <li id="menuitem_eth_eth0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth',0)">ETH</a></li>
+                    <li id="menuitem_eos_eos0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eos',0)">EOS</a></li>
+                    <li id="menuitem_eth_eos0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eos',0)">ETH X EOS</a></li>
+                    <li id="menuitem_eos_eth0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eth',0)">EOS X ETH</a></li>
+                  </ul>
+                </li>
                 <li id="menu_chains"><a><i class="fa fa-line-chart"></i> Chains (TestNet) <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu" id="menuitem_plactforms">
                     <li id="menuitem_eth_eth"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth',1)">ETH</a></li>
                     <li id="menuitem_eos_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eos',1)">EOS</a></li>
                     <li id="menuitem_eth_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eos',1)">ETH X EOS</a></li>
                     <li id="menuitem_eos_eth"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eth',1)">EOS X ETH</a></li>
-                  </ul>
-                </li>
-                <li id="menu_chains0"><a><i class="fa fa-line-chart"></i> Chains (MainNet) <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu" id="menuitem_plactforms0">
-                    <li id="menuitem_eth_eth0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth',0)">ETH</a></li>
-                    <li id="menuitem_eos_eos0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eos',0)">EOS</a></li>
-                    <li id="menuitem_eth_eos0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eos',0)">ETH X EOS</a></li>
-                    <li id="menuitem_eos_eth0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eth',0)">EOS X ETH</a></li>
                   </ul>
                 </li>
                 <li id="menu_trxs"><a><i class="fa fa-newspaper-o"></i> Transactions <span class="fa fa-chevron-down"></span></a>
@@ -463,7 +463,8 @@
                   <form class="form-label-left input_mask">
                     <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control" id="mail_address_search" placeholder="Mail Address"> </div>
                     <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control" id="trx_id_search" placeholder="Transaction ID"> </div>
-                    <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control" id="a_debug_id_search" placeholder="Internal ID (Only for Administrators)"> </div>
+                    <div class="col-md-3 col-sm-3 form-group has-feedback"> <input type="text" class="form-control" id="a_debug_id_search" placeholder="Internal ID (Only for Administrators)"> </div> MainNet: <input type="radio" class="flat"
+                      name="net_chk" id="mainnet_chk" value="0" checked="" required /> TestNet: <input type="radio" class="flat" name="net_chk" id="testnet_chk" value="1" />
                     <div class="col-md-3 col-sm-3 form-group has-feedback"> <button type="button" class="btn btn-success" id="search_trxs">Search</button> </div>
                   </form>
                 </div>
