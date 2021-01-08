@@ -251,10 +251,18 @@
               <ul class="nav side-menu">
                 <li id="menu_chains" class="active"><a><i class="fa fa-line-chart"></i> Chains (TestNet) <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu" style="display:block;">
-                    <li id="menuitem_eth_eth" class="active"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth')">ETH</a></li>
-                    <li id="menuitem_eos_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eos')">EOS</a></li>
-                    <li id="menuitem_eth_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eos')">ETH X EOS</a></li>
-                    <li id="menuitem_eos_eth"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eth')">EOS X ETH</a></li>
+                    <li id="menuitem_eth_eth" class="active"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth',1)">ETH</a></li>
+                    <li id="menuitem_eos_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eos',1)">EOS</a></li>
+                    <li id="menuitem_eth_eos"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eos',1)">ETH X EOS</a></li>
+                    <li id="menuitem_eos_eth"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eth',1)">EOS X ETH</a></li>
+                  </ul>
+                </li>
+                <li id="menu_chains0" class="active"><a><i class="fa fa-line-chart"></i> Chains (MainNet) <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu" style="display:block;">
+                    <li id="menuitem_eth_eth0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth',0)">ETH</a></li>
+                    <li id="menuitem_eos_eos0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eos',0)">EOS</a></li>
+                    <li id="menuitem_eth_eos0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eos',0)">ETH X EOS</a></li>
+                    <li id="menuitem_eos_eth0"><a href="javascript:void(0);" onclick="changeCrossPlatforms('eos','eth',0)">EOS X ETH</a></li>
                   </ul>
                 </li>
                 <li id="menu_trxs"><a><i class="fa fa-newspaper-o"></i> Transactions <span class="fa fa-chevron-down"></span></a>
@@ -286,9 +294,9 @@
             </div>
           </div>
           <div class="sidebar-footer hidden-small"> <a data-toggle="tooltip" data-placement="top" title="Settings" href="javascript:void(0);" onclick="showSetting()"> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> </a> <a
-              data-toggle="tooltip" data-placement="top" title="Chains" href="javascript:void(0);" onclick="changeCrossPlatforms('eth','eth')"> <span class="glyphicon glyphicon-signal" aria-hidden="true"></span> </a> <a data-toggle="tooltip"
-              data-placement="top" title="Listing" href="javascript:void(0);" onclick="showListingRequest()"> <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span> </a> <a data-toggle="tooltip" data-placement="top"
-              title="Market Cap" href="javascript:void(0);" onclick="showMarketCap()"> <span class="glyphicon glyphicon glyphicon-th-list" aria-hidden="true"></span> </a> </div>
+              data-toggle="tooltip" data-placement="top" title="Fintechee" href="javascript:void(0);" onclick="showFintechee()"> <span class="glyphicon glyphicon-signal" aria-hidden="true"></span> </a> <a data-toggle="tooltip" data-placement="top"
+              title="Listing" href="javascript:void(0);" onclick="showListingRequest()"> <span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span> </a> <a data-toggle="tooltip" data-placement="top" title="Market Cap"
+              href="javascript:void(0);" onclick="showMarketCap()"> <span class="glyphicon glyphicon glyphicon-th-list" aria-hidden="true"></span> </a> </div>
         </div>
       </div>
       <div class="top_nav">
