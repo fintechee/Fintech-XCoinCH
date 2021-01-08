@@ -186,7 +186,7 @@
   <script defer>
     const contactId = "0";
     const serverUrl = "https://lmk2m8udud.execute-api.eu-central-1.amazonaws.com/v1";
-    const sandbox = false;
+    const sandbox = true;
     if (!sandbox) {
       $("#send_mail_div").show()
     }
@@ -294,6 +294,48 @@
         success: function(data) {}
       });
       return false
+    });
+    $("#si_mail_address").on("keyup keypress", 'form input[type="text"]', function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        $("#btn_sign_in").click();
+        return false
+      }
+    });
+    $("#si_password").on("keyup keypress", 'form input[type="text"]', function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        $("#btn_sign_in").click();
+        return false
+      }
+    });
+    $("#su_mail_address").on("keyup keypress", 'form input[type="text"]', function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        $("#btn_sign_up").click();
+        return false
+      }
+    });
+    $("#su_password").on("keyup keypress", 'form input[type="text"]', function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        $("#btn_sign_up").click();
+        return false
+      }
+    });
+    $("#vf_mail_address").on("keyup keypress", 'form input[type="text"]', function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        $("#btn_activate").click();
+        return false
+      }
+    });
+    $("#vf_code").on("keyup keypress", 'form input[type="text"]', function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        $("#btn_activate").click();
+        return false
+      }
     })
   </script>
 </body>
