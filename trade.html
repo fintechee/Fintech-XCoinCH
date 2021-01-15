@@ -1,1 +1,444 @@
-<html> <head> <meta charset="utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/> <title>XCoinCH | Trade via Crypto Wallet</title> <meta name="description" content="XCoinCH serves as a trading platform based on blockchain and smart contract."/> <meta property="og:title" content="XCoinCH | Trade via Crypto Wallet"/> <meta property="og:type" content="website"/> <meta property="og:description" content="XCoinCH serves as a trading platform based on blockchain and smart contract."/> <meta property="og:url" content="https://www.xcoinch.com"/> <meta property="og:image" content="https://www.xcoinch.com/xcoinch.png"/> <meta property="og:image:secure_url" content="https://www.xcoinch.com/xcoinch.png"/> <meta property="og:image:type" content="image/png"/> <meta property="og:image:width" content="200"/> <meta property="og:image:height" content="200"/> <meta property="og:image:alt" content="The LOGO and trademark of XCoinCH"/> <meta property="og:video" content="http://youtu.be/1mlzEMOEc34"/> <meta property="og:video:secure_url" content="https://youtu.be/1mlzEMOEc34"/> <meta property="og:video:width" content="1280"/> <meta property="og:video:height" content="720"/> <link rel="stylesheet" type="text/css" href="semantic-ui-build/semantic/dist/semantic.min.css"/> <link rel="stylesheet" type="text/css" href="semantic/calendar.min.css"/> <link rel="stylesheet" type="text/css" href="datatables/DataTables-1.10.18/css/jquery.dataTables.min.css"> <link rel="stylesheet" type="text/css" href="datatables/DataTables-1.10.18/css/dataTables.semanticui.min.css"> <link rel="stylesheet" type="text/css" href="datatables/RowReorder-1.2.4/css/rowReorder.dataTables.min.css"> <link rel="stylesheet" type="text/css" href="datatables/RowReorder-1.2.4/css/rowReorder.semanticui.min.css"> <link rel="stylesheet" type="text/css" href="datatables/Responsive-2.2.2/css/responsive.dataTables.min.css"> <link rel="stylesheet" type="text/css" href="datatables/Responsive-2.2.2/css/responsive.semanticui.min.css"> <link rel="stylesheet" type="text/css" href="spectrum/spectrum.css"/> <link rel="shortcut icon" href="favicon.ico"/> <style> .ui.noanimation, .ui.noanimation *{ -webkit-transition:none!important; -moz-transition:none!important; -ms-transition:none!important;transition:none!important;}.overlay{position:fixed;display:block;width:100%;height:100px;top:0px;left:0px;right:0;bottom:0;background-color:rgba(0,0,0,0.5);opacity:1.0;z-index:100;}iframe{overflow:scroll;width:100%;height:100%;border:0px solid black;padding:0;margin:0;}.ui.tabular.menu .active.item{background:#FFFFFF;margin-bottom:-2px;color:#222222!important;}.ui.tabular.menu .active.item:hover{background:#FFFFFF;}.ui.tabular.menu .item{background:#303030;color:#CCCCCC;}.ui.tabular.menu a.item:hover, .ui.tabular.menu .item:hover{background:#505050;color:#CCCCCC;}.ui.bottom.tabular.menu .active.item{margin-bottom:-2px;}.ui.bottom.tabular.menu{border-top:none;}@media (max-width:500px){ .ui.bottom.tabular.menu .active.item{margin-bottom:0px;padding:0px;}.ui.bottom.tabular.menu .item{margin-bottom:0px;padding:0px;}}@media (max-height:600px){ #charts{padding-top:7px;}}.ui.slider.checkbox input:focus:checked~.box:before, .ui.slider.checkbox input:focus:checked~label:before{background-color:#4dabf5!important}.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before{background-color:grey;}.ui.slider.checkbox input:checked~.box:before, .ui.slider.checkbox input:checked~label:before{background-color:#4dabf5!important;}.ui.styled.accordion, .ui.styled.accordion .accordion{ -webkit-box-shadow:0 0px 0px 0 rgba(34,36,38, .15),0 0 0 0px rgba(34,36,38, .15);box-shadow:0 0px 0px 0 rgba(34,36,38, .15),0 0 0 0px rgba(34,36,38, .15);}#testtext{position:absolute;width:100%;height:400px;}.ui.selection.dropdown{min-width:0;}.main_menu_item{text-align:center!important;padding-left:0!important;padding-right:0!important;}.main_menu{width:52px!important;}.main_panel{padding-left:50px!important;}.main_menu_item2{display:block!important;}@media (max-width:500px), (max-height:600px){ .main_menu{width:38px!important;}.main_panel{padding-left:36px!important;}.main_menu_item2{display:none!important;}}.ui.dropdown .menu{border:none;}.ui.vertical.menu .dropdown.item:not(.upward) .menu{top:0!important;} </style> </head> <body style="background:#151a30"> <div id="loading" class="ui active dimmer"> <div class="ui large text loader">Loading</div> </div> <div id="bd2" class="ui noanimation right vertical menu sidebar" style="padding-left:5px;padding-right:0px;width:350px;height:100%;overflow:hidden"> <div style="width:100%;height:100%;overflow-y:scroll;padding-right:35px;box-sizing:content-box;padding-top:10px"> <div class="row"> <div id="test_s"></div> </div> <div class="ui hidden divider"></div> <div class="row"> <iframe src="https://www.fintechee.com/ccnews/"></iframe> </div> </div> </div> <div id="accountsummarysidebar" class="ui noanimation right vertical menu sidebar" style="width:350px"> <div id="test_a_s"></div> </div> <div id="orderstradessidebar" class="ui noanimation bottom menu sidebar" style="background:#111111;overflow-x:hidden"> <div class="row" style="width:100%"> <div id="test_o"></div> </div> </div> <div id="indissidebar" class="ui noanimation bottom menu sidebar" style="background:#111111"> <div class="row" style="width:100%"> <div id="test_i"></div> </div> </div> <div id="eassidebar" class="ui noanimation bottom menu sidebar" style="background:#111111"> <div class="row" style="width:100%"> <div id="test_e"></div> </div> </div> <div class="ui small modal" id="console"> <div class="ui fluid large primary submit button" id="run" onclick="run1()">Run</div> <div class="field"> <div id="testtext"></div> </div> </div> <div class="ui small modal" id="calendar"> <div class="row"> <iframe src="https://www.fintechee.com/calendar/"></iframe> </div> </div> <div class="pusher"> <div style="width:100%;height:100%;position:absolute"> <div class="ui center aligned container"> <div class="ui hidden divider"></div> <div class="ui hidden divider"></div> <div class="ui hidden divider"></div> <div class="ui hidden divider"></div> <div class="ui hidden divider"></div> <div class="ui tiny images"> <img src="/xcoinch.png" class="ui centered tiny image" alt="The LOGO and trademark of XCoinCH"> </div> <div class="ui horizontal inverted small divided link list"> <p style="font-family:'Helvetica Neue','Luxi Sans','DejaVu Sans',Tahoma,'Hiragino Sans GB','Microsoft Yahei',sans-serif;"> © 2019 - Present XCoinCH<br> Trade via Wallet. </p> </div> </div> </div> <div class="winfrm2 main_menu ui fixed left vertical inverted icon menu" style="height:100%;border-radius:0px"> <div style="height:100%;text-align:center"> <a class="main_menu_item item" style="background:#151a30;font-family:'Arial Black'" target="_blank" href="index.html"> <img src="/xcoinch.png"> </a> <div class="main_menu_item ui winfrm simple dropdown item" style="display:none"> <i class="user icon"></i> <div class="menu"> <a class="item" id="showaccounts" style="background:#00A783!important;color:#FFFFFF!important">Account</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item"> <i class="balance scale icon"></i> <div class="menu"> <a class="item" id="showinstruments" style="background:#00A783!important;color:#FFFFFF!important">Market</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item" id="showtradesmenuitem" style="display:none"> <i class="handshake icon"></i> <div class="menu"> <a class="item" id="showtrades" style="background:#00A783!important;color:#FFFFFF!important">Trades</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item"> <i class="chart line icon"></i> <div class="menu"> <a class="item" id="showindis" style="background:#00A783!important;color:#FFFFFF!important">Indicators</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item"> <i class="graduation cap icon"></i> <div class="menu"> <a class="item" id="showeas" style="background:#00A783!important;color:#FFFFFF!important">EA</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item" style="display:none"> <i class="gamepad icon"></i> <div class="menu"> <a class="item" id="showbt" style="background:#00A783!important;color:#FFFFFF!important">Back Testing</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item"> <i class="wrench icon"></i> <div class="menu"> <a class="item" id="showconsole" style="background:#00A783!important;color:#FFFFFF!important">Console</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item"> <i class="calendar alternate icon"></i> <div class="menu"> <a class="item" id="showcalendar" style="background:#00A783!important;color:#FFFFFF!important">Calendar</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item"> <i class="book icon"></i> <div class="menu"> <a class="item" id="showdoc" target="doc" href="https://www.fintechee.com/sdk-trading/" style="background:#00A783!important;color:#FFFFFF!important">Documents</a> </div> </div> <div class="main_menu_item ui winfrm simple dropdown item"> <i class="paint brush icon"></i> <div class="menu"> <a class="item" id="showcolorpicker" style="background:#00A783!important;color:#FFFFFF!important">Color Picker</a> <a class="item" id="changecolortoblue" style="background:#00A783!important;color:#FFFFFF!important">Blue Theme</a> </div> </div> <div class="main_menu_item main_menu_item2 ui winfrm simple dropdown item"> <i class="table icon"></i> <div class="menu"> <a class="item" id="changelayoutto1" style="background:#00A783!important;color:#FFFFFF!important"><i class="window maximize outline icon"></i></a><a class="item" id="changelayoutto3" style="background:#00A783!important;color:#FFFFFF!important"><i class="columns icon"></i></a> </div> </div> </div> </div> <div id="test_s_m"></div> <div id="test_e_m"></div> <div id="test_w_m"></div> <div id="bd" class="ui grid" style="margin:0px;padding:0px;height:100%;position:relative"> <div id="charts" class="main_panel sixteen wide column" style="padding-top:0px;padding-bottom:0px;padding-right:0px;width:100%;height:100%;overflow:hidden"> <div style="width:100%;height:100%;overflow:hidden;padding-right:0px;padding-bottom:10px;box-sizing:content-box;"> <div class="row"> <div id="test_m_k_c" style="margin:0px;padding:0px;top:0;left:0;right:100%;bottom:100%"></div> </div> </div> </div> </div> <div id="test_i_d"></div> <div id="test_i_cd"></div> <div id="test_e_d"></div> <div id="test_e_cd"></div> <div id="test_s_d"></div> <div id="test_a_d"></div> <div id="test_r_d"></div> <div id="test_c_d"></div> <div id="test_p_d"></div> <div id="test_o_d"></div> <div id="test_w_d"></div> <div id="test_oc_d"></div> <div id="test_cl_d"></div> </div> <div id="reserved_zone"></div> <script type="text/javascript" src="js/cc/lang/en.js"> </script> <script type="text/javascript" src="js/cc/brokers.js"> </script> <script type="text/javascript" src="js/cc/builtin.js"> </script> <script type="text/javascript" src="js/jquery/jquery-3.2.1.min.js"> </script> <script type="text/javascript" src="semantic-ui-build/semantic/dist/semantic.min.js"> </script> <script type="text/javascript" src="semantic/calendar.min.js"> </script> <script type="text/javascript" src="datatables/DataTables-1.10.18/js/jquery.dataTables.min.js"> </script> <script type="text/javascript" src="datatables/DataTables-1.10.18/js/dataTables.semanticui.min.js"> </script> <script type="text/javascript" src="datatables/RowReorder-1.2.4/js/dataTables.rowReorder.min.js"> </script> <script type="text/javascript" src="datatables/RowReorder-1.2.4/js/rowReorder.semanticui.min.js"> </script> <script type="text/javascript" src="datatables/Responsive-2.2.2/js/dataTables.responsive.min.js "> </script> <script type="text/javascript" src="datatables/Responsive-2.2.2/js/responsive.semanticui.min.js "> </script> <script type="text/javascript" src="spectrum/spectrum.js"> </script> <script type="text/javascript" src="js/d3/d3.min.js"> </script> <script type="text/javascript" src="js/cc/u.js"> </script> <script type="text/javascript" src="js/ace/ace.js" charset="utf-8"> </script> <script type="text/javascript" src="js/ace/theme-chrome.js" charset="utf-8"> </script> <script type="text/javascript" src="js/ace/mode-javascript.js" charset="utf-8"> </script> <script src="js/synaptic/synaptic.js"> </script> <script defer>var backtest_html="/backtest.html";var editor=null;var colorStyle="blue";var brokerlessMode=true;var backboneMode=true;var layoutMode=true;var widgetMode=true;var colorpickerMode=true;var newsMode=true;var calendarMode=true;var brokerless_html="/login.html";var report_html="report.html";if(widgetMode){$('#showtradesmenuitem').hide()}$(document).ready(function(){$('.ui.embed').embed();$('.noanimation').transition('disable');$('#showconsole').on('click',function(){$('#console').transition('disable');$('#console').modal({autofocus:true}).modal('show');$('body').css('height','100%')});$('#showindis').on('click',function(){showIndicators();$('#indissidebar').sidebar('setting','transition','overlay').sidebar('toggle')});$('#showeas').on('click',function(){showEAs();$('#eassidebar').sidebar('setting','transition','overlay').sidebar('toggle')});$('#showbt').on('click',function(){showBackTest()});$('#showtrades').on('click',function(){showTrades();$('#orderstradessidebar').sidebar('setting','transition','overlay').sidebar('toggle')});$('#showinstruments').on('click',function(){$('#bd2').sidebar('setting','transition','overlay').sidebar('setting','dimPage',false).sidebar('toggle');$('#accountsummarysidebar').css('display','none')});$('#changecolortobright').on('click',function(){changeColorStyle("bright")});$('#changecolortodark').on('click',function(){changeColorStyle("dark")});$('#changecolortoblue').on('click',function(){changeColorStyle("blue")});$('#changelayoutto1').on('click',function(){changeLayout(1)});$('#changelayoutto2').on('click',function(){changeLayout(2)});$('#changelayoutto3').on('click',function(){changeLayout(3)});$('#showaccounts').on('click',function(){$('#accountsummarysidebar').sidebar('setting','transition','overlay').sidebar('toggle');$('#bd2').css('display','none')});$('#showcalendar').on('click',function(){$('#calendar').css('height','400px');$('#calendar').transition('disable');$('#calendar').modal({autofocus:false}).modal('show')});$('#showcolorpicker').on('click',function(){showColorPicker()});$(window).on('beforeunload',function(){unload()});initForTrade();editor=ace.edit("testtext");editor.setTheme("ace/theme/chrome");var JavaScriptMode=ace.require("ace/mode/javascript").Mode;editor.session.setMode(new JavaScriptMode());var synaptic=require('synaptic')});function run1(){eval(editor.getValue());console.log(document.getElementById("testtext").value);$('#console').modal({autofocus:false}).modal('hide');return false} </script> </body> </html> 
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <title>XCoinCH | Trade via Crypto Wallet</title>
+  <meta name="description" content="XCoinCH serves as a trading platform based on blockchain and smart contract." />
+  <meta property="og:title" content="XCoinCH | Trade via Crypto Wallet" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="XCoinCH serves as a trading platform based on blockchain and smart contract." />
+  <meta property="og:url" content="https://www.xcoinch.com" />
+  <meta property="og:image" content="https://www.xcoinch.com/xcoinch.png" />
+  <meta property="og:image:secure_url" content="https://www.xcoinch.com/xcoinch.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="200" />
+  <meta property="og:image:height" content="200" />
+  <meta property="og:image:alt" content="The LOGO and trademark of XCoinCH" />
+  <meta property="og:video" content="http://youtu.be/1mlzEMOEc34" />
+  <meta property="og:video:secure_url" content="https://youtu.be/1mlzEMOEc34" />
+  <meta property="og:video:width" content="1280" />
+  <meta property="og:video:height" content="720" />
+  <link rel="stylesheet" type="text/css" href="semantic-ui-build/semantic/dist/semantic.min.css" />
+  <link rel="stylesheet" type="text/css" href="semantic/calendar.min.css" />
+  <link rel="stylesheet" type="text/css" href="datatables/DataTables-1.10.18/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="datatables/DataTables-1.10.18/css/dataTables.semanticui.min.css">
+  <link rel="stylesheet" type="text/css" href="datatables/RowReorder-1.2.4/css/rowReorder.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="datatables/RowReorder-1.2.4/css/rowReorder.semanticui.min.css">
+  <link rel="stylesheet" type="text/css" href="datatables/Responsive-2.2.2/css/responsive.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="datatables/Responsive-2.2.2/css/responsive.semanticui.min.css">
+  <link rel="stylesheet" type="text/css" href="spectrum/spectrum.css" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <style>
+    .ui.noanimation,
+    .ui.noanimation * {
+      -webkit-transition: none !important;
+      -moz-transition: none !important;
+      -ms-transition: none !important;
+      transition: none !important;
+    }
+
+    .overlay {
+      position: fixed;
+      display: block;
+      width: 100%;
+      height: 100px;
+      top: 0px;
+      left: 0px;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 1.0;
+      z-index: 100;
+    }
+
+    iframe {
+      overflow: scroll;
+      width: 100%;
+      height: 100%;
+      border: 0px solid black;
+      padding: 0;
+      margin: 0;
+    }
+
+    .ui.tabular.menu .active.item {
+      background: #FFFFFF;
+      margin-bottom: -2px;
+      color: #222222 !important;
+    }
+
+    .ui.tabular.menu .active.item:hover {
+      background: #FFFFFF;
+    }
+
+    .ui.tabular.menu .item {
+      background: #303030;
+      color: #CCCCCC;
+    }
+
+    .ui.tabular.menu a.item:hover,
+    .ui.tabular.menu .item:hover {
+      background: #505050;
+      color: #CCCCCC;
+    }
+
+    .ui.bottom.tabular.menu .active.item {
+      margin-bottom: -2px;
+    }
+
+    .ui.bottom.tabular.menu {
+      border-top: none;
+    }
+
+    @media (max-width:500px) {
+      .ui.bottom.tabular.menu .active.item {
+        margin-bottom: 0px;
+        padding: 0px;
+      }
+
+      .ui.bottom.tabular.menu .item {
+        margin-bottom: 0px;
+        padding: 0px;
+      }
+    }
+
+    @media (max-height:600px) {
+      #charts {
+        padding-top: 7px;
+      }
+    }
+
+    .ui.slider.checkbox input:focus:checked~.box:before,
+    .ui.slider.checkbox input:focus:checked~label:before {
+      background-color: #4dabf5 !important
+    }
+
+    .ui.slider.checkbox .box:before,
+    .ui.slider.checkbox label:before {
+      background-color: grey;
+    }
+
+    .ui.slider.checkbox input:checked~.box:before,
+    .ui.slider.checkbox input:checked~label:before {
+      background-color: #4dabf5 !important;
+    }
+
+    .ui.styled.accordion,
+    .ui.styled.accordion .accordion {
+      -webkit-box-shadow: 0 0px 0px 0 rgba(34, 36, 38, .15), 0 0 0 0px rgba(34, 36, 38, .15);
+      box-shadow: 0 0px 0px 0 rgba(34, 36, 38, .15), 0 0 0 0px rgba(34, 36, 38, .15);
+    }
+
+    #testtext {
+      position: absolute;
+      width: 100%;
+      height: 400px;
+    }
+
+    .ui.selection.dropdown {
+      min-width: 0;
+    }
+
+    .main_menu_item {
+      text-align: center !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .main_menu {
+      width: 52px !important;
+    }
+
+    .main_panel {
+      padding-left: 50px !important;
+    }
+
+    .main_menu_item2 {
+      display: block !important;
+    }
+
+    @media (max-width:500px),
+    (max-height:600px) {
+      .main_menu {
+        width: 38px !important;
+      }
+
+      .main_panel {
+        padding-left: 36px !important;
+      }
+
+      .main_menu_item2 {
+        display: none !important;
+      }
+    }
+
+    .ui.dropdown .menu {
+      border: none;
+    }
+
+    .ui.vertical.menu .dropdown.item:not(.upward) .menu {
+      top: 0 !important;
+    }
+    #news::-webkit-scrollbar {
+		  display: none;
+		}
+  </style>
+</head>
+
+<body style="background:#151a30">
+  <div id="loading" class="ui active dimmer">
+    <div class="ui large text loader">Loading</div>
+  </div>
+  <div id="bd2" class="ui noanimation right vertical menu sidebar" style="padding-left:5px;padding-right:0px;width:350px;height:100%;overflow:hidden">
+    <div style="width:100%;height:100%;overflow-y:scroll;padding-right:35px;box-sizing:content-box;padding-top:10px">
+      <div class="row">
+        <div id="test_s"></div>
+      </div>
+    </div>
+  </div>
+  <div id="news" class="ui noanimation right vertical menu sidebar"
+  	style="padding-left:0px;padding-right:0px;width:350px;height:100%;overflow:hidden;-ms-overflow-style:none;scrollbar-width:none;">
+  	<div style="width:100%;height:100%;overflow-y:scroll;padding-right:0px;box-sizing:content-box;padding-top:0px;-ms-overflow-style:none;scrollbar-width:none;">
+  		<iframe src="https://www.fintechee.com/ccnews/"></iframe>
+  	</div>
+  </div>
+  <div id="accountsummarysidebar" class="ui noanimation right vertical menu sidebar" style="width:350px">
+    <div id="test_a_s"></div>
+  </div>
+  <div id="orderstradessidebar" class="ui noanimation bottom menu sidebar" style="background:#111111;overflow-x:hidden">
+    <div class="row" style="width:100%">
+      <div id="test_o"></div>
+    </div>
+  </div>
+  <div id="indissidebar" class="ui noanimation bottom menu sidebar" style="background:#111111">
+    <div class="row" style="width:100%">
+      <div id="test_i"></div>
+    </div>
+  </div>
+  <div id="eassidebar" class="ui noanimation bottom menu sidebar" style="background:#111111">
+    <div class="row" style="width:100%">
+      <div id="test_e"></div>
+    </div>
+  </div>
+  <div class="ui small modal" id="console">
+    <div class="ui fluid large primary submit button" id="run" onclick="run1()">Run</div>
+    <div class="field">
+      <div id="testtext"></div>
+    </div>
+  </div>
+  <div class="ui small modal" id="calendar">
+    <div class="row"> <iframe src="https://www.fintechee.com/calendar/"></iframe> </div>
+  </div>
+  <div class="pusher">
+    <div style="width:100%;height:100%;position:absolute">
+      <div class="ui center aligned container">
+        <div class="ui hidden divider"></div>
+        <div class="ui hidden divider"></div>
+        <div class="ui hidden divider"></div>
+        <div class="ui hidden divider"></div>
+        <div class="ui hidden divider"></div>
+        <div class="ui tiny images"> <img src="/xcoinch.png" class="ui centered tiny image" alt="The LOGO and trademark of XCoinCH"> </div>
+        <div class="ui horizontal inverted small divided link list">
+          <p style="font-family:'Helvetica Neue','Luxi Sans','DejaVu Sans',Tahoma,'Hiragino Sans GB','Microsoft Yahei',sans-serif;"> © 2019 - Present XCoinCH<br> Trade via Wallet. </p>
+        </div>
+      </div>
+    </div>
+    <div class="winfrm2 main_menu ui fixed left vertical inverted icon menu" style="height:100%;border-radius:0px">
+      <div style="height:100%;text-align:center"> <a class="main_menu_item item" style="background:#151a30;font-family:'Arial Black'" target="_blank" href="index.html"> <img src="/xcoinch.png"> </a>
+        <div class="main_menu_item ui winfrm simple dropdown item" style="display:none"> <i class="user icon"></i>
+          <div class="menu"> <a class="item" id="showaccounts" style="background:#00A783!important;color:#FFFFFF!important">Account</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item"> <i class="balance scale icon"></i>
+          <div class="menu"> <a class="item" id="showinstruments" style="background:#00A783!important;color:#FFFFFF!important">Market</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item" id="showtradesmenuitem" style="display:none"> <i class="handshake icon"></i>
+          <div class="menu"> <a class="item" id="showtrades" style="background:#00A783!important;color:#FFFFFF!important">Trades</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item"> <i class="chart line icon"></i>
+          <div class="menu"> <a class="item" id="showindis" style="background:#00A783!important;color:#FFFFFF!important">Indicators</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item"> <i class="graduation cap icon"></i>
+          <div class="menu"> <a class="item" id="showeas" style="background:#00A783!important;color:#FFFFFF!important">EA</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item" style="display:none"> <i class="gamepad icon"></i>
+          <div class="menu"> <a class="item" id="showbt" style="background:#00A783!important;color:#FFFFFF!important">Back Testing</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item"> <i class="wrench icon"></i>
+          <div class="menu"> <a class="item" id="showconsole" style="background:#00A783!important;color:#FFFFFF!important">Console</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item"> <i class="calendar alternate icon"></i>
+          <div class="menu"> <a class="item" id="showcalendar" style="background:#00A783!important;color:#FFFFFF!important">Calendar</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item">
+    			<i class="newspaper outline icon"></i>
+    			<div class="menu">
+    				<a class="item" id="shownews" style="background:#00A783!important;color:#FFFFFF!important">News</a>
+    			</div>
+    		</div>
+        <div class="main_menu_item ui winfrm simple dropdown item"> <i class="book icon"></i>
+          <div class="menu"> <a class="item" id="showdoc" target="doc" href="https://www.fintechee.com/sdk-trading/" style="background:#00A783!important;color:#FFFFFF!important">Documents</a> </div>
+        </div>
+        <div class="main_menu_item ui winfrm simple dropdown item"> <i class="paint brush icon"></i>
+          <div class="menu"> <a class="item" id="showcolorpicker" style="background:#00A783!important;color:#FFFFFF!important">Color Picker</a> <a class="item" id="changecolortoblue" style="background:#00A783!important;color:#FFFFFF!important">Blue
+              Theme</a> </div>
+        </div>
+        <div class="main_menu_item main_menu_item2 ui winfrm simple dropdown item"> <i class="table icon"></i>
+          <div class="menu"> <a class="item" id="changelayoutto1" style="background:#00A783!important;color:#FFFFFF!important"><i class="window maximize outline icon"></i></a><a class="item" id="changelayoutto3"
+              style="background:#00A783!important;color:#FFFFFF!important"><i class="columns icon"></i></a> </div>
+        </div>
+      </div>
+    </div>
+    <div id="test_s_m"></div>
+    <div id="test_e_m"></div>
+    <div id="test_w_m"></div>
+    <div id="bd" class="ui grid" style="margin:0px;padding:0px;height:100%;position:relative">
+      <div id="charts" class="main_panel sixteen wide column" style="padding-top:0px;padding-bottom:0px;padding-right:0px;width:100%;height:100%;overflow:hidden">
+        <div style="width:100%;height:100%;overflow:hidden;padding-right:0px;padding-bottom:10px;box-sizing:content-box;">
+          <div class="row">
+            <div id="test_m_k_c" style="margin:0px;padding:0px;top:0;left:0;right:100%;bottom:100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="test_i_d"></div>
+    <div id="test_i_cd"></div>
+    <div id="test_e_d"></div>
+    <div id="test_e_cd"></div>
+    <div id="test_s_d"></div>
+    <div id="test_a_d"></div>
+    <div id="test_r_d"></div>
+    <div id="test_c_d"></div>
+    <div id="test_p_d"></div>
+    <div id="test_o_d"></div>
+    <div id="test_w_d"></div>
+    <div id="test_oc_d"></div>
+    <div id="test_cl_d"></div>
+  </div>
+  <div id="reserved_zone"></div>
+  <script type="text/javascript" src="js/cc/lang/en.js"> </script>
+  <script type="text/javascript" src="js/cc/brokers.js"> </script>
+  <script type="text/javascript" src="js/cc/builtin.js"> </script>
+  <script type="text/javascript" src="js/jquery/jquery-3.2.1.min.js"> </script>
+  <script type="text/javascript" src="semantic-ui-build/semantic/dist/semantic.min.js"> </script>
+  <script type="text/javascript" src="semantic/calendar.min.js"> </script>
+  <script type="text/javascript" src="datatables/DataTables-1.10.18/js/jquery.dataTables.min.js"> </script>
+  <script type="text/javascript" src="datatables/DataTables-1.10.18/js/dataTables.semanticui.min.js"> </script>
+  <script type="text/javascript" src="datatables/RowReorder-1.2.4/js/dataTables.rowReorder.min.js"> </script>
+  <script type="text/javascript" src="datatables/RowReorder-1.2.4/js/rowReorder.semanticui.min.js"> </script>
+  <script type="text/javascript" src="datatables/Responsive-2.2.2/js/dataTables.responsive.min.js "> </script>
+  <script type="text/javascript" src="datatables/Responsive-2.2.2/js/responsive.semanticui.min.js "> </script>
+  <script type="text/javascript" src="spectrum/spectrum.js"> </script>
+  <script type="text/javascript" src="js/d3/d3.min.js"> </script>
+  <script type="text/javascript" src="js/cc/u.js"> </script>
+  <script type="text/javascript" src="js/ace/ace.js" charset="utf-8"> </script>
+  <script type="text/javascript" src="js/ace/theme-chrome.js" charset="utf-8"> </script>
+  <script type="text/javascript" src="js/ace/mode-javascript.js" charset="utf-8"> </script>
+  <script src="js/synaptic/synaptic.js"> </script>
+  <script defer>
+    var backtest_html = "/backtest.html";
+    var editor = null;
+    var colorStyle = "blue";
+    var brokerlessMode = true;
+    var backboneMode = true;
+    var layoutMode = true;
+    var widgetMode = true;
+    var defaultIndicatorsMode = true
+    var colorpickerMode = true;
+    var newsMode = true;
+    var calendarMode = true;
+    var brokerless_html = "/login.html";
+    var report_html = "report.html";
+    if (widgetMode) {
+      $('#showtradesmenuitem').hide()
+    }
+    $(document).ready(function() {
+      $('.ui.embed').embed();
+      $('.noanimation').transition('disable');
+      $('#showconsole').on('click', function() {
+        $('#console').transition('disable');
+        $('#console').modal({
+          autofocus: true
+        }).modal('show');
+        $('body').css('height', '100%')
+      });
+      $('#showindis').on('click', function() {
+        showIndicators();
+        $('#indissidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle')
+      });
+      $('#showeas').on('click', function() {
+        showEAs();
+        $('#eassidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle')
+      });
+      $('#showbt').on('click', function() {
+        showBackTest()
+      });
+      $('#showtrades').on('click', function() {
+        showTrades();
+        $('#orderstradessidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle')
+      });
+      $('#showinstruments').on('click', function() {
+        $('#bd2').sidebar('setting', 'transition', 'overlay').sidebar('setting', 'dimPage', false).sidebar('toggle');
+        $('#accountsummarysidebar').css('display', 'none')
+      });
+      $('#changecolortobright').on('click', function() {
+        changeColorStyle("bright")
+      });
+      $('#changecolortodark').on('click', function() {
+        changeColorStyle("dark")
+      });
+      $('#changecolortoblue').on('click', function() {
+        changeColorStyle("blue")
+      });
+      $('#changelayoutto1').on('click', function() {
+        changeLayout(1)
+      });
+      $('#changelayoutto2').on('click', function() {
+        changeLayout(2)
+      });
+      $('#changelayoutto3').on('click', function() {
+        changeLayout(3)
+      });
+      $('#showaccounts').on('click', function() {
+        $('#accountsummarysidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
+        $('#bd2').css('display', 'none')
+      });
+      $('#showcalendar').on('click', function() {
+        $('#calendar').css('height', '400px');
+        $('#calendar').transition('disable');
+        $('#calendar').modal({
+          autofocus: false
+        }).modal('show')
+      });
+      $('#shownews').on('click', function () {
+  			$('#news')
+  			.sidebar('setting', 'transition', 'overlay')
+  			.sidebar('setting', 'dimPage', false)
+  			.sidebar('toggle')
+  		});
+      $('#showcolorpicker').on('click', function() {
+        showColorPicker()
+      });
+      $(window).on('beforeunload', function() {
+        unload()
+      });
+      initForTrade();
+      editor = ace.edit("testtext");
+      editor.setTheme("ace/theme/chrome");
+      var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+      editor.session.setMode(new JavaScriptMode());
+      var synaptic = require('synaptic')
+    });
+
+    function run1() {
+      eval(editor.getValue());
+      console.log(document.getElementById("testtext").value);
+      $('#console').modal({
+        autofocus: false
+      }).modal('hide');
+      return false
+    }
+  </script>
+</body>
+
+</html>
