@@ -3671,7 +3671,6 @@ function importBuiltInIndicators () {
 	    color: "#ECAE93"
 	}],
 	WHERE_TO_RENDER.SEPARATE_WINDOW)
-
 }
 
 function importBuiltInEAs () {
@@ -7823,7 +7822,7 @@ function importBuiltInEAs () {
 	)
 }
 
-function Perceptron(input, hidden, output) {
+function Perceptron (input, hidden, output) {
 	// create the layers
 	var inputLayer = new synaptic.Layer(input)
 	var hiddenLayer = new synaptic.Layer(hidden)
@@ -7839,4 +7838,8 @@ function Perceptron(input, hidden, output) {
 		hidden: [hiddenLayer],
 		output: outputLayer
 	})
+}
+
+function initDefaultIndicators () {
+	// setDefaultIndicator("fintechee_crypto_loader")
 }

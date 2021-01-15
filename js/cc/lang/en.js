@@ -266,7 +266,7 @@ var dict = {
     iDH1: 'Parameter',
     iDH2: 'Input',
     iDH3: 'Output',
-    iDH4: 'Render this indicator on chart',
+    iDH4: 'Render this indicator on the same window with its parent chart(or indicator)',
     cDTL1: 'This Indicator is Already Existent',
     cDHL1: 'Would you like to overwrite it? Please press OK to overwrite it.', // kIE 23
     dIMIH1: 'Add an Indicator',
@@ -282,6 +282,7 @@ var dict = {
     tSH7: 'Zoom Out',
     tSH8: 'Zoom In',
     tSH9: 'Scroll Lock',
+    tSH10: 'Add a Chart',
     dSNH1: 'Select Symbol', // kT 14
     aSDH1: 'Select Symbols',
     sPHL1: 'Volume(Lots) to Order',
@@ -593,6 +594,8 @@ var dict = {
     m264: "We detected that the number of your connections has exceeded the maximum value. So, the system blocked your location for a while as a penalty. " +
       "One of the possible reasons why the maximum value was exceeded is that you may have opened too many pages associated with our WEB trader. If so, please close the redundant pages and wait for a while. The connections would be recovered automatically. " +
       "Another reason is that you may use a proxy and the proxy is being used by too many people. If so, please switch your browser's proxy setting to another proxy and then refresh the page of our WEB trader.",
+    m265: "The interval is not correct.",
+    m266: "The callback function is not correct.",
     clDH1: "Axis",
     clDH2: "Background",
     clDH3: "Text",
