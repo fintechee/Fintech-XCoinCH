@@ -19,6 +19,7 @@ var dict = {
     aSH13: '密码',
     aSH14: '登出',
     aSH15: '我接受一键式下单交易的条款。',
+    aSH16: 'MFA - 多重验证',
     cRBT1: '报表',
     gR1: '账户',
     gR2: '货币',
@@ -38,7 +39,7 @@ var dict = {
     gR16: '税金',
     gR17: '隔夜利息',
     gR18: '利润',
-    gR19: '打开的单子',
+    gR19: '现有持仓',
     gR20: '编号',
     gR21: '打开时刻',
     gR22: '类型',
@@ -65,7 +66,7 @@ var dict = {
     gR43: '摘要',
     gR44: '入出金',
     gR45: '被关闭的单子的盈亏',
-    gR46: '打开的单子的盈亏',
+    gR46: '现有持仓的盈亏',
     gR47: '已用保证金',
     gR48: '余额',
     gR49: '净值',
@@ -102,22 +103,22 @@ var dict = {
     cSNWDD1: '在您同意此操作后, 任何人都不允许查看您的交易记录了。请确认继续。',
     cOCDH1: '您愿意接受一键式下单交易条款吗?',
     cNOCDH1: '您想恢复默认下单交易模式吗?',
-    cOCDD1: 'Please note that you are about to enable One-Click Trading mode. By clicking the "OK" button below, you acknowledge that you have read and understood the following terms and conditions, and you agree to be bound hereby. Your current version of the WEB trader enables you to choose between the following modes for sending orders. You agree that you will be bound by the procedures and conditions specified herein with respect to each such mode. ' +
-    '1. The Default mode for sending orders refers to a process with two steps: (a) open the dialog to send an order or modify an existing trade, then select the parameters including the order type, the price, the volume, the take-profit and the stop-loss if needed. (b) confirm the order or the trade by clicking the "Send Order" button or the "Modify Order" button based on the specific order type selected and your intentions. Your order or your command to modify the existing trade will not be submitted until you have done both of the steps. ' +
-    '2. The One-Click Trading mode for sending orders refers to a One-Click step either: ' +
-    '* Your order to open a trade will be submitted immediately when you click either the "SELL" or the "BUY" buttons on the Symbols (Instruments) Panel in the Market sidebar. ' +
-    '* Your order to close an open trade will be submitted immediately when you click the Close ("X") button corresponding to the specific open trade in the Open Trades List. ' +
-    'THERE WILL BE NO SUBSEQUENT CONFIRMATION PROMPT FOR YOU TO ENGAGE. YOU WILL NOT BE ABLE TO REVOKE OR CHANGE YOUR ORDER ONCE YOU ARE DONE CLICKING. UNDER NORMAL MARKET CONDITIONS AND SYSTEM PERFORMANCE, A MARKET ORDER WILL BE PROMPTLY FILLED AFTER SUBMISSION AND YOU WILL HAVE ENTERED INTO A BINDING TRANSACTION. ' +
-    'You can enable or disable One-Click Trading mode on the Accounts sidebar. ' +
-    'By enabling the One-Click Trading mode, you understand that your orders will be submitted by clicking the "SELL" or "BUY" button or in any other way described above, without any further order confirmation. You agree to accept all risks associated with the use of the order submission mode you have chosen, including without limitation, the risks of software program errors, loss of data, damage to equipment, unavailability, or interruption of operations. ' +
-    'You agree to fully indemnify and hold harmless our trading platform services from any and all losses, costs and expenses that it may incur as a result of any such errors, omissions or mistakes made by you, or any other person trading on behalf of your operations.',
-    cNOCDD1: 'Please note that you are about to disable One-Click Trading mode. By clicking the "OK" button below, you acknowledge that you have read and understood the following terms and conditions, and you agree to restore the Default trading mode. ' +
-    'The Default mode for sending orders refers to a process with two steps: (a) open the dialog to send an order or modify an existing trade, then select the parameters including the order type, the price, the volume, the take-profit and the stop-loss if needed. (b) confirm the order or the trade by clicking the "Send Order" button or the "Modify Order" button based on the specific order type selected and your intentions. Your order or your command to modify the existing trade will not be submitted until you have done both of the steps. ' +
-    'You can enable or disable One-Click Trading mode on the Accounts sidebar. ',
+    cOCDD1: '请注意, 您将启用One-Click一键交易模式。 如果您点击下面的"确认"按钮, 代表您已经确认了您已经阅读, 理解了以下条款和条件, 并且同意受此约束。 您当前版本的WEB-trader将使您能够从以下发送订单的模式进行选择。 您同意, 对于每种此类模式, 您均应遵守此处指定的程序和条件。 ' +
+    '1. 发送订单的默认模式指的是一个包含两个步骤的过程: (a)如果需要, 打开对话框发送订单或修改现有持仓, 然后选择参数, 包括订单类型、价格、数量、获利和止损。 (b)根据所选的特定订单类型和您的意图, 通过单击"发送订单"按钮或"修改订单"按钮来确认订单或现有持仓。 在完成这两个步骤之前, 不会提交您的订单或修改现有持仓的命令。 ' +
+    '2. 发送订单的One-Click一键交易模式指的是一个一键式步骤: ' +
+    '* 当您单击"市场侧边栏"的交易品种面板上的"卖出"或"买入"按钮时, 将立即提交您的开仓定单。 ' +
+    '* 当您单击现有持仓清单中特定未平仓单子相对应的平仓("X")按钮时, 将立即提交您的平仓交易定单。 ' +
+    '以后不会再有确认提示。 一旦完成点击, 您将无法撤消或更改您的订单。 在正常的市场条件和系统性能下, 市场订单在提交后将立即被执行, 并且您将签订一个有约束力的事务。 ' +
+    '您可以在"账户侧边栏"中启用或禁用"一键交易"模式。 ' +
+    '通过启用"一键交易"模式, 您了解到, 将通过单击"卖出"或"买入"按钮或上述任何其他方式提交订单, 而无需任何进一步的订单确认。 您同意接受因采纳所选订单提交模式后产生的所有相关风险, 包括但不限于软件程序错误、数据丢失、设备损坏、不可用或操作中断的风险。 ' +
+    '您同意对因您或代表您的业务进行操作后产生的任何此类错误、疏漏或过失而造成的任何及所有损失、成本和费用, 将使我们的交易平台服务获得全部赔偿, 并使我们的服务免受损害。',
+    cNOCDD1: '请注意, 您将禁用一键交易模式。 如果您点击下面的"确认"按钮, 代表您已经确认了您已经阅读, 理解了以下条款和条件, 并同意恢复默认交易模式。 ' +
+    '发送订单的默认模式指的是一个包含两个步骤的过程: (a)如果需要, 打开对话框发送订单或修改现有持仓, 然后选择参数, 包括订单类型、价格、数量、获利和止损。 (b)根据所选的特定订单类型和您的意图, 通过单击"发送订单"按钮或"修改订单"按钮来确认订单或现有持仓。 在完成这两个步骤之前, 不会提交您的订单或修改现有持仓的命令。 ' +
+    '您可以在"账户侧边栏"中启用或禁用"一键交易"模式。 ',
     cancel: '取消',
     ok: '确认',
     oTPH1: '挂单',
-    oTPH2: '打开的单子',
+    oTPH2: '现有持仓',
     oTPH3: '历史交易记录',
     oTPH4: '取消的订单',
     oTPH5: '入出金记录',
@@ -245,7 +246,7 @@ var dict = {
     rOPAA3: '账户编号',
     rOPAA4: '货币',
     rOPAA5: '利润',
-    rOPAA6: '打开的单子',
+    rOPAA6: '现有持仓',
     rOPAA7: '操作',
     rOPAA8: '结果',
     rOPAA9: '编号',
@@ -475,10 +476,10 @@ var dict = {
     m145: "您选择的账户不正确。",
     m146: "您选择的挂单不是一个object。",
     m147: "您选择的挂单不正确。",
-    m148: "您选择的已打开的单子不是一个object。",
-    m149: "您选择的已打开的单子不正确。",
-    m150: "您选择的挂单或者已打开的单子不是一个object。",
-    m151: "您选择的挂单或者已打开的单子不正确。",
+    m148: "您选择的持仓不是一个object。",
+    m149: "您选择的持仓不正确。",
+    m150: "您选择的挂单或者持仓不是一个object。",
+    m151: "您选择的挂单或者持仓不正确。",
     m152: "您选择的报价不是一个object。",
     m153: "您选择的报价不正确。",
     m154: "至少您应该运行一个EA并且指定一个报价流或者添加一张图表。",
@@ -532,7 +533,7 @@ var dict = {
     m202: "您提交的认证信息不正确。",
     m203: "没有该账户编号的用户。",
     m204: "没有该邮箱地址的用户。",
-    m205: "请注意您的密码或者观摩密码已经重置。账户编号: ",
+    m205: "请注意您的密码或者观摩密码已经重置。",
     m206: "因为是观摩模式, 变更密码失败。",
     m207: "因为该账户是注册在Oanda的, 变更密码失败。",
     m208: "因为该账户是注册在Oanda的, 用观摩密码登录失败。",
@@ -596,6 +597,18 @@ var dict = {
       "另一个原因是您可能使用了代理服务器，同时这台代理服务器正被很多人使用。如果符合这种情况，请切换您的浏览器代理服务器设定到另一台代理服务器，然后刷新下我们WEB交易终端的页面。",
     m265: "时间间隔不正确。",
     m266: "回调函数不正确。",
+    m267: "因为该账户是注册在Oanda的, 验证MFA代码失败。",
+    m268: "请输入您的MFA代码。",
+    m269: "因为该账户是注册在Oanda的, 设定MFA失败。",
+    m270: "因为是观摩模式, 设定MFA失败。",
+    m271: "生成二维码失败。",
+    m272: "如果您已经用验证器扫描了二维码, 请勾选确认框后再点击确认按钮。 如果您点击确认按钮前并没有扫描二维码, 则您下次将不能够登录。",
+    m273: "MFA被成功启用。",
+    m274: "MFA被成功禁用。",
+    m275: "该EA被删除了。",
+    m276: "一个EA被成功创建了。",
+    m277: "该自定义指标线程序被删除了。",
+    m278: "一条自定义指标线程序被成功创建了。",
     clDH1: "坐标轴",
     clDH2: "面板色",
     clDH3: "文字",
@@ -611,5 +624,15 @@ var dict = {
     kOD1: "开",
     kOD2: "高",
     kOD3: "低",
-    kOD4: "收"
+    kOD4: "收",
+    vMH1: "MFA代码",
+    vMH2: "验证",
+    mH1: "MFA - 多重认证",
+    mH2: "用Google认证器扫描二维码",
+    mH3: "MFA能帮您提升认证的安全性。请注意，如果您已经启用MFA, 又开始一个新的操作, 那么无论该操作的目的是什么(启用MFA或禁用MFA), 您的MFA状态都将被设定为无效, 并且您的MFA旧密钥无法恢复。幸运的是，您可以通过扫描新的二维码来重新启用MFA。",
+    mH4: "您想要禁用MFA吗？请注意，在本次操作以后，您以前的MFA状态以及您的MFA旧密钥都无法恢复。幸运的是，您可以在将来任何时候通过扫描新的二维码来重新启用MFA。",
+    mH5: "这张二维码里包含您的MFA私钥信息，请不要和其他任何人分享这张图片。",
+    mH6: "如果您已经用Google认证器扫描了二维码，请勾选本选项。",
+    mH7: "禁用MFA",
+    mH8: "启用MFA"
 }
