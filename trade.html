@@ -210,6 +210,7 @@
 </head>
 
 <body style="background:#151a30">
+  <input type="file" id="fileselector" style="display:none" accept=".cpp, .c, .hpp, .h"/>
   <div id="loading" class="ui active dimmer">
     <div class="ui large text loader">Loading</div>
   </div>
@@ -250,7 +251,7 @@
   		<div class="ui tiny top attached tabular menu">
   			<a class="programl item" id="closeprograml"><i class="times circle icon"></i></a>
   			<a class="programl active item" data-tab="javascript" id="javascript">Javascript</a>
-  			<a class="programl item" data-tab="cpp" id="cpp">C / C++ (in development)</a>
+  			<a class="programl item" data-tab="cpp" id="cpp">C / C++</a>
   			<a class="programl item" data-tab="eastudio" id="eastudio">Expert Advisor Studio</a>
   		</div>
   		<div class="ui attached active tab segment" id="javascriptseg" data-tab="javascript" style="width:100%;height:100%;padding-top:5px;padding-left:0;padding-right:0">
@@ -261,27 +262,50 @@
   				<div id="testtext"></div>
   			</div>
   		</div>
-  		<div class="ui attached tab segment" id="cppseg" data-tab="cpp" style="width:100%;height:100%;padding-left:0">
+      <div class="ui attached tab segment" id="cppseg" data-tab="cpp" style="width:100%;height:100%;padding-left:0;padding-top:5px">
   			<div class="ui grid" style="height:100%">
-  				<div class="ten wide column" style="border-right:5px solid #EEEEEE;padding-right:0;padding-left:0">
-  					<div id="testtextc"></div>
+  				<div class="ten wide column" style="border-right:5px solid #EEEEEE;padding-right:0;padding-left:0;padding-top:30px">
+  					<div class="row" style="text-align:left;margin-bottom:0">
+  						<div class="ui basic buttons" style="margin-left:20px;border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:0">
+  							<div class="ui button" id="openfile" style="background:#EEEEEE" onclick="openFileDialog()">
+  							    Open
+  							</div>
+  							<div class="ui small button" id="generateindi" onclick="generateIndi()" style="background:#EEEEEE">Generate Indicator</div>
+  							<div class="ui small button" id="generateea" onclick="generateEa()" style="background:#EEEEEE">Generate EA</div>
+  							<div class="ui small button" id="compileindi" onclick="compileIndi()" style="background:#EEEEEE">Compile Indicator</div>
+  							<div class="ui small button" id="compileea" onclick="compileEa()" style="background:#EEEEEE">Compile EA</div>
+  							<a class="ui small button" href="https://www.fintechee.com/compatible-with-mql/" target="_blank" style="background:#EEEEEE"><i class="question icon"></i></a>
+  						</div>
+  					</div>
+  					<div class="row" style="background:#FFFFFF;width:100%;border-top:1px solid #EEEEEE">
+  						<div id="testtextc" style="margin-top:10px"></div>
+  					</div>
   				</div>
-  				<div class="six wide column" style="height:100%;padding:0;background:#CCCCCC" id="consolepanel">
+  				<div class="six wide column" style="height:100%;padding-top:1rem;padding-left:0;padding-right:0;background:#EEEEEE" id="consolepanel">
   					<div class="row" style="height:100%">
   						<div style="width:100%;height:100%;background:#EEEEEE">
-  							<div class="ui fluid basic buttons" style="border-radius:0">
-  								<div class="ui button" id="generateindi" onclick="generateIndi()" style="border-radius:0">Generate Indicator</div>
-  								<div class="ui button" id="generateea" onclick="generateEa()" style="border-radius:0">Generate EA</div>
-  								<div class="ui button" id="compileindi" onclick="compileIndi()" style="border-radius:0">Compile Indicator</div>
-  								<div class="ui button" id="compileea" onclick="compileEa()" style="border-radius:0">Compile EA</div>
-  							</div>
-  							<div style="height:150px;width:100%">
-  								<textarea name="cppcode" id="cppcode" style="font-size:12px;width:100%;height:100%;padding:10px;border:1px solid #EEEEEE" rows="15" spellcheck="false"></textarea>
-  							</div>
-  							<div style="height:150px;width:100%;margin-top:5px;background:#EEEEEE">
-  								<textarea name="jsoncode" id="jsoncode" style="font-size:12px;width:100%;height:100%;padding:10px;border:1px solid #EEEEEE" rows="15" spellcheck="false"></textarea>
-  							</div>
-  							<div style="height:100%;width:100%;padding:10px" id="consolelog">
+  							<div class="ui form" style="margin-left:5px">
+  								<div class="inline fields">
+  									<div class="eight wide field">
+  										<label>URL</label>
+  										<input id="serverurl" type="text" placeholder="Default: http://127.0.0.1:3000">
+  									</div>
+  									<div class="eight wide field">
+  										<label>Name</label>
+  										<input id="filename" type="text" placeholder="Default: test">
+  									</div>
+  								</div>
+  								<div class="field" style="height:30%">
+  									<label>Generated C / C++ Source Codes</label>
+  									<textarea name="cppcode" id="cppcode" style="font-size:12px;width:100%;height:100%;padding:10px;border:1px solid #EEEEEE;resize:vertical" rows="5" spellcheck="false"></textarea>
+  								</div>
+  								<div class="field" style="height:30%">
+  									<label>Generated JSON</label>
+  									<textarea name="jsoncode" id="jsoncode" style="font-size:12px;width:100%;height:100%;padding:10px;border:1px solid #EEEEEE;resize:vertical" rows="5" spellcheck="false"></textarea>
+  								</div>
+  								<div class="field" style="height:30%">
+  									<textarea name="consolelog" id="consolelog" style="font-size:12px;width:100%;height:100%;padding:10px;border:1px solid #EEEEEE;background:#EEEEEE;scroll:hidden" rows="10" spellcheck="false" readonly></textarea>
+  								</div>
   							</div>
   						</div>
   					</div>
@@ -506,31 +530,91 @@
       editor.session.setMode(new JavaScriptMode());
       editorForC = ace.edit("testtextc")
   		editorForC.setTheme("ace/theme/chrome")
-    });
+      editorForC.setValue("// You can drag and drop your C/C++ source file here to open it.")
+  		$("#consolelog").val("")
 
-    function run1() {
-      eval(editor.getValue());
-      console.log(document.getElementById("testtext").value);
-      return false
-    }
-    function generateIndi () {
-  		var parsedSourceCodes = eaStudio.generateIndi(editorForC.getValue())
+  		const fileSelector = document.getElementById("fileselector")
+  	  fileSelector.addEventListener("change", (event) => {
+  	    const fileList = event.target.files
+  			readSourceFile(fileList[0])
+  	  })
+
+  		const dropArea = document.getElementById("testtextc")
+
+  		dropArea.addEventListener("dragover", (event) => {
+  		  event.stopPropagation()
+  		  event.preventDefault()
+  		  // Style the drag-and-drop as a "copy file" operation.
+  		  event.dataTransfer.dropEffect = "copy"
+  		});
+
+  		dropArea.addEventListener("drop", (event) => {
+  		  event.stopPropagation()
+  		  event.preventDefault()
+  		  const fileList = event.dataTransfer.files
+  			readSourceFile(fileList[0])
+  		})
+  	})
+
+  	function run1(){
+  		eval(editor.getValue())
+  		console.log(document.getElementById("testtext").value)
+  		return false
+  	}
+
+  	function openFileDialog () {
+  		$("#fileselector").trigger("click")
+  	}
+
+  	function readSourceFile (file) {
+  	  if (file.type && file.type.indexOf("text") === -1) {
+  	    console.log("File is not a text file.", file.type, file)
+  	    return
+  	  }
+
+  	  const reader = new FileReader()
+  	  reader.addEventListener("load", (event) => {
+  	    editorForC.setValue(event.target.result)
+  	  });
+  		reader.readAsText(file)
+  	}
+
+  	function generateIndi () {
+  		var serverUrl = $("#serverurl").val()
+  		var name = $("#filename").val()
+
+  		var parsedSourceCodes = eaStudio.generateIndi(serverUrl, name, editorForC.getValue())
   		$("#cppcode").val(parsedSourceCodes.sourcecode)
   		$("#jsoncode").val(JSON.stringify(parsedSourceCodes.definition))
   	}
 
   	function generateEa () {
-  		var parsedSourceCodes = eaStudio.generateEa(editorForC.getValue())
+  		var serverUrl = $("#serverurl").val()
+  		var name = $("#filename").val()
+
+  		var parsedSourceCodes = eaStudio.generateEa(serverUrl, name, editorForC.getValue())
   		$("#cppcode").val(parsedSourceCodes.sourcecode)
   		$("#jsoncode").val(JSON.stringify(parsedSourceCodes.definition))
   	}
 
   	function compileIndi () {
-  		eaStudio.compileIndi(editorForC.getValue())
+  		var serverUrl = $("#serverurl").val()
+  		var name = $("#filename").val()
+
+  		eaStudio.compileIndi(serverUrl, name, editorForC.getValue())
+  		.then(data => {
+  			$("#consolelog").val(data)
+  		})
   	}
 
   	function compileEa () {
-  		eaStudio.compileEa(editorForC.getValue())
+  		var serverUrl = $("#serverurl").val()
+  		var name = $("#filename").val()
+
+  		eaStudio.compileEa(serverUrl, name, editorForC.getValue())
+  		.then(data => {
+  			$("#consolelog").val(data)
+  		})
   	}
   </script>
 </body>
