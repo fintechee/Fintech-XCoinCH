@@ -3,36 +3,6 @@
 // Because the key words have been used to split the source lines to extract the parts of the variables.
 // Fortunately, a better parser compatible with more complex syntax will be coming soon.
 var eaStudio = {
-  // generateIndi: function (sourceCode) {
-  //   var generatedIndi = ""
-  //   var generatedStructure = this.generateStructure(sourceCode)
-  //
-  //   if (generatedStructure != null) {
-  //     for (var i in generatedStructure.removedLines) {
-  //       var removedLine = generatedStructure.removedLines[i]
-  //       generatedIndi += removedLine + "\n"
-  //     }
-  //   }
-  //
-  //   if (generatedStructure != null) {
-  //     for (var i in generatedStructure.variables) {
-  //       var variable = generatedStructure.variables[i]
-  //       generatedIndi += variable + "\n"
-  //     }
-  //   }
-  //
-  //   if (generatedStructure != null) {
-  //     for (var i in generatedStructure.arr) {
-  //       var dataOutput = generatedStructure.arr[i]
-  //       generatedIndi += dataOutput + "\n"
-  //     }
-  //   }
-  //
-  //   return generatedIndi
-  // },
-  // generateEa: function (sourceCode) {
-  //   return this.generateStructure(sourceCode)
-  // },
   generateStructure: function (sourceCode) {
     var generatedStructure = null
 
@@ -301,10 +271,13 @@ var eaStudio = {
 
   	return parsedOutput
   },
-  generateIndi: function (sourceCode) {
+  generateIndi: function (serverUrl, name, sourceCode) {
+    var fileName = name.trim() == "" ? "test" : name.trim()
     var generatedStructure = this.generateStructure(sourceCode)
 
-    var namedesc = ["indi_example", "This is an example.", "http://127.0.0.1:8082/indi_example.js"]
+  	var namedesc = [fileName, "This is an example.", (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/js/" + fileName + ".js"]
+
+    var namedesc = [(name.trim() == "" ? "test" : name.trim()), "This is an example.", "http://127.0.0.1:8082/indi_example.js"]
   	var params = generatedStructure.params.split("\n")
   	var datainput = generatedStructure.datainput.split("\n")
   	var dataoutput = generatedStructure.dataoutput.split("\n")
@@ -420,10 +393,11 @@ var eaStudio = {
       definition: definition
     }
   },
-  generateEa: function (sourceCode) {
+  generateEa: function (serverUrl, name, sourceCode) {
+    var fileName = name.trim() == "" ? "test" : name.trim()
     var generatedStructure = this.generateStructure(sourceCode)
 
-  	var namedesc = ["ea_example", "This is an example.", "http://127.0.0.1:8082/ea_example.js"]
+  	var namedesc = [fileName, "This is an example.", (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/js/" + fileName + ".js"]
   	var params = generatedStructure.params.split("\n")
 
   	var parsedParams = this.parseParams(params)
@@ -491,5 +465,47 @@ var eaStudio = {
       sourcecode: sourcecode,
       definition: definition
     }
+  },
+  compileIndi: function (serverUrl, name, sourceCodes) {
+    return new Promise(function (resolve, reject) {
+      $.ajax({
+        type: "POST",
+        url: (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/compile",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({
+          name: (name.trim() == "" ? "test" : name.trim()),
+          sourceCode: sourceCodes,
+          type: "indicator"
+        }),
+        success: function (data) {
+          resolve(data.res)
+        },
+        error: function (request, status, error) {
+          reject()
+        }
+      })
+    })
+  },
+  compileEa: function (serverUrl, name, sourceCodes) {
+    return new Promise(function (resolve, reject) {
+      $.ajax({
+        type: "POST",
+        url: (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/compile",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({
+          name: (name.trim() == "" ? "test" : name.trim()),
+          sourceCode: sourceCodes,
+          type: "EA"
+        }),
+        success: function (data) {
+          resolve(data.res)
+        },
+        error: function (request, status, error) {
+          reject()
+        }
+      })
+    })
   }
 }
