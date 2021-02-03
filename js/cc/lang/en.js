@@ -284,6 +284,7 @@ var dict = {
     tSH8: 'Zoom In',
     tSH9: 'Scroll Lock',
     tSH10: 'Add a Chart',
+    tSH11: 'Send Order',
     dSNH1: 'Select Symbol', // kT 14
     aSDH1: 'Select Symbols',
     sPHL1: 'Volume(Lots) to Order',
