@@ -277,7 +277,6 @@ var eaStudio = {
 
   	var namedesc = [fileName, "This is an example.", (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/js/" + fileName + ".js"]
 
-    var namedesc = [(name.trim() == "" ? "test" : name.trim()), "This is an example.", "http://127.0.0.1:8082/indi_example.js"]
   	var params = generatedStructure.params.split("\n")
   	var datainput = generatedStructure.datainput.split("\n")
   	var dataoutput = generatedStructure.dataoutput.split("\n")
