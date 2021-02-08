@@ -445,6 +445,51 @@
   			$("#consolelog").val(data)
   		})
   	}
+
+    function getMobileOsName () {
+  		var userAgent = navigator.userAgent || navigator.vendor || window.opera
+
+  		if (/windows phone/i.test(userAgent)) {
+  			return "Windows Phone"
+  		}
+
+  		if (/android/i.test(userAgent)) {
+  			return "Android"
+  		}
+
+  		if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+  			return "iOS"
+  		}
+
+  		return "unknown"
+  	}
+
+  	var latestResizeTriggered = 0
+  	var originalHeight = document.documentElement.clientHeight || document.body.clientHeight - 100
+  	window.onresize = function () {
+  		var dt = new Date().getTime()
+  		if (dt - latestResizeTriggered > 3000) {
+  			latestResizeTriggered = dt
+  			var heightAfterResized = document.documentElement.clientHeight || document.body.clientHeight
+
+  			if (heightAfterResized < originalHeight) {
+  			} else {
+  				if (getMobileOsName() == "Android") {
+  					setTimeout(function () {
+  						$(window).trigger("resize")
+  					}, 2000)
+  				}
+  			}
+  		}
+  	}
+
+  	document.body.addEventListener("focusout", () => {
+  		if (getMobileOsName() == "iOS") {
+  			setTimeout(function () {
+  				$(window).trigger("resize")
+  			}, 2000)
+  		}
+  	})
   </script>
 </body>
 
