@@ -3675,7 +3675,7 @@ function importBuiltInIndicators () {
 	importBuiltInIndicator("tutorial_videos", "Embedded tutorial videos(v1.0)", function (context) {
 	},[{
 		name: "url",
-		value: "https://www.youtube.com/embed/pfxW1-yhm3Y",
+		value: "https://www.youtube.com/watch?v=-DsU7GjND4g&list=PLcSxiblkIq5K-9YijsCjlLVBsGOE75mzI",
 		required: true,
 		type: PARAMETER_TYPE.STRING,
 		range: null
