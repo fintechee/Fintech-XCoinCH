@@ -7919,5 +7919,5 @@ function Perceptron (input, hidden, output) {
 }
 
 function initDefaultIndicators () {
-	// setDefaultIndicator("fintechee_crypto_loader")
+	// setDefaultIndicator("fintechee_crypto_loader", false)
 }
