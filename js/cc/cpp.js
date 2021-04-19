@@ -15,7 +15,8 @@ var eaStudio = {
 
         if (line.indexOf("OnCalculate") != -1 ||
             line.indexOf("start") != -1 ||
-            line.indexOf("init") != -1) {
+            line.indexOf("init") != -1 ||
+            line.indexOf("(") != -1) {
           break
         }
 
