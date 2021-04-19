@@ -25,14 +25,16 @@ var eaStudio = {
 				parts = line.split("#")
 				if (parts.length > 1) {
 					if (parts[0].trim() == "") {
-						op[i] = {
-              op: "r",
-              line: "// " + line
-            }
-					} else if (parts[1].indexOf("define") != -1) {
-            op[i] = {
-              op: "c",
-              line: line
+            if (parts[1].indexOf("define") != -1) {
+              op[i] = {
+                op: "c",
+                line: line
+              }
+            } else {
+              op[i] = {
+                op: "r",
+                line: "// " + line
+              }
             }
           }
 				}
