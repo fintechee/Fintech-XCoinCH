@@ -29,7 +29,12 @@ var eaStudio = {
               op: "r",
               line: "// " + line
             }
-					}
+					} else if (parts[1].indexOf("define") != -1) {
+            op[i] = {
+              op: "c",
+              line: line
+            }
+          }
 				}
 
 				var bVariable = false
@@ -177,6 +182,8 @@ var eaStudio = {
           } else if (o.dataType == "double") {
             params += o.name + ", " + "Number" + ", true, " + o.value + ", " + (o.value - 1) + ", " + (o.value + 1) + "\n"
           }
+        } else if (o.op == "c") {
+          params += o.line + "\n"
         }
       }
 
