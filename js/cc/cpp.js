@@ -167,6 +167,7 @@ var eaStudio = {
       }
 
       var params = ""
+      var constants = ""
 
       for (var i in op) {
         var o = op[i]
@@ -185,7 +186,7 @@ var eaStudio = {
             params += o.name + ", " + "Number" + ", true, " + o.value + ", " + (o.value - 1) + ", " + (o.value + 1) + "\n"
           }
         } else if (o.op == "c") {
-          params += o.line + "\n"
+          constants += o.line + "\n"
         }
       }
 
@@ -205,6 +206,7 @@ var eaStudio = {
 
     return {
       removedLines: removedLines,
+      constants: constants,
       params: params,
       datainput: "Time, 0\nVolume, 1\nOpen, 2\nHigh, 3\nLow, 4\nClose, 5",
       dataoutput: dataoutput
@@ -287,6 +289,7 @@ var eaStudio = {
 
   	var namedesc = [fileName, "This is an example.", (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/js/" + fileName + ".js"]
 
+    var constants = generatedStructure.constants
   	var params = generatedStructure.params.split("\n")
   	var datainput = generatedStructure.datainput.split("\n")
   	var dataoutput = generatedStructure.dataoutput.split("\n")
@@ -298,7 +301,9 @@ var eaStudio = {
 
   	var template = '#include "mqlindi2fintechee.h"\n\n'
 
-  	var template2 = ''
+    var template1 = constants
+
+  	var template2 = '\n'
   	for (var i in parsedParams) {
   	  if (parsedParams[i].type == 'Integer') {
   	    template2 += 'int ' + parsedParams[i].name + ';\n'
@@ -384,7 +389,7 @@ var eaStudio = {
 
   	var template15 = ')\n'
 
-  	var sourcecode = template + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10 +
+  	var sourcecode = template + template1 + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10 +
   	                 template11 + template12 + template13 + template14 + template15
 
   	var definition = {
@@ -407,13 +412,16 @@ var eaStudio = {
     var generatedStructure = this.generateStructure(sourceCode)
 
   	var namedesc = [fileName, "This is an example.", (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/js/" + fileName + ".js"]
+    var constants = generatedStructure.constants
   	var params = generatedStructure.params.split("\n")
 
   	var parsedParams = this.parseParams(params)
 
   	var template = '#include "mqlea2fintechee.h"\n\n'
 
-  	var template2 = ''
+    var template1 = constants
+
+  	var template2 = '\n'
   	for (var i in parsedParams) {
   	  if (parsedParams[i].type == 'Integer') {
   	    template2 += 'int ' + parsedParams[i].name + ';\n'
@@ -461,7 +469,7 @@ var eaStudio = {
   	'}\n\n' +
   	'}\n'
 
-  	var sourcecode = template + template2 + template3 + template4 + template5
+  	var sourcecode = template + template1 + template2 + template3 + template4 + template5
 
   	var definition = {
   		name: namedesc[0],
