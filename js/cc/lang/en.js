@@ -304,7 +304,7 @@ var dict = {
     sH2: 'Account ID',
     sH3: 'Password',
     sH4: 'Investor Password',
-    sH5: 'Keep me signed in.(Absolutely NOT Recommended!)',
+    sH5: 'Keep me signed in.(NOT recommended if you are using a public computer!)',
     sH6: 'Sign In',
     sH7: 'New to us?',
     sH8: 'Sign up',
