@@ -4530,11 +4530,11 @@ function importBuiltInEAs () {
 								var md = window.mqlIndicators[obj.name].module.UTF8ToString(mode)
 								var arr = getDataFromIndi(obj.context, indiHandle, md)
 								if (md == "jaws") {
-									return arr[arr.length - jaw_shift - shift - 1]
+									return arr[arr.length - shift - 1]
 								} else if (md == "teeth") {
-									return arr[arr.length - teeth_shift - shift - 1]
+									return arr[arr.length - shift - 1]
 								} else {
-									return arr[arr.length - lips_shift - shift - 1]
+									return arr[arr.length - shift - 1]
 								}
 							}, "diiiiiii")
 							var jiAOInit = Module.addFunction(function (uid, symbol, timeframe) {
@@ -4613,7 +4613,7 @@ function importBuiltInEAs () {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
 								var md = window.mqlIndicators[obj.name].module.UTF8ToString(mode)
 								var arr = getDataFromIndi(obj.context, indiHandle, md)
-								return arr[arr.length - bands_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiii")
 							var jiBandsOnArray = Module.addFunction(function (uid, array, total, period, deviation, bands_shift, mode, shift) {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
@@ -4642,7 +4642,7 @@ function importBuiltInEAs () {
 								}], dataInput, total)
 								var md = window.mqlIndicators[obj.name].module.UTF8ToString(mode)
 								var arr = getDataOnArray(dataOutput, md)
-								return arr[arr.length - bands_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiidiii")
 							var jiBullsPowerInit = Module.addFunction(function (uid, symbol, timeframe, period, applied_price) {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
@@ -4778,7 +4778,7 @@ function importBuiltInEAs () {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
 								var md = window.mqlIndicators[obj.name].module.UTF8ToString(mode)
 								var arr = getDataFromIndi(obj.context, indiHandle, md)
-								return arr[arr.length - ma_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiii")
 							var jiEnvelopesOnArray = Module.addFunction(function (uid, array, total, ma_period, ma_method, ma_shift, deviation, mode, shift) {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
@@ -4808,7 +4808,7 @@ function importBuiltInEAs () {
 								}], dataInput, total)
 								var md = window.mqlIndicators[obj.name].module.UTF8ToString(mode)
 								var arr = getDataOnArray(dataOutput, md)
-								return arr[arr.length - ma_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiiiidii")
 							var jiFractalsInit = Module.addFunction(function (uid, symbol, timeframe) {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
@@ -4845,7 +4845,7 @@ function importBuiltInEAs () {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
 								var md = window.mqlIndicators[obj.name].module.UTF8ToString(mode)
 								var arr = getDataFromIndi(obj.context, indiHandle, md)
-								return arr[arr.length - ichimoku_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiii")
 							var jiMAInit = Module.addFunction(function (uid, symbol, timeframe, ma_period, ma_shift, ma_method, applied_price) {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
@@ -4877,7 +4877,7 @@ function importBuiltInEAs () {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
 								var method = window.mqlIndicators[obj.name].module.UTF8ToString(ma_method)
 								var arr = getDataFromIndi(obj.context, indiHandle, method)
-								return arr[arr.length - ma_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiii")
 							var jiMAOnArray = Module.addFunction(function (uid, array, total, ma_period, ma_shift, ma_method, shift) {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
@@ -4910,7 +4910,7 @@ function importBuiltInEAs () {
 									dataOutput = calcIndicatorOnArray("sma_for_mql", params, dataInput, total)
 								}
 								var arr = getDataOnArray(dataOutput, method)
-								return arr[arr.length - ma_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiiiii")
 							var jiMACDInit = Module.addFunction(function (uid, symbol, timeframe, fast_ema_period, slow_ema_period, signal_period, applied_price) {
 								var obj = window.mqlIndicatorsBuffer[uid + ""]
@@ -5919,7 +5919,7 @@ function importBuiltInEAs () {
 							}, "iiii")
 							var jiTime = Module.addFunction(function (uid, chartHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, chartHandle, "Time")
+								var arr = getData(obj.context, chartHandle, "Time")
 								return arr[arr.length - shift - 1]
 							}, "iiii")
 							var jiOpenInit = Module.addFunction(function (uid, symbol, timeframe) {
@@ -5932,7 +5932,7 @@ function importBuiltInEAs () {
 							}, "iiii")
 							var jiOpen = Module.addFunction(function (uid, chartHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, chartHandle, "Open")
+								var arr = getData(obj.context, chartHandle, "Open")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiHighInit = Module.addFunction(function (uid, symbol, timeframe) {
@@ -5945,7 +5945,7 @@ function importBuiltInEAs () {
 							}, "iiii")
 							var jiHigh = Module.addFunction(function (uid, chartHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, chartHandle, "High")
+								var arr = getData(obj.context, chartHandle, "High")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiLowInit = Module.addFunction(function (uid, symbol, timeframe) {
@@ -5958,7 +5958,7 @@ function importBuiltInEAs () {
 							}, "iiii")
 							var jiLow = Module.addFunction(function (uid, chartHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, chartHandle, "Low")
+								var arr = getData(obj.context, chartHandle, "Low")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiCloseInit = Module.addFunction(function (uid, symbol, timeframe) {
@@ -5971,7 +5971,7 @@ function importBuiltInEAs () {
 							}, "iiii")
 							var jiClose = Module.addFunction(function (uid, chartHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, chartHandle, "Close")
+								var arr = getData(obj.context, chartHandle, "Close")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiVolumeInit = Module.addFunction(function (uid, symbol, timeframe) {
@@ -5984,13 +5984,13 @@ function importBuiltInEAs () {
 							}, "iiii")
 							var jiVolume = Module.addFunction(function (uid, chartHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, chartHandle, "Volume")
+								var arr = getData(obj.context, chartHandle, "Volume")
 								return arr[arr.length - shift - 1]
 							}, "iiii")
 							var jiHighest = Module.addFunction(function (uid, chartHandle, mode, count, start) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, chartHandle, md)
+								var arr = getData(obj.context, chartHandle, md)
 								var highest = -Number.MAX_VALUE
 								var idx = -1
 								for (var i = start; i < start + count && i >= 0 && i < arr.length; i++) {
@@ -6004,7 +6004,7 @@ function importBuiltInEAs () {
 							var jiLowest = Module.addFunction(function (uid, chartHandle, mode, count, start) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, chartHandle, md)
+								var arr = getData(obj.context, chartHandle, md)
 								var lowest = Number.MAX_VALUE
 								var idx = -1
 								for (var i = start; i < start + count && i >= 0 && i < arr.length; i++) {
@@ -6025,8 +6025,8 @@ function importBuiltInEAs () {
 							}, "iiii")
 							var jiAC = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arrUp = getDataWithoutShift(obj.context, indiHandle, "up")
-								var arrDown = getDataWithoutShift(obj.context, indiHandle, "down")
+								var arrUp = getData(obj.context, indiHandle, "up")
+								var arrDown = getData(obj.context, indiHandle, "down")
 								return arrUp[arrUp.length - shift - 1] > 0 ? arrUp[arrUp.length - shift - 1] : arrDown[arrDown.length - shift - 1]
 							}, "diii")
 							var jiADXInit = Module.addFunction(function (uid, symbol, timeframe, period, applied_price) {
@@ -6046,7 +6046,7 @@ function importBuiltInEAs () {
 							var jiADX = Module.addFunction(function (uid, indiHandle, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
+								var arr = getData(obj.context, indiHandle, md)
 								return arr[arr.length - shift - 1]
 							}, "diiii")
 							var jiAlligatorInit = Module.addFunction(function (uid, symbol, timeframe, jaw_period, jaw_shift, teeth_period, teeth_shift, lips_period, lips_shift, ma_method, applied_price) {
@@ -6085,13 +6085,13 @@ function importBuiltInEAs () {
 							var jiAlligator = Module.addFunction(function (uid, indiHandle, jaw_shift, teeth_shift, lips_shift, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
+								var arr = getData(obj.context, indiHandle, md)
 								if (md == "jaws") {
-									return arr[arr.length - jaw_shift - shift - 1]
+									return arr[arr.length - shift - 1]
 								} else if (md == "teeth") {
-									return arr[arr.length - teeth_shift - shift - 1]
+									return arr[arr.length - shift - 1]
 								} else {
-									return arr[arr.length - lips_shift - shift - 1]
+									return arr[arr.length - shift - 1]
 								}
 							}, "diiiiiii")
 							var jiAOInit = Module.addFunction(function (uid, symbol, timeframe) {
@@ -6104,8 +6104,8 @@ function importBuiltInEAs () {
 							}, "iiii")
 							var jiAO = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arrUp = getDataWithoutShift(obj.context, indiHandle, "up")
-								var arrDown = getDataWithoutShift(obj.context, indiHandle, "down")
+								var arrUp = getData(obj.context, indiHandle, "up")
+								var arrDown = getData(obj.context, indiHandle, "down")
 								return arrUp[arrUp.length - shift - 1] > 0 ? arrUp[arrUp.length - shift - 1] : arrDown[arrDown.length - shift - 1]
 							}, "diii")
 							var jiATRInit = Module.addFunction(function (uid, symbol, timeframe, period) {
@@ -6121,7 +6121,7 @@ function importBuiltInEAs () {
 							}, "iiiii")
 							var jiATR = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "atr")
+								var arr = getData(obj.context, indiHandle, "atr")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiBearsPowerInit = Module.addFunction(function (uid, symbol, timeframe, period, applied_price) {
@@ -6140,7 +6140,7 @@ function importBuiltInEAs () {
 							}, "iiiiii")
 							var jiBearsPower = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "bears")
+								var arr = getData(obj.context, indiHandle, "bears")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiBandsInit = Module.addFunction(function (uid, symbol, timeframe, period, deviation, bands_shift, applied_price) {
@@ -6169,8 +6169,8 @@ function importBuiltInEAs () {
 							var jiBands = Module.addFunction(function (uid, indiHandle, bands_shift, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
-								return arr[arr.length - bands_shift - shift - 1]
+								var arr = getData(obj.context, indiHandle, md)
+								return arr[arr.length - shift - 1]
 							}, "diiiii")
 							var jiBandsOnArray = Module.addFunction(function (uid, array, total, period, deviation, bands_shift, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
@@ -6199,7 +6199,7 @@ function importBuiltInEAs () {
 								}], dataInput, total)
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
 								var arr = getDataOnArray(dataOutput, md)
-								return arr[arr.length - bands_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiidiii")
 							var jiBullsPowerInit = Module.addFunction(function (uid, symbol, timeframe, period, applied_price) {
 								var obj = window.mqlEAsBuffer[uid + ""]
@@ -6217,7 +6217,7 @@ function importBuiltInEAs () {
 							}, "iiiiii")
 							var jiBullsPower = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "bulls")
+								var arr = getData(obj.context, indiHandle, "bulls")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiCCIInit = Module.addFunction(function (uid, symbol, timeframe, period, applied_price) {
@@ -6236,7 +6236,7 @@ function importBuiltInEAs () {
 							}, "iiiiii")
 							var jiCCI = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "cci")
+								var arr = getData(obj.context, indiHandle, "cci")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiCCIOnArray = Module.addFunction(function (uid, array, total, period, shift) {
@@ -6288,7 +6288,7 @@ function importBuiltInEAs () {
 							var jiCustom = Module.addFunction(function (uid, indiHandle, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
+								var arr = getData(obj.context, indiHandle, md)
 								return arr[arr.length - shift - 1]
 							}, "diiii")
 							var jiDeMarkerInit = Module.addFunction(function (uid, symbol, timeframe, period) {
@@ -6304,7 +6304,7 @@ function importBuiltInEAs () {
 							}, "iiiii")
 							var jiDeMarker = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "demarker")
+								var arr = getData(obj.context, indiHandle, "demarker")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiEnvelopesInit = Module.addFunction(function (uid, symbol, timeframe, ma_period, ma_method, ma_shift, applied_price, deviation) {
@@ -6334,8 +6334,8 @@ function importBuiltInEAs () {
 							var jiEnvelopes = Module.addFunction(function (uid, indiHandle, ma_shift, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
-								return arr[arr.length - ma_shift - shift - 1]
+								var arr = getData(obj.context, indiHandle, md)
+								return arr[arr.length - shift - 1]
 							}, "diiiii")
 							var jiEnvelopesOnArray = Module.addFunction(function (uid, array, total, ma_period, ma_method, ma_shift, deviation, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
@@ -6365,7 +6365,7 @@ function importBuiltInEAs () {
 								}], dataInput, total)
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
 								var arr = getDataOnArray(dataOutput, md)
-								return arr[arr.length - ma_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiiiidii")
 							var jiFractalsInit = Module.addFunction(function (uid, symbol, timeframe) {
 								var obj = window.mqlEAsBuffer[uid + ""]
@@ -6378,7 +6378,7 @@ function importBuiltInEAs () {
 							var jiFractals = Module.addFunction(function (uid, indiHandle, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
+								var arr = getData(obj.context, indiHandle, md)
 								return arr[arr.length - shift - 1]
 							}, "diiii")
 							var jiIchimokuInit = Module.addFunction(function (uid, symbol, timeframe, tenkan_sen, kijun_sen, senkou_span_b) {
@@ -6401,8 +6401,8 @@ function importBuiltInEAs () {
 							var jiIchimoku = Module.addFunction(function (uid, indiHandle, ichimoku_shift, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
-								return arr[arr.length - ichimoku_shift - shift - 1]
+								var arr = getData(obj.context, indiHandle, md)
+								return arr[arr.length - shift - 1]
 							}, "diiiii")
 							var jiMAInit = Module.addFunction(function (uid, symbol, timeframe, ma_period, ma_shift, ma_method, applied_price) {
 								var obj = window.mqlEAsBuffer[uid + ""]
@@ -6433,8 +6433,8 @@ function importBuiltInEAs () {
 							var jiMA = Module.addFunction(function (uid, indiHandle, ma_shift, ma_method, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var method = window.mqlEAs[obj.name].module.UTF8ToString(ma_method)
-								var arr = getDataWithoutShift(obj.context, indiHandle, method)
-								return arr[arr.length - ma_shift - shift - 1]
+								var arr = getData(obj.context, indiHandle, method)
+								return arr[arr.length - shift - 1]
 							}, "diiiii")
 							var jiMAOnArray = Module.addFunction(function (uid, array, total, ma_period, ma_shift, ma_method, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
@@ -6467,7 +6467,7 @@ function importBuiltInEAs () {
 									dataOutput = calcIndicatorOnArray("sma_for_mql", params, dataInput, total)
 								}
 								var arr = getDataOnArray(dataOutput, method)
-								return arr[arr.length - ma_shift - shift - 1]
+								return arr[arr.length - shift - 1]
 							}, "diiiiiii")
 							var jiMACDInit = Module.addFunction(function (uid, symbol, timeframe, fast_ema_period, slow_ema_period, signal_period, applied_price) {
 								var obj = window.mqlEAsBuffer[uid + ""]
@@ -6492,7 +6492,7 @@ function importBuiltInEAs () {
 							var jiMACD = Module.addFunction(function (uid, indiHandle, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
+								var arr = getData(obj.context, indiHandle, md)
 								return arr[arr.length - shift - 1]
 							}, "diiii")
 							var jiMomentumInit = Module.addFunction(function (uid, symbol, timeframe, period, applied_price) {
@@ -6511,7 +6511,7 @@ function importBuiltInEAs () {
 							}, "iiiiii")
 							var jiMomentum = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "momentum")
+								var arr = getData(obj.context, indiHandle, "momentum")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiMomentumOnArray = Module.addFunction(function (uid, array, total, period, shift) {
@@ -6549,7 +6549,7 @@ function importBuiltInEAs () {
 							}, "iiiiii")
 							var jiRSI = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "rsi")
+								var arr = getData(obj.context, indiHandle, "rsi")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiRSIOnArray = Module.addFunction(function (uid, array, total, period, shift) {
@@ -6585,7 +6585,7 @@ function importBuiltInEAs () {
 							var jiRVI = Module.addFunction(function (uid, indiHandle, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
+								var arr = getData(obj.context, indiHandle, md)
 								return arr[arr.length - shift - 1]
 							}, "diiii")
 							var jiSARInit = Module.addFunction(function (uid, symbol, timeframe, step, maximum) {
@@ -6604,7 +6604,7 @@ function importBuiltInEAs () {
 							}, "iiiidd")
 							var jiSAR = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "sar")
+								var arr = getData(obj.context, indiHandle, "sar")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jiStochasticInit = Module.addFunction(function (uid, symbol, timeframe, Kperiod, Dperiod, slowing, ma_method) {
@@ -6631,7 +6631,7 @@ function importBuiltInEAs () {
 							var jiStochastic = Module.addFunction(function (uid, indiHandle, mode, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
 								var md = window.mqlEAs[obj.name].module.UTF8ToString(mode)
-								var arr = getDataWithoutShift(obj.context, indiHandle, md)
+								var arr = getData(obj.context, indiHandle, md)
 								return arr[arr.length - shift - 1]
 							}, "diiii")
 							var jiWPRInit = Module.addFunction(function (uid, symbol, timeframe, period) {
@@ -6647,7 +6647,7 @@ function importBuiltInEAs () {
 							}, "iiiii")
 							var jiWPR = Module.addFunction(function (uid, indiHandle, shift) {
 								var obj = window.mqlEAsBuffer[uid + ""]
-								var arr = getDataWithoutShift(obj.context, indiHandle, "wpr")
+								var arr = getData(obj.context, indiHandle, "wpr")
 								return arr[arr.length - shift - 1]
 							}, "diii")
 							var jARROW_CHECKCreate = Module.addFunction(function (uid, chart_id, object_name, time, price) {
@@ -7046,7 +7046,7 @@ function importBuiltInEAs () {
 									var accountId = buffObj.accountId
 									var symbolName = buffObj.symbolName
 
-									var tData = getDataWithoutShift(context, buffObj.chartId, DATA_NAME.TIME)
+									var tData = getData(context, buffObj.chartId, DATA_NAME.TIME)
 
 									var ask = null
 									var bid = null
