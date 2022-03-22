@@ -415,22 +415,32 @@
   		reader.readAsText(file)
   	}
 
-  	function generateIndi () {
+    function generateIndi () {
   		var serverUrl = $("#serverurl").val()
   		var name = $("#filename").val()
 
-  		var parsedSourceCodes = eaStudio.generateIndi(serverUrl, name, editorForC.getValue())
-  		$("#cppcode").val(parsedSourceCodes.sourcecode)
-  		$("#jsoncode").val(JSON.stringify(parsedSourceCodes.definition))
+  		eaStudio.generateIndi(serverUrl, name, editorForC.getValue())
+  		.then(parsedSourceCodes => {
+  			$("#cppcode").val(parsedSourceCodes.sourcecode)
+  			$("#jsoncode").val(JSON.stringify(parsedSourceCodes.definition))
+  		})
+  		.catch(e => {
+  			$("#consolelog").val(e)
+  		})
   	}
 
   	function generateEa () {
   		var serverUrl = $("#serverurl").val()
   		var name = $("#filename").val()
 
-  		var parsedSourceCodes = eaStudio.generateEa(serverUrl, name, editorForC.getValue())
-  		$("#cppcode").val(parsedSourceCodes.sourcecode)
-  		$("#jsoncode").val(JSON.stringify(parsedSourceCodes.definition))
+  		eaStudio.generateEa(serverUrl, name, editorForC.getValue())
+  		.then(parsedSourceCodes => {
+  			$("#cppcode").val(parsedSourceCodes.sourcecode)
+  			$("#jsoncode").val(JSON.stringify(parsedSourceCodes.definition))
+  		})
+  		.catch(e => {
+  			$("#consolelog").val(e)
+  		})
   	}
 
   	function compileIndi () {
