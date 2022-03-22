@@ -62,6 +62,9 @@ var eaStudio = {
 				subParts = mainParts.split("int")
 				if (subParts.length > 1 && subParts[0].trim() == "") {
           var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+
+          if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+
           var value = variable[1].trim()
           value = value.substring(0, value.length - 1)
           if (variable.length == 2) {
@@ -77,6 +80,9 @@ var eaStudio = {
 					subParts = mainParts.split("long")
 					if (subParts.length > 1 && subParts[0].trim() == "") {
             var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+
+            if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+
             var value = variable[1].trim()
             value = value.substring(0, value.length - 1)
             if (variable.length == 2) {
@@ -92,6 +98,9 @@ var eaStudio = {
 						subParts = mainParts.split("bool")
 						if (subParts.length > 1 && subParts[0].trim() == "") {
               var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+
+              if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+
               var value = variable[1].trim()
               value = value.substring(0, value.length - 1)
               if (variable.length == 2) {
@@ -107,6 +116,9 @@ var eaStudio = {
 							subParts = mainParts.split("string")
 							if (subParts.length > 1 && subParts[0].trim() == "") {
                 var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+
+                if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+
                 var value = variable[1].trim()
                 value = value.substring(0, value.length - 1)
                 if (variable.length == 2) {
@@ -122,6 +134,9 @@ var eaStudio = {
 								subParts = mainParts.split("float")
 								if (subParts.length > 1 && subParts[0].trim() == "") {
                   var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+
+                  if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+
                   var value = variable[1].trim()
                   value = value.substring(0, value.length - 1)
                   if (variable.length == 2) {
@@ -137,6 +152,9 @@ var eaStudio = {
 									subParts = mainParts.split("double")
 									if (subParts.length > 1 && subParts[0].trim() == "") {
                     var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+
+                    if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+
                     var value = variable[1].trim()
                     value = value.substring(0, value.length - 1)
                     if (variable.length == 2) {
@@ -233,7 +251,9 @@ var eaStudio = {
 
   	for (var i in params) {
   	  var pm = params[i].split(",")
-        var pm1 = pm[1].trim()
+      if (pm.length < 6) continue
+
+      var pm1 = pm[1].trim()
   	  var pm3 = pm[3].trim()
   	  var pm4 = pm[4].trim()
   	  var pm5 = pm[5].trim()
@@ -284,6 +304,16 @@ var eaStudio = {
   	return parsedOutput
   },
   generateIndi: function (serverUrl, name, sourceCode) {
+    var that = this
+    return new Promise(function(resolve, reject) {
+      try {
+        resolve(that.generateIndi2(serverUrl, name, sourceCode))
+      } catch (e) {
+        reject(e.message)
+      }
+    })
+  },
+  generateIndi2: function (serverUrl, name, sourceCode) {
     var fileName = name.trim() == "" ? "test" : name.trim()
     var generatedStructure = this.generateStructure(sourceCode)
 
@@ -408,6 +438,16 @@ var eaStudio = {
     }
   },
   generateEa: function (serverUrl, name, sourceCode) {
+    var that = this
+    return new Promise(function(resolve, reject) {
+      try {
+        resolve(that.generateEa2(serverUrl, name, sourceCode))
+      } catch (e) {
+        reject(e.message)
+      }
+    })
+  },
+  generateEa2: function (serverUrl, name, sourceCode) {
     var fileName = name.trim() == "" ? "test" : name.trim()
     var generatedStructure = this.generateStructure(sourceCode)
 
