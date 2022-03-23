@@ -423,6 +423,7 @@
   		.then(parsedSourceCodes => {
   			$("#cppcode").val(parsedSourceCodes.sourcecode)
   			$("#jsoncode").val(JSON.stringify(parsedSourceCodes.definition))
+  			$("#consolelog").val("Successfully done!")
   		})
   		.catch(e => {
   			$("#consolelog").val(e)
@@ -437,6 +438,7 @@
   		.then(parsedSourceCodes => {
   			$("#cppcode").val(parsedSourceCodes.sourcecode)
   			$("#jsoncode").val(JSON.stringify(parsedSourceCodes.definition))
+  			$("#consolelog").val("Successfully done!")
   		})
   		.catch(e => {
   			$("#consolelog").val(e)
