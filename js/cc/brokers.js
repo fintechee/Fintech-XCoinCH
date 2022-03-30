@@ -1,1 +1,1 @@
-
+var brokerDomain={};var brokerPort={};var brokerProtocol={};var shopDomain={};var brokerName={};var signInShownBrokerName={};var shownBrokerName={};var brokerCtx=[];var BROKER_NAME={DEMO:"Fintechee Demo",FINTECHEE_DEMO:"Fintechee Demo"} 
