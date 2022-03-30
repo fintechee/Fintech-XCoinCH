@@ -241,3 +241,6 @@
 		  display: none;
 		}
 
+        .ui.dimmer {
+            overflow-y: auto;
+        }
