@@ -30,7 +30,19 @@ var eaStudio = {
     var generatedStructure = null
 
 		if (srcCode.length > 0) {
-      var sourceCode = srcCode.replaceAll(/\/\*([\s\S]*?)\*\//g, "")
+      var sourceCode = srcCode
+        .replaceAll(/\/\*([\s\S]*?)\*\//g, "")
+        // .replaceAll("PERIOD_CURRENT", 0)
+        // .replaceAll("PERIOD_M1", 1)
+        // .replaceAll("PERIOD_M5", 5)
+        // .replaceAll("PERIOD_M15", 15)
+        // .replaceAll("PERIOD_M30", 30)
+        // .replaceAll("PERIOD_H1", 60)
+        // .replaceAll("PERIOD_H4", 240)
+        // .replaceAll("PERIOD_D1", 1440)
+        // .replaceAll("PERIOD_W1", 10080)
+        // .replaceAll("PERIOD_MN1", 43200)
+
 			var lines = sourceCode.split("\n")
 			var op = []
 
@@ -48,6 +60,14 @@ var eaStudio = {
             line.indexOf("OnDeinit") != -1 ||
             line.indexOf("OnTick") != -1) {
           break
+        }
+
+        var leftBIndex = line.indexOf("(")
+        if (leftBIndex != -1) {
+          var detectComment = line.split("//")
+          if (detectComment.length > 1 && detectComment[0].length > leftBIndex) {
+            break
+          }
         }
 
 				var parts = null
@@ -110,7 +130,7 @@ var eaStudio = {
             op: "m",
             dataType: "int",
             name: variable[0].trim().replaceAll(",", "~"),
-            value: (value != "" ? parseInt(value) : null)
+            value: (value != "" ? value : null)
           }
 				} else {
 					subParts = mainParts.split("long")
@@ -126,7 +146,7 @@ var eaStudio = {
               op: "m",
               dataType: "long",
               name: variable[0].trim().replaceAll(",", "~"),
-              value: (value != "" ? parseInt(value) : null)
+              value: (value != "" ? value : null)
             }
 					} else {
 						subParts = mainParts.split("bool")
@@ -142,7 +162,7 @@ var eaStudio = {
                 op: "m",
                 dataType: "bool",
                 name: variable[0].trim().replaceAll(",", "~"),
-                value: (value != "" ? (value == "true" ? true : false) : null)
+                value: (value != "" ? value : null)
               }
 						} else {
 							subParts = mainParts.split("string")
@@ -174,7 +194,7 @@ var eaStudio = {
                     op: "m",
                     dataType: "float",
                     name: variable[0].trim().replaceAll(",", "~"),
-                    value: (value != "" ? parseFloat(value) : null)
+                    value: (value != "" ? value : null)
                   }
 								} else {
 									subParts = mainParts.split("double")
@@ -190,9 +210,26 @@ var eaStudio = {
                       op: "m",
                       dataType: "double",
                       name: variable[0].trim().replaceAll(",", "~").replaceAll(" ", ""),
-                      value: (value != "" ? parseFloat(value) : null)
+                      value: (value != "" ? value : null)
                     }
-									}
+									} else {
+                    subParts = mainParts.split("datetime")
+          					if (subParts.length > 1 && subParts[0].trim() == "") {
+                      var variable = this.parseVariable(subParts[1], bVariable)
+
+                      if (variable.length < 3) throw new Error("Incorrect Syntax: " + line)
+
+                      var value = variable[1].trim()
+                      value = value.substring(0, value.length - 1)
+                      op[i] = {
+                        type: variable[2],
+                        op: "m",
+                        dataType: "long",
+                        name: variable[0].trim().replaceAll(",", "~"),
+                        value: (value != "" ? value : null)
+                      }
+                    }
+                  }
 								}
 							}
 						}
@@ -219,33 +256,33 @@ var eaStudio = {
         if (o.op == "m") {
           if (o.type == "v") {
             if (o.dataType == "int") {
-              params += o.name + "," + "Integer" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+              params += o.name + "," + "Integer" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             } else if (o.dataType == "long") {
-              params += o.name + "," + "Integer" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+              params += o.name + "," + "Integer" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             } else if (o.dataType == "bool") {
               params += o.name + "," + "Boolean" + ",false," + o.value + ",false,true" + "\n"
             } else if (o.dataType == "string") {
               params += o.name + "," + "String" + ",false," + o.value + ",false,true" + "\n"
             } else if (o.dataType == "float") {
-              params += o.name + "," + "Number" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+              params += o.name + "," + "Number" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             } else if (o.dataType == "double") {
-              params += o.name + "," + "Number" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+              params += o.name + "," + "Number" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             }
           }
 
           if (o.type == "v" || o.type == "g") {
             if (o.dataType == "int") {
-              globalVars += o.name + "," + "Integer" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+              globalVars += o.name + "," + "Integer" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             } else if (o.dataType == "long") {
-              globalVars += o.name + "," + "Integer" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+              globalVars += o.name + "," + "Integer" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             } else if (o.dataType == "bool") {
               globalVars += o.name + "," + "Boolean" + ",false," + o.value + ",false,true" + "\n"
             } else if (o.dataType == "string") {
               globalVars += o.name + "," + "String" + ",false," + o.value + ",false,true" + "\n"
             } else if (o.dataType == "float") {
-              globalVars += o.name + "," + "Number" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+              globalVars += o.name + "," + "Number" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             } else if (o.dataType == "double") {
-              globalVars += o.name + "," + "Number" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+              globalVars += o.name + "," + "Number" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             }
           }
         } else if (o.op == "c") {
@@ -302,7 +339,7 @@ var eaStudio = {
   	    name: pm[0].replaceAll("~", ", "),
   	    type: pm1,
   	    required: pm[2] == 'true' ? true : false,
-  	    value: this.isInteger(pm3) ? parseInt(pm3) : (this.isNumeric(pm3) ? parseFloat(pm3) : (pm3 == 'true' ? true : (pm3 == 'false' ? false : (pm3 == 'null' ? null : pm3.slice(1,-1))))),
+  	    value: this.isInteger(pm3) ? parseInt(pm3) : (this.isNumeric(pm3) ? parseFloat(pm3) : (pm3 == 'true' ? true : (pm3 == 'false' ? false : (pm3 == 'null' ? null : (pm1 == 'String' ? pm3.slice(1,-1) : pm3))))),
   	    range: pm1 != 'String' ? [] : null
   	  }
       if (pm1 != 'String') {
@@ -385,7 +422,7 @@ var eaStudio = {
   	  } else if (parsedGlobalVars[i].type == 'Boolean') {
   	    template2 += 'bool ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
   	  } else if (parsedGlobalVars[i].type == 'String') {
-  	    template2 += 'string ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = '" + parsedGlobalVars[i].value + "'") : "") + ';\n'
+  	    template2 += 'string ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (' = "' + parsedGlobalVars[i].value + '"') : "") + ';\n'
   	  }
   	}
 
@@ -515,7 +552,7 @@ var eaStudio = {
   	  } else if (parsedGlobalVars[i].type == 'Boolean') {
   	    template2 += 'bool ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
   	  } else if (parsedGlobalVars[i].type == 'String') {
-  	    template2 += 'string ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = '" + parsedGlobalVars[i].value + "'") : "") + ';\n'
+  	    template2 += 'string ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (' = "' + parsedGlobalVars[i].value + '"') : "") + ';\n'
   	  }
   	}
 
