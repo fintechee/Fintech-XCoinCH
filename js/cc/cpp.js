@@ -67,6 +67,8 @@ var eaStudio = {
           var detectComment = line.split("//")
           if (detectComment.length > 1 && detectComment[0].length > leftBIndex) {
             break
+          } else if (detectComment.length == 1) {
+            break
           }
         }
 
