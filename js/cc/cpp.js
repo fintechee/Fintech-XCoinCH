@@ -3,20 +3,50 @@
 // Because the key words have been used to split the source lines to extract the parts of the variables.
 // Fortunately, a better parser compatible with more complex syntax will be coming soon.
 var eaStudio = {
-  generateStructure: function (sourceCode) {
+  parseVariable: function (subParts, bVariable) {
+    var variable = null
+
+    if (bVariable) {
+      variable = subParts.split("=")
+      variable.push("v")
+    } else {
+      variable = subParts.split("[]")
+      if (variable.length > 1) {
+        variable[1] = ";"
+        variable.push("a")
+      } else {
+        variable = subParts.split("=")
+        if (variable.length == 1) {
+          variable[0] = variable[0].replace(";", "")
+          variable[1] = ";"
+        }
+        variable.push("g")
+      }
+    }
+
+    return variable
+  },
+  generateStructure: function (srcCode) {
     var generatedStructure = null
 
-		if (sourceCode.length > 0) {
+		if (srcCode.length > 0) {
+      var sourceCode = srcCode.replaceAll(/\/\*([\s\S]*?)\*\//g, "")
 			var lines = sourceCode.split("\n")
 			var op = []
 
 			for (var i in lines) {
 				var line = lines[i]
 
+        if (line.trim() == "") {
+          continue
+        }
+
         if (line.indexOf("OnCalculate") != -1 ||
             line.indexOf("start") != -1 ||
             line.indexOf("init") != -1 ||
-            line.indexOf("(") != -1) {
+            line.indexOf("OnInit") != -1 ||
+            line.indexOf("OnDeinit") != -1 ||
+            line.indexOf("OnTick") != -1) {
           break
         }
 
@@ -37,7 +67,15 @@ var eaStudio = {
               }
             }
           }
-				}
+				} else {
+          parts = line.split("//")
+          if (parts.length > 1) {
+            line = parts[0].trim()
+  					if (line == "") {
+              continue
+            }
+          }
+        }
 
 				var bVariable = false
         var mainParts = null
@@ -61,110 +99,98 @@ var eaStudio = {
         var subParts = null
 				subParts = mainParts.split("int")
 				if (subParts.length > 1 && subParts[0].trim() == "") {
-          var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+          var variable = this.parseVariable(subParts[1], bVariable)
 
-          if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+          if (variable.length < 3) throw new Error("Incorrect Syntax: " + line)
 
           var value = variable[1].trim()
           value = value.substring(0, value.length - 1)
-          if (variable.length == 2) {
-            op[i] = {
-              type: (bVariable ? "v" : "a"),
-              op: "m",
-              dataType: "int",
-              name: variable[0].trim(),
-              value: (bVariable ? parseInt(value) : null)
-            }
+          op[i] = {
+            type: variable[2],
+            op: "m",
+            dataType: "int",
+            name: variable[0].trim().replaceAll(",", "~"),
+            value: (value != "" ? parseInt(value) : null)
           }
 				} else {
 					subParts = mainParts.split("long")
 					if (subParts.length > 1 && subParts[0].trim() == "") {
-            var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+            var variable = this.parseVariable(subParts[1], bVariable)
 
-            if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+            if (variable.length < 3) throw new Error("Incorrect Syntax: " + line)
 
             var value = variable[1].trim()
             value = value.substring(0, value.length - 1)
-            if (variable.length == 2) {
-              op[i] = {
-                type: (bVariable ? "v" : "a"),
-                op: "m",
-                dataType: "long",
-                name: variable[0].trim(),
-                value: (bVariable ? parseInt(value) : null)
-              }
+            op[i] = {
+              type: variable[2],
+              op: "m",
+              dataType: "long",
+              name: variable[0].trim().replaceAll(",", "~"),
+              value: (value != "" ? parseInt(value) : null)
             }
 					} else {
 						subParts = mainParts.split("bool")
 						if (subParts.length > 1 && subParts[0].trim() == "") {
-              var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+              var variable = this.parseVariable(subParts[1], bVariable)
 
-              if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+              if (variable.length < 3) throw new Error("Incorrect Syntax: " + line)
 
               var value = variable[1].trim()
               value = value.substring(0, value.length - 1)
-              if (variable.length == 2) {
-                op[i] = {
-                  type: (bVariable ? "v" : "a"),
-                  op: "m",
-                  dataType: "bool",
-                  name: variable[0].trim(),
-                  value: (bVariable ? (value == "true" ? true : false) : null)
-                }
+              op[i] = {
+                type: variable[2],
+                op: "m",
+                dataType: "bool",
+                name: variable[0].trim().replaceAll(",", "~"),
+                value: (value != "" ? (value == "true" ? true : false) : null)
               }
 						} else {
 							subParts = mainParts.split("string")
 							if (subParts.length > 1 && subParts[0].trim() == "") {
-                var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+                var variable = this.parseVariable(subParts[1], bVariable)
 
-                if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+                if (variable.length < 3) throw new Error("Incorrect Syntax: " + line)
 
                 var value = variable[1].trim()
                 value = value.substring(0, value.length - 1)
-                if (variable.length == 2) {
-                  op[i] = {
-                    type: (bVariable ? "v" : "a"),
-                    op: "m",
-                    dataType: "string",
-                    name: variable[0].trim(),
-                    value: (bVariable ? value : null)
-                  }
+                op[i] = {
+                  type: variable[2],
+                  op: "m",
+                  dataType: "string",
+                  name: variable[0].trim().replaceAll(",", "~"),
+                  value: (value != "" ? value : null)
                 }
 							} else {
 								subParts = mainParts.split("float")
 								if (subParts.length > 1 && subParts[0].trim() == "") {
-                  var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+                  var variable = this.parseVariable(subParts[1], bVariable)
 
-                  if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+                  if (variable.length < 3) throw new Error("Incorrect Syntax: " + line)
 
                   var value = variable[1].trim()
                   value = value.substring(0, value.length - 1)
-                  if (variable.length == 2) {
-                    op[i] = {
-                      type: (bVariable ? "v" : "a"),
-                      op: "m",
-                      dataType: "float",
-                      name: variable[0].trim(),
-                      value: (bVariable ? parseFloat(value) : null)
-                    }
+                  op[i] = {
+                    type: variable[2],
+                    op: "m",
+                    dataType: "float",
+                    name: variable[0].trim().replaceAll(",", "~"),
+                    value: (value != "" ? parseFloat(value) : null)
                   }
 								} else {
 									subParts = mainParts.split("double")
 									if (subParts.length > 1 && subParts[0].trim() == "") {
-                    var variable = bVariable ? subParts[1].split("=") : subParts[1].split("[]")
+                    var variable = this.parseVariable(subParts[1], bVariable)
 
-                    if (variable.length < 2) throw new Error("Incorrect Syntax: " + line)
+                    if (variable.length < 3) throw new Error("Incorrect Syntax: " + line)
 
                     var value = variable[1].trim()
                     value = value.substring(0, value.length - 1)
-                    if (variable.length == 2) {
-                      op[i] = {
-                        type: (bVariable ? "v" : "a"),
-                        op: "m",
-                        dataType: "double",
-                        name: variable[0].trim(),
-                        value: (bVariable ? parseFloat(value) : null)
-                      }
+                    op[i] = {
+                      type: variable[2],
+                      op: "m",
+                      dataType: "double",
+                      name: variable[0].trim().replaceAll(",", "~").replaceAll(" ", ""),
+                      value: (value != "" ? parseFloat(value) : null)
                     }
 									}
 								}
@@ -185,23 +211,42 @@ var eaStudio = {
       }
 
       var params = ""
+      var globalVars = ""
       var constants = ""
 
       for (var i in op) {
         var o = op[i]
-        if (o.op == "m" && o.type == "v") {
-          if (o.dataType == "int") {
-            params += o.name + ", " + "Integer" + ", false, " + o.value + ", " + (o.value - 1) + ", " + (o.value + 1) + "\n"
-          } else if (o.dataType == "long") {
-            params += o.name + ", " + "Integer" + ", false, " + o.value + ", " + (o.value - 1) + ", " + (o.value + 1) + "\n"
-          } else if (o.dataType == "bool") {
-            params += o.name + ", " + "Boolean" + ", false, " + o.value + ", false, true" + "\n"
-          } else if (o.dataType == "string") {
-            params += o.name + ", " + "String" + ", false, " + o.value + ", false, true" + "\n"
-          } else if (o.dataType == "float") {
-            params += o.name + ", " + "Number" + ", false, " + o.value + ", " + (o.value - 1) + ", " + (o.value + 1) + "\n"
-          } else if (o.dataType == "double") {
-            params += o.name + ", " + "Number" + ", false, " + o.value + ", " + (o.value - 1) + ", " + (o.value + 1) + "\n"
+        if (o.op == "m") {
+          if (o.type == "v") {
+            if (o.dataType == "int") {
+              params += o.name + "," + "Integer" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+            } else if (o.dataType == "long") {
+              params += o.name + "," + "Integer" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+            } else if (o.dataType == "bool") {
+              params += o.name + "," + "Boolean" + ",false," + o.value + ",false,true" + "\n"
+            } else if (o.dataType == "string") {
+              params += o.name + "," + "String" + ",false," + o.value + ",false,true" + "\n"
+            } else if (o.dataType == "float") {
+              params += o.name + "," + "Number" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+            } else if (o.dataType == "double") {
+              params += o.name + "," + "Number" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+            }
+          }
+
+          if (o.type == "v" || o.type == "g") {
+            if (o.dataType == "int") {
+              globalVars += o.name + "," + "Integer" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+            } else if (o.dataType == "long") {
+              globalVars += o.name + "," + "Integer" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+            } else if (o.dataType == "bool") {
+              globalVars += o.name + "," + "Boolean" + ",false," + o.value + ",false,true" + "\n"
+            } else if (o.dataType == "string") {
+              globalVars += o.name + "," + "String" + ",false," + o.value + ",false,true" + "\n"
+            } else if (o.dataType == "float") {
+              globalVars += o.name + "," + "Number" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+            } else if (o.dataType == "double") {
+              globalVars += o.name + "," + "Number" + ",false," + o.value + "," + (o.value - 1) + "," + (o.value + 1) + "\n"
+            }
           }
         } else if (o.op == "c") {
           constants += o.line + "\n"
@@ -209,13 +254,14 @@ var eaStudio = {
       }
 
       params = params.substring(0, params.length - 1)
+      globalVars = globalVars.substring(0, globalVars.length - 1)
 
       var dataoutput = ""
 
       for (var i in op) {
         var o = op[i]
         if (o.op == "m" && o.type == "a") {
-          dataoutput += o.dataType + ", true, Line, #00CCFF\n"
+          dataoutput += o.name + ", true, Line, #00CCFF\n"
         }
       }
 		}
@@ -226,15 +272,10 @@ var eaStudio = {
       removedLines: removedLines,
       constants: constants,
       params: params,
+      globalVars: globalVars,
       datainput: "Time, 0\nVolume, 1\nOpen, 2\nHigh, 3\nLow, 4\nClose, 5",
       dataoutput: dataoutput
     }
-  },
-  compileIndi: function (sourceCode) {
-
-  },
-  compileEa: function (sourceCode) {
-
   },
   isNumeric: function (number) {
   	if (typeof number == "undefined" || number == null) return false
@@ -253,21 +294,21 @@ var eaStudio = {
   	  var pm = params[i].split(",")
       if (pm.length < 6) continue
 
-      var pm1 = pm[1].trim()
-  	  var pm3 = pm[3].trim()
-  	  var pm4 = pm[4].trim()
-  	  var pm5 = pm[5].trim()
+      var pm1 = pm[1]
+  	  var pm3 = pm[3]
+  	  var pm4 = pm[4]
+  	  var pm5 = pm[5]
   	  var obj = {
-  	    name: pm[0].trim(),
+  	    name: pm[0].replaceAll("~", ", "),
   	    type: pm1,
-  	    required: pm[2].trim().toLowerCase() == 'true' ? true : false,
-  	    value: this.isInteger(pm3) ? parseInt(pm3) : (this.isNumeric(pm3) ? parseFloat(pm3) : (pm3.toLowerCase() == 'true' ? true : (pm3.toLowerCase() == 'false' ? false : (pm3.toLowerCase() == 'null' ? null : pm3.slice(1,-1))))),
+  	    required: pm[2] == 'true' ? true : false,
+  	    value: this.isInteger(pm3) ? parseInt(pm3) : (this.isNumeric(pm3) ? parseFloat(pm3) : (pm3 == 'true' ? true : (pm3 == 'false' ? false : (pm3 == 'null' ? null : pm3.slice(1,-1))))),
   	    range: pm1 != 'String' ? [] : null
   	  }
-        if (pm1 != 'String') {
-  	      obj.range.push(this.isInteger(pm4) ? parseInt(pm4) : (this.isNumeric(pm4) ? parseFloat(pm4) : (pm4.toLowerCase() == 'true' ? true : (pm4.toLowerCase() == 'false' ? false : (pm4.toLowerCase() == 'null' ? null : pm4)))))
-  	      obj.range.push(this.isInteger(pm5) ? parseInt(pm5) : (this.isNumeric(pm5) ? parseFloat(pm5) : (pm5.toLowerCase() == 'true' ? true : (pm5.toLowerCase() == 'false' ? false : (pm5.toLowerCase() == 'null' ? null : pm5)))))
-        }
+      if (pm1 != 'String') {
+	      obj.range.push(this.isInteger(pm4) ? parseInt(pm4) : (this.isNumeric(pm4) ? parseFloat(pm4) : (pm4 == 'true' ? true : (pm4 == 'false' ? false : (pm4 == 'null' ? null : pm4)))))
+	      obj.range.push(this.isInteger(pm5) ? parseInt(pm5) : (this.isNumeric(pm5) ? parseFloat(pm5) : (pm5 == 'true' ? true : (pm5 == 'false' ? false : (pm5 == 'null' ? null : pm5)))))
+      }
   	  parsedParams.push(obj)
   	}
 
@@ -321,11 +362,13 @@ var eaStudio = {
 
     var constants = generatedStructure.constants
   	var params = generatedStructure.params.split("\n")
+    var globalVars = generatedStructure.globalVars.split("\n")
   	var datainput = generatedStructure.datainput.split("\n")
   	var dataoutput = generatedStructure.dataoutput.split("\n")
   	var separatewindow = true
 
   	var parsedParams = this.parseParams(params)
+    var parsedGlobalVars = this.parseParams(globalVars)
   	var parsedInput = this.parseInput(datainput)
   	var parsedOutput = this.parseOutput(dataoutput)
 
@@ -334,15 +377,15 @@ var eaStudio = {
     var template1 = constants
 
   	var template2 = '\n'
-  	for (var i in parsedParams) {
-  	  if (parsedParams[i].type == 'Integer') {
-  	    template2 += 'int ' + parsedParams[i].name + ';\n'
-  	  } else if (parsedParams[i].type == 'Number') {
-  	    template2 += 'double ' + parsedParams[i].name + ';\n'
-  	  } else if (parsedParams[i].type == 'Boolean') {
-  	    template2 += 'bool ' + parsedParams[i].name + ';\n'
-  	  } else if (parsedParams[i].type == 'String') {
-  	    template2 += 'string ' + parsedParams[i].name + ';\n'
+  	for (var i in parsedGlobalVars) {
+  	  if (parsedGlobalVars[i].type == 'Integer') {
+  	    template2 += 'int ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
+  	  } else if (parsedGlobalVars[i].type == 'Number') {
+  	    template2 += 'double ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
+  	  } else if (parsedGlobalVars[i].type == 'Boolean') {
+  	    template2 += 'bool ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
+  	  } else if (parsedGlobalVars[i].type == 'String') {
+  	    template2 += 'string ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = '" + parsedGlobalVars[i].value + "'") : "") + ';\n'
   	  }
   	}
 
@@ -454,23 +497,25 @@ var eaStudio = {
   	var namedesc = [fileName, "This is an example.", (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/js/" + fileName + ".js"]
     var constants = generatedStructure.constants
   	var params = generatedStructure.params.split("\n")
+    var globalVars = generatedStructure.globalVars.split("\n")
 
   	var parsedParams = this.parseParams(params)
+    var parsedGlobalVars = this.parseParams(globalVars)
 
   	var template = '#include "mqlea2fintechee.h"\n\n'
 
     var template1 = constants
 
   	var template2 = '\n'
-  	for (var i in parsedParams) {
-  	  if (parsedParams[i].type == 'Integer') {
-  	    template2 += 'int ' + parsedParams[i].name + ';\n'
-  	  } else if (parsedParams[i].type == 'Number') {
-  	    template2 += 'double ' + parsedParams[i].name + ';\n'
-  	  } else if (parsedParams[i].type == 'Boolean') {
-  	    template2 += 'bool ' + parsedParams[i].name + ';\n'
-  	  } else if (parsedParams[i].type == 'String') {
-  	    template2 += 'string ' + parsedParams[i].name + ';\n'
+  	for (var i in parsedGlobalVars) {
+  	  if (parsedGlobalVars[i].type == 'Integer') {
+  	    template2 += 'int ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
+  	  } else if (parsedGlobalVars[i].type == 'Number') {
+  	    template2 += 'double ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
+  	  } else if (parsedGlobalVars[i].type == 'Boolean') {
+  	    template2 += 'bool ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
+  	  } else if (parsedGlobalVars[i].type == 'String') {
+  	    template2 += 'string ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = '" + parsedGlobalVars[i].value + "'") : "") + ';\n'
   	  }
   	}
 
