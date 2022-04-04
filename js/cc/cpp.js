@@ -32,16 +32,6 @@ var eaStudio = {
 		if (srcCode.length > 0) {
       var sourceCode = srcCode
         .replaceAll(/\/\*([\s\S]*?)\*\//g, "")
-        // .replaceAll("PERIOD_CURRENT", 0)
-        // .replaceAll("PERIOD_M1", 1)
-        // .replaceAll("PERIOD_M5", 5)
-        // .replaceAll("PERIOD_M15", 15)
-        // .replaceAll("PERIOD_M30", 30)
-        // .replaceAll("PERIOD_H1", 60)
-        // .replaceAll("PERIOD_H4", 240)
-        // .replaceAll("PERIOD_D1", 1440)
-        // .replaceAll("PERIOD_W1", 10080)
-        // .replaceAll("PERIOD_MN1", 43200)
 
 			var lines = sourceCode.split("\n")
 			var op = []
@@ -68,7 +58,10 @@ var eaStudio = {
           if (detectComment.length > 1 && detectComment[0].length > leftBIndex) {
             break
           } else if (detectComment.length == 1) {
-            break
+            detectComment = line.split("#")
+            if (detectComment.length == 1 || detectComment[0].trim() != "") {
+              break
+            }
           }
         }
 
