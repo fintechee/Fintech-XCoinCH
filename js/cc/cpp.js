@@ -376,6 +376,125 @@ var eaStudio = {
 
   	return parsedOutput
   },
+  generateOnInitSourceCodes: function (sourceCodes) {
+    var onInitMatch = sourceCodes.match(/OnInit/g)
+    if (onInitMatch.length > 0) {
+      var onInitSourceCodes =
+      'EMSCRIPTEN_KEEPALIVE\n' +
+      'void onInit (int uid) {\n' +
+      '  OnInit();\n' +
+      '}\n'
+      return onInitSourceCodes
+    } else {
+      return ""
+    }
+  },
+  generateOnDeinitSourceCodes: function (sourceCodes) {
+    var onDeinitMatch = sourceCodes.match(/OnDeinit/g)
+    if (onDeinitMatch.length > 0) {
+      var onDeinitSourceCodes =
+      'EMSCRIPTEN_KEEPALIVE\n' +
+      'void onDeinit (int uid, const int reason) {\n' +
+      '  OnDeinit(reason);\n' +
+      '}\n'
+      return onDeinitSourceCodes
+    } else {
+      return ""
+    }
+  },
+  generateApiCallingSourceCodes: function (sourceCodes) {
+    var apiCallingMatchSet = new Set()
+    var regexps1 = []
+    var regexps2 = []
+    var regexps3 = []
+
+    regexps1.push(/iTime\s*\([\w\s,\.]*\)/g)
+    regexps1.push(/iOpen\s*\([\w\s,\.]*\)/g)
+    regexps1.push(/iTime\s*\([\w\s,\.]*\)/g)
+    regexps1.push(/iOpen\s*\([\w\s,\.]*\)/g)
+    regexps1.push(/iHigh\s*\([\w\s,\.]*\)/g)
+    regexps1.push(/iLow\s*\([\w\s,\.]*\)/g)
+    regexps1.push(/iClose\s*\([\w\s,\.]*\)/g)
+    regexps1.push(/iVolume\s*\([\w\s,\.]*\)/g)
+
+    for (var i in regexps1) {
+      var apiCallingMatches = sourceCodes.match(regexps1[i])
+      for (var j in apiCallingMatches) {
+        var apiCallingMatch = apiCallingMatches[j]
+        var matchArr = apiCallingMatch.split(",")
+        matchArr.splice(2, 1)
+        for (var k in matchArr) {
+          matchArr[k] = matchArr[k].trim()
+        }
+        matchArr[0] = matchArr[0].replace(/iTime|iOpen|iHigh|iLow|iClose|iVolume/, "    iTime")
+        matchArr.push("0);\n")
+        var apiCallingMatch2 = matchArr.join(", ")
+        apiCallingMatchSet.add(apiCallingMatch2)
+      }
+    }
+
+    regexps2.push(/iHighest\s*\([\w\s,\.]*\)/g)
+    regexps2.push(/iLowest\s*\([\w\s,\.]*\)/g)
+
+    for (var i in regexps2) {
+      var apiCallingMatches = sourceCodes.match(regexps2[i])
+      for (var j in apiCallingMatches) {
+        var apiCallingMatch = apiCallingMatches[j]
+        var matchArr = apiCallingMatch.split(",")
+        matchArr.splice(2, 3)
+        for (var k in matchArr) {
+          matchArr[k] = matchArr[k].trim()
+        }
+        matchArr[0] = matchArr[0].replace(/iHighest|iLowest/, "    iTime")
+        matchArr.push("0);\n")
+        var apiCallingMatch2 = matchArr.join(", ")
+        apiCallingMatchSet.add(apiCallingMatch2)
+      }
+    }
+
+    regexps3.push(/iAC\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iADX\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iAlligator\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iAO\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iATR\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iBearsPower\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iBands\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iBullsPower\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iCCI\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iCustom\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iDeMarker\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iEnvelopes\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iFractals\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iIchimoku\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iMA\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iMACD\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iMomentum\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iRSI\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iRVI\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iSAR\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iStochastic\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iWPR\s*\([\w\s,\.]*\)/g)
+
+    for (var i in regexps3) {
+      var apiCallingMatches = sourceCodes.match(regexps3[i])
+
+      for (var j in apiCallingMatches) {
+        var apiCallingMatch = apiCallingMatches[j]
+        var matchArr = apiCallingMatch.split(",")
+        matchArr.splice(matchArr.length - 1, 1)
+        for (var k in matchArr) {
+          matchArr[k] = matchArr[k].trim()
+        }
+        matchArr[0] = "    " + matchArr[0]
+        matchArr.push("0);\n")
+        var apiCallingMatch2 = matchArr.join(", ")
+        apiCallingMatchSet.add(apiCallingMatch2)
+      }
+    }
+
+    var apiCallingMatchArr = Array.from(apiCallingMatchSet)
+    return apiCallingMatchArr.join("")
+  },
   generateIndi: function (serverUrl, name, sourceCode) {
     var that = this
     return new Promise(function(resolve, reject) {
@@ -553,7 +672,9 @@ var eaStudio = {
 
   	var template3 = '\n' +
   	'extern "C" {\n\n' +
-  	'EMSCRIPTEN_KEEPALIVE\n' +
+    this.generateOnInitSourceCodes(sourceCode) +
+    this.generateOnDeinitSourceCodes(sourceCode) +
+    'EMSCRIPTEN_KEEPALIVE\n' +
   	'void onTick (int uid, int barNum, double ask, double bid, double point, int digits) {\n' +
   	'  iFintecheeUID = uid;\n' +
   	'  Bars = barNum;\n' +
@@ -578,7 +699,7 @@ var eaStudio = {
   	}
 
   	var template5 = '    }\n' +
-      '    OnTick();\n' +
+    this.generateApiCallingSourceCodes(sourceCode) +
   	'    paramHandleList[uid].bInit = false;\n' +
   	'  } else {\n' +
       '    OnTick();\n' +
