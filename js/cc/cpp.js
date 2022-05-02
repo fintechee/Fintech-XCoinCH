@@ -335,12 +335,8 @@ var eaStudio = {
   	    type: pm1,
   	    required: pm[2] == 'true' ? true : false,
   	    value: this.isInteger(pm3) ? parseInt(pm3) : (this.isNumeric(pm3) ? parseFloat(pm3) : (pm3 == 'true' ? true : (pm3 == 'false' ? false : (pm3 == 'null' ? null : (pm1 == 'String' ? pm3.slice(1,-1) : pm3))))),
-  	    range: pm1 != 'String' ? [] : null
+  	    range: null
   	  }
-      if (pm1 != 'String') {
-	      obj.range.push(this.isInteger(pm4) ? parseInt(pm4) : (this.isNumeric(pm4) ? parseFloat(pm4) : (pm4 == 'true' ? true : (pm4 == 'false' ? false : (pm4 == 'null' ? null : pm4)))))
-	      obj.range.push(this.isInteger(pm5) ? parseInt(pm5) : (this.isNumeric(pm5) ? parseFloat(pm5) : (pm5 == 'true' ? true : (pm5 == 'false' ? false : (pm5 == 'null' ? null : pm5)))))
-      }
   	  parsedParams.push(obj)
   	}
 
