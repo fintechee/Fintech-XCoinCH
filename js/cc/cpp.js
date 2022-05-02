@@ -35,8 +35,10 @@ var eaStudio = {
 
 			var lines = sourceCode.split("\n")
 			var op = []
+      var cursor = -1
 
 			for (var i in lines) {
+        cursor = parseInt(i)
 				var line = lines[i]
 
         if (line.trim() == "") {
@@ -230,8 +232,16 @@ var eaStudio = {
 						}
 					}
 				}
-
 			}
+
+      var sourceBody = []
+      var linesLength = lines.length
+
+      if (cursor >= 0) {
+        for (var i = cursor; i < linesLength; i++) {
+          sourceBody.push(lines[i])
+        }
+      }
 
       var removedLines = ""
 
@@ -306,7 +316,8 @@ var eaStudio = {
       params: params,
       globalVars: globalVars,
       datainput: "Time, 0\nVolume, 1\nOpen, 2\nHigh, 3\nLow, 4\nClose, 5",
-      dataoutput: dataoutput
+      dataoutput: dataoutput,
+      sourceBody: sourceBody.join("\n")
     }
   },
   isNumeric: function (number) {
@@ -398,14 +409,45 @@ var eaStudio = {
       return ""
     }
   },
+  convertTOHLCV: function (sourceCodes) {
+    var newSourceCodes = sourceCodes
+    var regexps = []
+
+    regexps.push(/Time\s*\[[\w\s\.]*\]/g)
+    regexps.push(/Open\s*\[[\w\s\.]*\]/g)
+    regexps.push(/High\s*\[[\w\s\.]*\]/g)
+    regexps.push(/Low\s*\[[\w\s\.]*\]/g)
+    regexps.push(/Close\s*\[[\w\s\.]*\]/g)
+    regexps.push(/Volume\s*\[[\w\s\.]*\]/g)
+
+    for (var i in regexps) {
+      var tohlcvMatches = newSourceCodes.match(regexps[i])
+      for (var j in tohlcvMatches) {
+        var tohlcvMatch = tohlcvMatches[j]
+        var matchArr = []
+        var matchArr2 = tohlcvMatch.split("[")
+        matchArr.push(matchArr2[0])
+        matchArr2 = matchArr2[1].split("]")
+        matchArr.push(matchArr2[0])
+        var tohlcv = "i" + matchArr[0] + "(NULL, 0, " + matchArr[1] + ")"
+        newSourceCodes = newSourceCodes.replaceAll(tohlcvMatch, tohlcv)
+      }
+    }
+
+    return newSourceCodes
+  },
+  convertPeriod: function (sourceCodes) {
+    return sourceCodes.replaceAll("_Period", "Period")
+  },
+  convertPoint: function (sourceCodes) {
+    return sourceCodes.replaceAll("_Point", "Point")
+  },
   generateApiCallingSourceCodes: function (sourceCodes) {
     var apiCallingMatchSet = new Set()
     var regexps1 = []
     var regexps2 = []
     var regexps3 = []
 
-    regexps1.push(/iTime\s*\([\w\s,\.]*\)/g)
-    regexps1.push(/iOpen\s*\([\w\s,\.]*\)/g)
     regexps1.push(/iTime\s*\([\w\s,\.]*\)/g)
     regexps1.push(/iOpen\s*\([\w\s,\.]*\)/g)
     regexps1.push(/iHigh\s*\([\w\s,\.]*\)/g)
@@ -501,8 +543,9 @@ var eaStudio = {
       }
     })
   },
-  generateIndi2: function (serverUrl, name, sourceCode) {
+  generateIndi2: function (serverUrl, name, srcCodes) {
     var fileName = name.trim() == "" ? "test" : name.trim()
+    var sourceCode = this.convertPoint(this.convertPeriod(this.convertTOHLCV(srcCodes)))
     var generatedStructure = this.generateStructure(sourceCode)
 
   	var namedesc = [fileName, "This is an example.", (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/js/" + fileName + ".js"]
@@ -609,8 +652,8 @@ var eaStudio = {
 
   	var template15 = ')\n'
 
-  	var sourcecode = template + template1 + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10 +
-  	                 template11 + template12 + template13 + template14 + template15
+  	var newSourcecode = template + template1 + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10 +
+  	                 template11 + template12 + template13 + template14 + template15 + generatedStructure.sourceBody
 
   	var definition = {
   		name: namedesc[0],
@@ -623,7 +666,7 @@ var eaStudio = {
   	}
 
     return {
-      sourcecode: sourcecode,
+      sourcecode: newSourcecode,
       definition: definition
     }
   },
@@ -637,8 +680,9 @@ var eaStudio = {
       }
     })
   },
-  generateEa2: function (serverUrl, name, sourceCode) {
+  generateEa2: function (serverUrl, name, srcCodes) {
     var fileName = name.trim() == "" ? "test" : name.trim()
+    var sourceCode = this.convertPoint(this.convertPeriod(this.convertTOHLCV(srcCodes)))
     var generatedStructure = this.generateStructure(sourceCode)
 
   	var namedesc = [fileName, "This is an example.", (serverUrl.trim() == "" ? "http://127.0.0.1:3000" : serverUrl.trim()) + "/js/" + fileName + ".js"]
@@ -703,7 +747,7 @@ var eaStudio = {
   	'}\n\n' +
   	'}\n'
 
-  	var sourcecode = template + template1 + template2 + template3 + template4 + template5
+  	var newSourcecode = template + template1 + template2 + template3 + template4 + template5 + generatedStructure.sourceBody
 
   	var definition = {
   		name: namedesc[0],
@@ -713,7 +757,7 @@ var eaStudio = {
   	}
 
     return {
-      sourcecode: sourcecode,
+      sourcecode: newSourcecode,
       definition: definition
     }
   },
