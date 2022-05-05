@@ -385,7 +385,7 @@ var eaStudio = {
   },
   generateOnInitSourceCodes: function (sourceCodes) {
     var onInitMatch = sourceCodes.match(/OnInit/g)
-    if (onInitMatch.length > 0) {
+    if (onInitMatch != null && onInitMatch.length > 0) {
       var onInitSourceCodes =
       'EMSCRIPTEN_KEEPALIVE\n' +
       'void onInit (int uid) {\n' +
@@ -398,7 +398,7 @@ var eaStudio = {
   },
   generateOnDeinitSourceCodes: function (sourceCodes) {
     var onDeinitMatch = sourceCodes.match(/OnDeinit/g)
-    if (onDeinitMatch.length > 0) {
+    if (onDeinitMatch != null && onDeinitMatch.length > 0) {
       var onDeinitSourceCodes =
       'EMSCRIPTEN_KEEPALIVE\n' +
       'void onDeinit (int uid, const int reason) {\n' +

@@ -4268,7 +4268,7 @@ function importBuiltInIndicators () {
 function importBuiltInEAs () {
 	importBuiltInEA(
 		"plugin_for_mql",
-		"mql_plugin to make MQL-based programs runnable on Fintechee(v1.0)",
+		"mql_plugin to make MQL-based programs runnable on Fintechee(v1.01)",
 		[],
 		function (context) { // Init()
 			if (typeof window.pluginForMql != "undefined") {
@@ -5614,7 +5614,8 @@ function importBuiltInEAs () {
 									timeFrame: timeFrame,
 									chartId: getChartHandle(context, brokerName, accountId, symbolName, timeFrame),
 									symbol: getSymbolInfo(brokerName, accountId, symbolName),
-									objs: typeof localStorage.mqlObjs != "undefined" ? JSON.parse(localStorage.mqlObjs) : [],
+									objs: (typeof localStorage.mqlObjs != "undefined" ? JSON.parse(localStorage.mqlObjs) : []),
+									neuralNetworks: [],
 									lock: false,
 									convertTimeFrame: function () {
 										if (TIME_FRAME.M1 == timeFrame) {
