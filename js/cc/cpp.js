@@ -385,29 +385,21 @@ var eaStudio = {
   },
   generateOnInitSourceCodes: function (sourceCodes) {
     var onInitMatch = sourceCodes.match(/OnInit/g)
-    if (onInitMatch != null && onInitMatch.length > 0) {
-      var onInitSourceCodes =
-      'EMSCRIPTEN_KEEPALIVE\n' +
-      'void onInit (int uid) {\n' +
-      '  OnInit();\n' +
-      '}\n'
-      return onInitSourceCodes
-    } else {
-      return ""
-    }
+    var onInitSourceCodes =
+    'EMSCRIPTEN_KEEPALIVE\n' +
+    'void onInit (int uid) {\n' +
+    ((onInitMatch != null && onInitMatch.length > 0) ? '  OnInit();\n' : '') +
+    '}\n'
+    return onInitSourceCodes
   },
   generateOnDeinitSourceCodes: function (sourceCodes) {
     var onDeinitMatch = sourceCodes.match(/OnDeinit/g)
-    if (onDeinitMatch != null && onDeinitMatch.length > 0) {
-      var onDeinitSourceCodes =
-      'EMSCRIPTEN_KEEPALIVE\n' +
-      'void onDeinit (int uid, const int reason) {\n' +
-      '  OnDeinit(reason);\n' +
-      '}\n'
-      return onDeinitSourceCodes
-    } else {
-      return ""
-    }
+    var onDeinitSourceCodes =
+    'EMSCRIPTEN_KEEPALIVE\n' +
+    'void onDeinit (int uid, const int reason) {\n' +
+    ((onDeinitMatch != null && onDeinitMatch.length > 0) ? '  OnDeinit(reason);\n' : '') +
+    '}\n'
+    return onDeinitSourceCodes
   },
   convertTOHLCV: function (sourceCodes) {
     var newSourceCodes = sourceCodes
