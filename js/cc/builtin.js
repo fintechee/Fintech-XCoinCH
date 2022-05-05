@@ -8978,7 +8978,7 @@ function importBuiltInEAs () {
 		        }
 
 		        if (typeof window.oandaOrderAPI != "undefined") {
-		          window.oandaOrderAPI.trades.listOpen(that.oandaAccountId)
+		          window.oandaOrderAPI.trades.listOpen(this.oandaAccountId)
 		          .then(function (res) {
 		            that.renderTrades(res.trades)
 		          })
