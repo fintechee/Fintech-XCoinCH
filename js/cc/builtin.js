@@ -6745,6 +6745,33 @@ function importBuiltInEAs () {
 									printErrorMessage("Not supported the specific market information currently!")
 									return -1
 								}, "diii")
+								var jCreateNeuralNetwork = Module.addFunction(function (uid, name, nnJson) {
+									var obj = window.mqlEAsBuffer[uid + ""]
+								  var nnName = window.mqlEAs[obj.name].module.UTF8ToString(name)
+									var neuralNetworkJson = window.mqlEAs[obj.name].module.UTF8ToString(nnJson)
+									if (nnName != "" && neuralNetworkJson != "" && typeof obj.neuralNetworks[nnName] == "undefined") {
+										obj.neuralNetworks[nnName] = {
+											perceptron: synaptic.Network.fromJSON(neuralNetworkJson)
+										}
+										return 1
+									} else {
+										return 0
+									}
+								}, "iiii")
+								var jActivateNeuralNetwork = Module.addFunction(function (uid, name, input, inputNum) {
+									var obj = window.mqlEAsBuffer[uid + ""]
+								  var nnName = window.mqlEAs[obj.name].module.UTF8ToString(name)
+								  var nByteDouble = 8
+								  var data = new Array(inputNum)
+								  for (var i = 0; i < data.length; i++) {
+								    data[i] = window.mqlEAs[obj.name].module.getValue(input + i * nByteDouble, "double")
+								  }
+								  if (typeof obj.neuralNetworks[nnName] != "undefined" && typeof obj.neuralNetworks[nnName].perceptron != "undefined") {
+								    return obj.neuralNetworks[nnName].activate(input)[0]
+								  } else {
+										return 0.5
+									}
+								}, "diiii")
 
 						    window.mqlEAs[definition.name] = {
 									definition: definition,
@@ -6854,7 +6881,9 @@ function importBuiltInEAs () {
 									setjARROW_CHECKCreate: Module.cwrap("setjARROW_CHECKCreate", null, ["number"]),
 									setjARROW_CHECKDelete: Module.cwrap("setjARROW_CHECKDelete", null, ["number"]),
 									setjIsTesting: Module.cwrap("setjIsTesting", null, ["number"]),
-									setjMarketInfo: Module.cwrap("setjMarketInfo", null, ["number"])
+									setjMarketInfo: Module.cwrap("setjMarketInfo", null, ["number"]),
+									setjCreateNeuralNetwork: Module.cwrap("setjCreateNeuralNetwork", null, ["number"]),
+									setjActivateNeuralNetwork: Module.cwrap("setjActivateNeuralNetwork", null, ["number"])
 								}
 
 								window.mqlEAs[definition.name].setjPrint(jPrint)
@@ -6956,6 +6985,8 @@ function importBuiltInEAs () {
 								window.mqlEAs[definition.name].setjARROW_CHECKDelete(jARROW_CHECKDelete)
 								window.mqlEAs[definition.name].setjIsTesting(jIsTesting)
 								window.mqlEAs[definition.name].setjMarketInfo(jMarketInfo)
+								window.mqlEAs[definition.name].setjCreateNeuralNetwork(jCreateNeuralNetwork)
+								window.mqlEAs[definition.name].setjActivateNeuralNetwork(jActivateNeuralNetwork)
 
 								rs(definition)
 							}) // Module["onRuntimeInitialized"]
