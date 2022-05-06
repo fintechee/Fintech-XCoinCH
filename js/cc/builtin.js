@@ -4268,7 +4268,7 @@ function importBuiltInIndicators () {
 function importBuiltInEAs () {
 	importBuiltInEA(
 		"plugin_for_mql",
-		"mql_plugin to make MQL-based programs runnable on Fintechee(v1.01)",
+		"mql_plugin to make MQL-based programs runnable on Fintechee(v1.02)",
 		[],
 		function (context) { // Init()
 			if (typeof window.pluginForMql != "undefined") {
@@ -6751,7 +6751,7 @@ function importBuiltInEAs () {
 									var neuralNetworkJson = window.mqlEAs[obj.name].module.UTF8ToString(nnJson)
 									if (nnName != "" && neuralNetworkJson != "" && typeof obj.neuralNetworks[nnName] == "undefined") {
 										obj.neuralNetworks[nnName] = {
-											perceptron: synaptic.Network.fromJSON(neuralNetworkJson)
+											perceptron: synaptic.Network.fromJSON(JSON.parse(neuralNetworkJson))
 										}
 										return 1
 									} else {
