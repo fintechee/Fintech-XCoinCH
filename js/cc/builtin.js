@@ -1664,7 +1664,7 @@ function importBuiltInIndicators () {
     }],
 	WHERE_TO_RENDER.SEPARATE_WINDOW)
 
-	importBuiltInIndicator("alligator", "A series of Bill Williams' indicators(v1.01)", function (context) {
+	importBuiltInIndicator("alligator", "A series of Bill Williams' indicators(v1.02)", function (context) {
 		var dataInput = getDataInput(context, 0)
 		var dataOutputJaws = getDataOutput(context, "jaws")
 		var dataOutputTeeth = getDataOutput(context, "teeth")
@@ -1758,16 +1758,16 @@ function importBuiltInIndicators () {
 		name: "teeth",
 		visible: true,
 		renderType: RENDER_TYPE.LINE,
-		color: "#4EC2B4"
+		color: "#DE5029"
 	},{
 		name: "lips",
 		visible: true,
 		renderType: RENDER_TYPE.LINE,
-		color: "#DE5029"
+		color: "#4EC2B4"
 	}],
 	WHERE_TO_RENDER.CHART_WINDOW)
 
-	importBuiltInIndicatorOnArray("alligator_for_mql", "A series of Bill Williams' indicators for MQL(v1.0)", function (context) {
+	importBuiltInIndicatorOnArray("alligator_for_mql", "A series of Bill Williams' indicators for MQL(v1.01)", function (context) {
 		var appliedPrice = getIndiParameter(context, "appliedPrice")
 		appliedPrice = (appliedPrice < 0 || appliedPrice > 6) ? 0 : appliedPrice
 		var dataInput = getDataInput(context, appliedPrice)
@@ -1887,12 +1887,12 @@ function importBuiltInIndicators () {
 		name: "teeth",
 		visible: true,
 		renderType: RENDER_TYPE.LINE,
-		color: "#4EC2B4"
+		color: "#DE5029"
 	},{
 		name: "lips",
 		visible: true,
 		renderType: RENDER_TYPE.LINE,
-		color: "#DE5029"
+		color: "#4EC2B4"
 	}],
 	WHERE_TO_RENDER.CHART_WINDOW)
 
