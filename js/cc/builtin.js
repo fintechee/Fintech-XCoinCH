@@ -1896,7 +1896,7 @@ function importBuiltInIndicators () {
 	}],
 	WHERE_TO_RENDER.CHART_WINDOW)
 
-	importBuiltInIndicator("fractals", "Fractals(v1.01)", function (context) {
+	importBuiltInIndicator("fractals", "Fractals(v1.02)", function (context) {
 	    var dataInputHigh = getDataInput(context, 0)
 	    var dataInputLow = getDataInput(context, 1)
 	    var dataOutputUp = getDataOutput(context, "fractalsUp")
@@ -1930,30 +1930,6 @@ function importBuiltInIndicators () {
 	            bHFound = true
 	            dataOutputUp[ptr] = highest
 	        }
-	        if (!bHFound && ptr >= 3) {
-	            if (highest > dataInputHigh[ptr - 1] && highest > dataInputHigh[ptr - 2] && highest > dataInputHigh[ptr - 3] && highest > dataInputHigh[ptr + 1] && highest > dataInputHigh[ptr + 2]) {
-	                bHFound = true
-	                dataOutputUp[ptr] = highest
-	            }
-	        }
-	        if (!bHFound && ptr >= 4) {
-	            if (highest > dataInputHigh[ptr - 1] && highest > dataInputHigh[ptr - 2] && highest > dataInputHigh[ptr - 3] && highest > dataInputHigh[ptr - 4] && highest > dataInputHigh[ptr + 1] && highest > dataInputHigh[ptr + 2]) {
-	                bHFound = true
-	                dataOutputUp[ptr] = highest
-	            }
-	        }
-	        if (!bHFound && ptr >= 5) {
-	            if (highest > dataInputHigh[ptr - 1] && highest > dataInputHigh[ptr - 2] && highest > dataInputHigh[ptr - 3] && highest > dataInputHigh[ptr - 4] && highest > dataInputHigh[ptr - 5] && highest > dataInputHigh[ptr + 1] && highest > dataInputHigh[ptr + 2]) {
-	                bHFound = true
-	                dataOutputUp[ptr] = highest
-	            }
-	        }
-	        if (!bHFound && ptr >= 6) {
-	            if (highest > dataInputHigh[ptr - 1] && highest > dataInputHigh[ptr - 2] && highest > dataInputHigh[ptr - 3] && highest > dataInputHigh[ptr - 4] && highest > dataInputHigh[ptr - 5] && highest > dataInputHigh[ptr - 6] && highest > dataInputHigh[ptr + 1] && highest > dataInputHigh[ptr + 2]) {
-	                bHFound = true
-	                dataOutputUp[ptr] = highest
-	            }
-	        }
 
 	        bLFound = false
 	        lowest = dataInputLow[ptr]
@@ -1961,30 +1937,6 @@ function importBuiltInIndicators () {
 	        if (lowest < dataInputLow[ptr - 1] && lowest < dataInputLow[ptr - 2] && lowest < dataInputLow[ptr + 1] && lowest < dataInputLow[ptr + 2]) {
 	            bLFound = true
 	            dataOutputDown[ptr] = lowest
-	        }
-	        if (!bLFound && ptr >= 3) {
-	            if (lowest < dataInputLow[ptr - 1] && lowest < dataInputLow[ptr - 2] && lowest < dataInputLow[ptr - 3] && lowest < dataInputLow[ptr + 1] && lowest < dataInputLow[ptr + 2]) {
-	                bLFound = true
-	                dataOutputDown[ptr] = lowest
-	            }
-	        }
-	        if (!bLFound && ptr >= 4) {
-	            if (lowest < dataInputLow[ptr - 1] && lowest < dataInputLow[ptr - 2] && lowest < dataInputLow[ptr - 3] && lowest < dataInputLow[ptr - 4] && lowest < dataInputLow[ptr + 1] && lowest < dataInputLow[ptr + 2]) {
-	                bLFound = true
-	                dataOutputDown[ptr] = lowest
-	            }
-	        }
-	        if (!bLFound && ptr >= 5) {
-	            if (lowest < dataInputLow[ptr - 1] && lowest < dataInputLow[ptr - 2] && lowest < dataInputLow[ptr - 3] && lowest < dataInputLow[ptr - 4] && lowest < dataInputLow[ptr - 5] && lowest < dataInputLow[ptr + 1] && lowest < dataInputLow[ptr + 2]) {
-	                bLFound = true
-	                dataOutputDown[ptr] = lowest
-	            }
-	        }
-	        if (!bLFound && ptr >= 6) {
-	            if (lowest < dataInputLow[ptr - 1] && lowest < dataInputLow[ptr - 2] && lowest < dataInputLow[ptr - 3] && lowest < dataInputLow[ptr - 4] && lowest < dataInputLow[ptr - 5] && lowest < dataInputLow[ptr - 6] && lowest < dataInputLow[ptr + 1] && lowest < dataInputLow[ptr + 2]) {
-	                bLFound = true
-	                dataOutputDown[ptr] = lowest
-	            }
 	        }
 
 	        ptr++
@@ -9127,6 +9079,39 @@ function importBuiltInEAs () {
 		      }
 		    }
 		  }
+		}
+	)
+
+	importBuiltInEA(
+		"historical_data_viewer",
+		"An EA only used for watching historical data in the backtesting mode(v1.0)",
+		[{ // parameters
+			name: "symbolName",
+	    value: "EUR/USD",
+	    required: true,
+	    type: PARAMETER_TYPE.STRING,
+	    range: null
+	  },{
+			name: "timeFrame",
+	    value: TIME_FRAME.H1,
+	    required: true,
+	    type: PARAMETER_TYPE.STRING,
+	    range: null
+		}],
+		function (context) { // Init()
+			var account = getAccount(context, 0)
+			var brokerName = getBrokerNameOfAccount(account)
+			var accountId = getAccountIdOfAccount(account)
+			var symbolName = getEAParameter(context, "symbolName")
+			var timeFrame = getEAParameter(context, "timeFrame")
+
+			context.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, timeFrame)
+		},
+		function (context) { // Deinit()
+		},
+		function (context) { // OnTick()
+		},
+		function (context) { // OnTransaction()
 		}
 	)
 }
