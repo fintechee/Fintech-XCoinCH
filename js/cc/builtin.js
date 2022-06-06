@@ -7378,7 +7378,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 		"sample_using_sma",
-		"A test EA based on sma(v1.03)",
+		"A test EA based on sma(v1.04)",
 		[{ // parameters
 			name: "period",
 			value: 20,
@@ -7393,24 +7393,21 @@ function importBuiltInEAs () {
 			var symbolName = "EUR/USD"
 
 			getQuotes (context, brokerName, accountId, symbolName)
-			window.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1)
+			context.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1)
 			var period = getEAParameter(context, "period")
-			window.indiHandle = getIndicatorHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1, "sma", [{
+			context.indiHandle = getIndicatorHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1, "sma", [{
 				name: "period",
 				value: period
 			}])
 		},
 		function (context) { // Deinit()
-			delete window.currTime
-			delete window.chartHandle
-			delete window.indiHandle
 		},
 		function (context) { // OnTick()
-			var arrTime = getData(context, window.chartHandle, DATA_NAME.TIME)
-			if (typeof window.currTime == "undefined") {
-				window.currTime = arrTime[arrTime.length - 1]
-			} else if (window.currTime != arrTime[arrTime.length - 1]) {
-				window.currTime = arrTime[arrTime.length - 1]
+			var arrTime = getData(context, context.chartHandle, DATA_NAME.TIME)
+			if (typeof context.currTime == "undefined") {
+				context.currTime = arrTime[arrTime.length - 1]
+			} else if (context.currTime != arrTime[arrTime.length - 1]) {
+				context.currTime = arrTime[arrTime.length - 1]
 			} else {
 				return
 			}
@@ -7420,8 +7417,8 @@ function importBuiltInEAs () {
 			var accountId = getAccountIdOfAccount(account)
 			var symbolName = "EUR/USD"
 
-			var arrClose = getData(context, window.chartHandle, DATA_NAME.CLOSE)
-			var arrSma = getData(context, window.indiHandle, "sma")
+			var arrClose = getData(context, context.chartHandle, DATA_NAME.CLOSE)
+			var arrSma = getData(context, context.indiHandle, "sma")
 
 			var ask = null
 			var bid = null
@@ -7448,7 +7445,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 		"sample_trading_arbitrage",
-		"Two accounts signed up on the different servers are required to trade arbitrage. Additionally please make sure that you have signed in to both accounts and logged out from the accounts in investor mode.(v1.03)",
+		"Two accounts signed up on the different servers are required to trade arbitrage. Additionally please make sure that you have signed in to both accounts and logged out from the accounts in investor mode.(v1.04)",
 		[],// parameters
 		function (context) { // Init()
 			var account1 = getAccount(context, 0)
@@ -7468,26 +7465,23 @@ function importBuiltInEAs () {
 			getQuotes (context, acc1.brokerName, acc1.accountId, acc1.symbolName)
 			getQuotes (context, acc2.brokerName, acc2.accountId, acc2.symbolName)
 
-			window.acc1 = acc1
-			window.acc2 = acc2
+			context.acc1 = acc1
+			context.acc2 = acc2
 		},
 		function (context) { // Deinit()
-			delete window.currTime
-			delete window.acc1
-			delete window.acc2
 		},
 		function (context) { // OnTick()
 			var currTime = new Date().getTime()
-			if (typeof window.currTime == "undefined") {
-				window.currTime = currTime
-			} else if (window.currTime <= currTime - 1000) {
-				window.currTime = currTime
+			if (typeof context.currTime == "undefined") {
+				context.currTime = currTime
+			} else if (context.currTime <= currTime - 1000) {
+				context.currTime = currTime
 			} else {
 				return
 			}
 
-			var acc1 = window.acc1
-			var acc2 = window.acc2
+			var acc1 = context.acc1
+			var acc2 = context.acc2
 
 			var ask1 = null
 			var ask2 = null
@@ -7575,7 +7569,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 		"sample_training_neuron_model",
-		"A test EA to train neuron model(v1.02)",
+		"A test EA to train neuron model(v1.03)",
 		[{ // parameters
 			name: "period",
 			value: 20,
@@ -7607,9 +7601,9 @@ function importBuiltInEAs () {
 			var accountId = getAccountIdOfAccount(account)
 			var symbolName = "EUR/USD"
 
-			window.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1)
+			context.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1)
 			var period = getEAParameter(context, "period")
-			window.indiHandle = getIndicatorHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1, "rsi", [{
+			context.indiHandle = getIndicatorHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1, "rsi", [{
 				name: "period",
 				value: period
 			}])
@@ -7618,9 +7612,9 @@ function importBuiltInEAs () {
 			var period = getEAParameter(context, "period")
 			var inputNum = getEAParameter(context, "inputNum")
 			var hiddenNum = getEAParameter(context, "hiddenNum")
-			var arrOpen = getData(context, window.chartHandle, DATA_NAME.OPEN)
-			var arrClose = getData(context, window.chartHandle, DATA_NAME.CLOSE)
-			var arrRsi = getData(context, window.indiHandle, "rsi")
+			var arrOpen = getData(context, context.chartHandle, DATA_NAME.OPEN)
+			var arrClose = getData(context, context.chartHandle, DATA_NAME.CLOSE)
+			var arrRsi = getData(context, context.indiHandle, "rsi")
 
 			if (arrRsi.length <= period + 1) return
 			if (inputNum + period - 1 > arrRsi.length) throw new Error("No enough data.")
@@ -7682,9 +7676,6 @@ function importBuiltInEAs () {
 			printMessage(longCount + ", " + shortCount)
 			printMessage(JSON.stringify(trainingSet))
 			printMessage(JSON.stringify(myPerceptron.toJSON()))
-
-			delete window.chartHandle
-			delete window.indiHandle
 		},
 		function (context) { // OnTick()
 		}
@@ -7692,7 +7683,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 		"sample_run_neuron_model",
-		"A test EA to run neuron model(v1.03)",
+		"A test EA to run neuron model(v1.04)",
 		[{ // parameters
 			name: "period",
 			value: 20,
@@ -7725,7 +7716,7 @@ function importBuiltInEAs () {
 
 			var reservedZone = JSON.parse(localStorage.reservedZone)
 			if (typeof reservedZone.sample_training_neuron_model == "undefined") return
-			window.myPerceptron = synaptic.Network.fromJSON(reservedZone.sample_training_neuron_model)
+			context.myPerceptron = synaptic.Network.fromJSON(reservedZone.sample_training_neuron_model)
 
 			var account = getAccount(context, 0)
 			var brokerName = getBrokerNameOfAccount(account)
@@ -7733,25 +7724,21 @@ function importBuiltInEAs () {
 			var symbolName = "EUR/USD"
 
 			getQuotes (context, brokerName, accountId, symbolName)
-			window.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1)
+			context.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1)
 			var period = getEAParameter(context, "period")
-			window.indiHandle = getIndicatorHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1, "rsi", [{
+			context.indiHandle = getIndicatorHandle(context, brokerName, accountId, symbolName, TIME_FRAME.M1, "rsi", [{
 				name: "period",
 				value: period
 			}])
 		},
 		function (context) { // Deinit()
-			delete window.currTime
-			delete window.chartHandle
-			delete window.indiHandle
-			delete window.myPerceptron
 		},
 		function (context) { // OnTick()
-			var arrTime = getData(context, window.chartHandle, DATA_NAME.TIME)
-			if (typeof window.currTime == "undefined") {
-				window.currTime = arrTime[arrTime.length - 1]
-			} else if (window.currTime != arrTime[arrTime.length - 1]) {
-				window.currTime = arrTime[arrTime.length - 1]
+			var arrTime = getData(context, context.chartHandle, DATA_NAME.TIME)
+			if (typeof context.currTime == "undefined") {
+				context.currTime = arrTime[arrTime.length - 1]
+			} else if (context.currTime != arrTime[arrTime.length - 1]) {
+				context.currTime = arrTime[arrTime.length - 1]
 			} else {
 				return
 			}
@@ -7765,7 +7752,7 @@ function importBuiltInEAs () {
 			var inputNum = getEAParameter(context, "inputNum")
 			var threshold = getEAParameter(context, "threshold")
 			var takeProfit = getEAParameter(context, "takeProfit")
-			var arrRsi = getData(context, window.indiHandle, "rsi")
+			var arrRsi = getData(context, context.indiHandle, "rsi")
 
 			if (inputNum + period - 1 > arrRsi.length) throw new Error("No enough data.")
 
@@ -7775,7 +7762,7 @@ function importBuiltInEAs () {
 				input.push(arrRsi[i] / 100)
 			}
 
-			var result = window.myPerceptron.activate(input)[0]
+			var result = context.myPerceptron.activate(input)[0]
 			printMessage(result)
 
 			var ask = null
@@ -8116,525 +8103,8 @@ function importBuiltInEAs () {
 	)
 
 	importBuiltInEA(
-		"decentralized_exchange_eos_propose",
-		"A decentralized exchange plugin to propose for exchanging digital assets via EOS platform(v1.01)",
-		[{ // parameters
-			name: "proposalName",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "asset",
-			value: "eosio.token",
-			required: true,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "proposer",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "exchange",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "escrow",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "amount",
-			value: 0,
-			required: true,
-			type: PARAMETER_TYPE.INTEGER,
-			range: [0, null]
-		}, {
-			name: "currency",
-			value: "SYS",
-			required: true,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "memo",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}],
-		function (context) { // Init()
-			var proposalName = getEAParameter(context, "proposalName")
-			var asset = getEAParameter(context, "asset")
-			var proposer = getEAParameter(context, "proposer")
-			var exchange = getEAParameter(context, "exchange")
-			var escrow = getEAParameter(context, "escrow")
-			var amount = getEAParameter(context, "amount")
-			var currency = getEAParameter(context, "currency")
-			var memo = getEAParameter(context, "memo")
-
-			if (proposalName == null || proposalName == "") {
-				popupErrorMessage("The proposal name should not be empty.")
-				return
-			}
-			if (proposer == null || proposer == "") {
-				popupErrorMessage("The proposer should not be empty.")
-				return
-			}
-			if (exchange == null || exchange == "") {
-				popupErrorMessage("The exchange should not be empty.")
-				return
-			}
-			if (escrow == null || escrow == "") {
-				popupErrorMessage("The escrow account should not be empty.")
-				return
-			}
-			if (amount <= 0) {
-				popupErrorMessage("The amount should be greater than zero.")
-				return
-			}
-			if (memo == null) {
-				memo = ""
-			}
-
-			const actions = [{
-				account: asset,
-				name: "transfer",
-				authorization: [{
-					actor: escrow,
-					permission: "active",
-				}],
-				data: {
-					from: escrow,
-					to: exchange,
-					quantity: Math.floor(amount) + ".0000 " + currency,
-					memo: memo
-				}
-			}];
-
-			(async () => {
-				try {
-				  const serialized_actions = await window.eos_api.serializeActions(actions)
-
-					const proposeInput = {
-						proposer: proposer,
-						proposal_name: proposalName,
-						// We make the threshold be 1(not 2) to simplify the process, because multi-sig requires that all approvers are online, which is not that realistic.
-						requested: [{
-							actor: exchange,
-							permission: "active"
-						}],
-						trx: {
-							expiration: new Date(new Date().getTime() + 3600000).toISOString().slice(0,19),
-							ref_block_num: 0,
-							ref_block_prefix: 0,
-							max_net_usage_words: 0,
-							max_cpu_usage_ms: 0,
-							delay_sec: 0,
-							context_free_actions: [],
-							actions: serialized_actions,
-							transaction_extensions: []
-						}
-					}
-
-					const result = await window.eos_api.transact({
-						actions: [{
-							account: "eosio.msig",
-							name: "propose",
-							authorization: [{
-								actor: proposer,
-								permission: "active"
-							}],
-							data: proposeInput
-						}]
-					}, {
-						blocksBehind: 3,
-						expireSeconds: 30,
-						broadcast: true,
-						sign: true
-					})
-
-					popupMessage("Proposed!\n\n" + JSON.stringify(result, null, 2))
-				} catch (e) {
-					popupErrorMessage("Caught exception: " + e)
-
-	        if (e instanceof window.eosjs_jsonrpc.RpcError) {
-						popupErrorMessage(JSON.stringify(e.json, null, 2))
-					}
-	      }
-			})()
-		},
-		function (context) { // Deinit()
-		},
-		function (context) { // OnTick()
-		}
-	)
-
-	importBuiltInEA(
-		"decentralized_exchange_eos_approve",
-		"A decentralized exchange plugin to approve a proposal for exchanging digital assets via EOS platform(v1.0)",
-		[{ // parameters
-			name: "proposalName",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "proposer",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "approver",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}],
-		function (context) { // Init()
-			var proposalName = getEAParameter(context, "proposalName")
-			var proposer = getEAParameter(context, "proposer")
-			var approver = getEAParameter(context, "approver")
-
-			if (proposalName == null || proposalName == "") {
-				popupErrorMessage("The proposal name should not be empty.")
-				return
-			}
-			if (proposer == null || proposer == "") {
-				popupErrorMessage("The proposer should not be empty.")
-				return
-			}
-			if (approver == null || approver == "") {
-				popupErrorMessage("The approver should not be empty.")
-				return
-			}
-
-			(async () => {
-				try {
-					const result = await window.eos_api.transact({
-						actions: [{
-							account: "eosio.msig",
-							name: "approve",
-							authorization: [{
-								actor: approver,
-								permission: "active"
-							}],
-							data: {
-								proposer: proposer,
-								proposal_name: proposalName,
-								level: {
-									actor: approver,
-									permission: "active",
-								}
-							}
-						}]
-					}, {
-						blocksBehind: 3,
-						expireSeconds: 30,
-						broadcast: true,
-						sign: true
-					})
-
-					popupMessage("Approved!\n\n" + JSON.stringify(result, null, 2))
-				} catch (e) {
-					popupErrorMessage("Caught exception: " + e)
-
-	        if (e instanceof window.eosjs_jsonrpc.RpcError) {
-						popupErrorMessage(JSON.stringify(e.json, null, 2))
-					}
-	      }
-			})()
-		},
-		function (context) { // Deinit()
-		},
-		function (context) { // OnTick()
-		}
-	)
-
-	importBuiltInEA(
-		"decentralized_exchange_eos_unapprove",
-		"A decentralized exchange plugin to unapprove a proposal for exchanging digital assets via EOS platform(v1.0)",
-		[{ // parameters
-			name: "proposalName",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "proposer",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "actor",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}],
-		function (context) { // Init()
-			var proposalName = getEAParameter(context, "proposalName")
-			var proposer = getEAParameter(context, "proposer")
-			var actor = getEAParameter(context, "actor")
-
-			if (proposalName == null || proposalName == "") {
-				popupErrorMessage("The proposal name should not be empty.")
-				return
-			}
-			if (proposer == null || proposer == "") {
-				popupErrorMessage("The proposer should not be empty.")
-				return
-			}
-			if (actor == null || actor == "") {
-				popupErrorMessage("The actor should not be empty.")
-				return
-			}
-
-			(async () => {
-				try {
-					const result = await window.eos_api.transact({
-						actions: [{
-							account: "eosio.msig",
-							name: "unapprove",
-							authorization: [{
-								actor: actor,
-								permission: "active"
-							}],
-							data: {
-								proposer: proposer,
-								proposal_name: proposalName,
-								level: {
-									actor: actor,
-									permission: "active",
-								}
-							}
-						}]
-					}, {
-						blocksBehind: 3,
-						expireSeconds: 30,
-						broadcast: true,
-						sign: true
-					})
-
-					popupMessage("Unapproved!\n\n" + JSON.stringify(result, null, 2))
-				} catch (e) {
-					popupErrorMessage("Caught exception: " + e)
-
-	        if (e instanceof window.eosjs_jsonrpc.RpcError) {
-						popupErrorMessage(JSON.stringify(e.json, null, 2))
-					}
-	      }
-			})()
-		},
-		function (context) { // Deinit()
-		},
-		function (context) { // OnTick()
-		}
-	)
-
-	importBuiltInEA(
-		"decentralized_exchange_eos_cancel",
-		"A decentralized exchange plugin to cancel a proposal for exchanging digital assets via EOS platform(v1.0)",
-		[{ // parameters
-			name: "proposalName",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "proposer",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "canceler",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}],
-		function (context) { // Init()
-			var proposalName = getEAParameter(context, "proposalName")
-			var proposer = getEAParameter(context, "proposer")
-			var canceler = getEAParameter(context, "canceler")
-
-			if (proposalName == null || proposalName == "") {
-				popupErrorMessage("The proposal name should not be empty.")
-				return
-			}
-			if (proposer == null || proposer == "") {
-				popupErrorMessage("The proposer should not be empty.")
-				return
-			}
-			if (canceler == null || canceler == "") {
-				popupErrorMessage("The canceler should not be empty.")
-				return
-			}
-
-			(async () => {
-				try {
-					const result = await window.eos_api.transact({
-						actions: [{
-							account: "eosio.msig",
-							name: "cancel",
-							authorization: [{
-								actor: canceler,
-								permission: "active"
-							}],
-							data: {
-								proposer: proposer,
-								proposal_name: proposalName,
-								canceler: canceler
-							}
-						}]
-					}, {
-						blocksBehind: 3,
-						expireSeconds: 30,
-						broadcast: true,
-						sign: true
-					})
-
-					popupMessage("Canceled!\n\n" + JSON.stringify(result, null, 2))
-				} catch (e) {
-					popupErrorMessage("Caught exception: " + e)
-
-	        if (e instanceof window.eosjs_jsonrpc.RpcError) {
-						popupErrorMessage(JSON.stringify(e.json, null, 2))
-					}
-	      }
-			})()
-		},
-		function (context) { // Deinit()
-		},
-		function (context) { // OnTick()
-		}
-	)
-
-	importBuiltInEA(
-		"decentralized_exchange_eos_exec",
-		"A decentralized exchange plugin to execute a transaction of exchanging digital assets via EOS platform(v1.0)",
-		[{ // parameters
-			name: "proposalName",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "proposer",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}, {
-			name: "executor",
-			value: "",
-			required: false,
-			type: PARAMETER_TYPE.STRING,
-			range: null
-		}],
-		function (context) { // Init()
-			var proposalName = getEAParameter(context, "proposalName")
-			var proposer = getEAParameter(context, "proposer")
-			var executor = getEAParameter(context, "executor")
-
-			if (proposalName == null || proposalName == "") {
-				popupErrorMessage("The proposal name should not be empty.")
-				return
-			}
-			if (proposer == null || proposer == "") {
-				popupErrorMessage("The proposer should not be empty.")
-				return
-			}
-			if (executor == null || executor == "") {
-				popupErrorMessage("The executor should not be empty.")
-				return
-			}
-
-			(async () => {
-				try {
-					const result = await window.eos_api.transact({
-						actions: [{
-							account: "eosio.msig",
-							name: "exec",
-							authorization: [{
-								actor: executor,
-								permission: "active"
-							}],
-							data: {
-								proposer: proposer,
-								proposal_name: proposalName,
-								executer: executor
-							}
-						}]
-					}, {
-						blocksBehind: 3,
-						expireSeconds: 30,
-						broadcast: true,
-						sign: true
-					})
-
-					popupMessage("Transaction pushed!\n\n" + JSON.stringify(result, null, 2))
-				} catch (e) {
-					popupErrorMessage("Caught exception: " + e)
-
-	        if (e instanceof window.eosjs_jsonrpc.RpcError) {
-						popupErrorMessage(JSON.stringify(e.json, null, 2))
-					}
-	      }
-			})()
-		},
-		function (context) { // Deinit()
-		},
-		function (context) { // OnTick()
-		}
-	)
-
-	importBuiltInEA(
-	  "test_loading_tensorflow",
-	  "A test EA to load Tensorflow2.0 (v1.0)",
-	  [{ // parameters
-	    name: "url",
-	    value: "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js",
-	    required: true,
-	    type: PARAMETER_TYPE.STRING,
-	    range: null
-	  }],
-	  function (context) { // Init()
-	    if (typeof tf == "undefined") {
-	      var url = getEAParameter(context, "url")
-
-	      var tags = document.getElementsByTagName("script")
-	      for (var i = tags.length - 1; i >= 0; i--) {
-	        if (tags[i] && tags[i].getAttribute("src") != null && tags[i].getAttribute("src") == url) {
-	          tags[i].parentNode.removeChild(tags[i])
-	        }
-	      }
-
-	      var script1 = document.createElement("script")
-	      document.body.appendChild(script1)
-	      script1.onload = function () {
-	      }
-	      script1.onerror = function () {}
-	      script1.async = true
-	      script1.src = url
-	    }
-	  },
-	  function (context) { // Deinit()
-	  },
-	  function (context) { // OnTick()
-	  }
-	)
-
-	importBuiltInEA(
-	  "test_xor_powered_by_tensorflow",
-	  "A test EA to train XOR by using Tensorflow2.0 (v1.0)",
+	  "plugin_to_load_tensorflow",
+	  "A plugin to load Tensorflow(v1.0)",
 	  [{ // parameters
 	    name: "tfjs",
 	    value: "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js",
@@ -8647,23 +8117,15 @@ function importBuiltInEAs () {
 	    required: true,
 	    type: PARAMETER_TYPE.STRING,
 	    range: null
-	  },{
-	    name: "epochs",
-	    value: 10000,
-	    required: true,
-	    type: PARAMETER_TYPE.INTEGER,
-	    range: [1, 1000000]
 	  }],
 	  function (context) { // Init()
-	    window.epochs = getEAParameter(context, "epochs")
-
 	    if (typeof tf == "undefined") {
 	      var tfjs = getEAParameter(context, "tfjs")
 	      var tfvisjs = getEAParameter(context, "tfvisjs")
 
 	      var tags = document.getElementsByTagName("script")
 	      for (var i = tags.length - 1; i >= 0; i--) {
-	        if (tags[i] && tags[i].getAttribute("src") != null && tags[i].getAttribute("src") == tfjs && tags[i].getAttribute("src") == tfvisjs) {
+	        if (tags[i] && tags[i].getAttribute("src") != null && (tags[i].getAttribute("src") == tfjs || tags[i].getAttribute("src") == tfvisjs)) {
 	          tags[i].parentNode.removeChild(tags[i])
 	        }
 	      }
@@ -8674,100 +8136,823 @@ function importBuiltInEAs () {
 	        var script2 = document.createElement("script")
 		      document.body.appendChild(script2)
 		      script2.onload = function () {
-	          window.buildCnn = function () {
+	          window.buildCnn = function (featuresNum, kernelSize, filters, strides) {
 	            return new Promise(function (resolve, reject) {
-	              const model = tf.sequential()
+	              var tfModel = window.tf.sequential()
 
-	              model.add(tf.layers.inputLayer({
-	                inputShape: [2, 1, 1],
-	              }))
-
-	              model.add(tf.layers.conv2d({
-	                inputShape: [2, 1, 1],
-	                kernelSize: 1,
-	                filters: 2,
-	                strides: 1,
+	              tfModel.add(window.tf.layers.conv1d({
+	                inputShape: [featuresNum, 1],
+	                kernelSize: kernelSize,
+	                filters: filters,
+	                strides: strides,
 	                use_bias: true,
 	                activation: "relu",
 	                kernelInitializer: "VarianceScaling"
 	              }))
 
-	              model.add(tf.layers.maxPooling2d({
-	                poolSize: [1, 1],
-	                strides: [1, 1]
+	              tfModel.add(window.tf.layers.flatten({
 	              }))
 
-	              model.add(tf.layers.flatten({
-	              }))
-
-	              model.add(tf.layers.dense({
+	              tfModel.add(window.tf.layers.dense({
 	                units: 2,
 	                kernelInitializer: "VarianceScaling",
 	                activation: "softmax"
 	              }))
 
-	              return resolve(model)
+	              return resolve(tfModel)
 	            })
 	          }
 
-	          window.trainCnn = function (model, trainingSet) {
-	            printMessage("Summary: ")
-	            model.summary()
+	          window.trainCnn = function (tfModel, trainingSet, epochs, batchSize, bMonitor) {
+	            if (bMonitor) {
+	              printMessage("Summary: ")
+	              tfModel.summary()
+	            }
 
 	            return new Promise(function (resolve, reject) {
 	              try {
-	                model.compile({
-	                  optimizer: tf.train.adam(),
+	                tfModel.compile({
+	                  optimizer: window.tf.train.adam(),
 	                  loss: "categoricalCrossentropy",
 	                  metrics: ["accuracy"]
 	                })
 
-	                model.fit(trainingSet.input, trainingSet.output, {
-	                  epochs: window.epochs,
-	                  shuffle: true,
-	                  callbacks: tfvis.show.fitCallbacks({
-	                    name: "Model Training", tab: "Model", styles: { height: "500px" }
-	                  }, ["loss", "val_loss", "acc", "val_acc"])
-	                }).then(function (result) {
-	                  printMessage("Loss after last Epoch (" + result.epoch.length + ") is: " + result.history.loss[result.epoch.length-1])
-	                  resolve(model)
-	                })
+	                if (bMonitor) {
+	                  tfModel.fit(trainingSet.input, trainingSet.output, {
+	                    batchSize: batchSize,
+	                    epochs: epochs,
+	                    shuffle: true,
+	                    callbacks: tfvis.show.fitCallbacks({
+	                      name: "Model Training", tab: "Model", styles: { height: "500px" }
+	                    }, ["loss", "val_loss", "acc", "val_acc"])
+	                  }).then(function (result) {
+	                    printMessage("Loss after last Epoch (" + result.epoch.length + ") is: " + result.history.loss[result.epoch.length-1])
+	                    resolve()
+	                  })
+
+	                  $("#tfjs-visor-container").show()
+	                } else {
+	                  tfModel.fit(trainingSet.input, trainingSet.output, {
+	                    batchSize: batchSize,
+	                    epochs: epochs,
+	                    shuffle: true
+	                  }).then(function (result) {
+	                    printMessage("Loss after last Epoch (" + result.epoch.length + ") is: " + result.history.loss[result.epoch.length-1])
+	                    resolve()
+	                  })
+	                }
 	              } catch (ex) {
 	                reject(ex)
 	              }
 	            })
 	          }
 
-	          window.doCnn = function () {
-	            window.buildCnn().then(function (model) {
-	              var trainingSet = {
-	                input: tf.tensor4d([0, 0, 1, 1, 1, 0, 0, 1], [4, 2, 1, 1]),
-	                output: tf.tensor2d([0, 1, 0, 1, 1, 0, 1, 0], [4, 2])
-	              }
-
-	              window.trainCnn(model, trainingSet).then(function (model) {
-	                printMessage(model.predict(trainingSet.input))
-	              })
-	            })
-	          }
-
-	          window.doCnn()
+	          popupMessage("Tensorflow has been loaded successfully!")
 	        }
-	        script2.onerror = function () {}
+	        script2.onerror = function () {
+	          popupErrorMessage("Failed to load Tensorflow! Please run this plugin again.")
+	        }
 		      script2.async = true
 		      script2.src = tfvisjs
 	      }
-	      script1.onerror = function () {}
+	      script1.onerror = function () {
+	        popupErrorMessage("Failed to load Tensorflow! Please run this plugin again.")
+	      }
 	      script1.async = true
 	      script1.src = tfjs
-	    } else {
-	      window.doCnn()
 	    }
 	  },
 	  function (context) { // Deinit()
-	    delete window.epochs
 	  },
 	  function (context) { // OnTick()
+	  }
+	)
+
+	importBuiltInEA(
+	"sample_training_cnn_model",
+	"An EA sample to train neuron model(v1.0)",
+	[{
+		name: "version",
+		value: 1,
+		required: true,
+		type: PARAMETER_TYPE.NUMBER,
+		range: [0, 100],
+		step: null
+	}, {
+		name: "symbolName",
+		value: "EUR/USD",
+		required: true,
+		type: PARAMETER_TYPE.STRING,
+		range: null,
+		step: null
+	}, {
+		name: "timeFrame",
+		value: "H1",
+		required: true,
+		type: PARAMETER_TYPE.STRING,
+		range: null,
+		step: null
+	}, {
+		name: "inputNum",
+		value: 10,
+		required: true,
+		type: PARAMETER_TYPE.INTEGER,
+		range: [1, 100],
+		step: null
+	}, {
+		name: "hiddenNum",
+		value: 20,
+		required: true,
+		type: PARAMETER_TYPE.INTEGER,
+		range: [1, 100],
+		step: null
+	}, {
+		name: "predictNum",
+		value: 10,
+		required: true,
+		type: PARAMETER_TYPE.INTEGER,
+		range: [1, 100],
+		step: null
+	}, {
+		name: "iterations",
+		value: 10000,
+		required: true,
+		type: PARAMETER_TYPE.INTEGER,
+		range: [1, 1000000],
+		step: null
+	}, {
+		name: "batchSize",
+		value: 512,
+		required: true,
+		type: PARAMETER_TYPE.INTEGER,
+		range: [1, 100000],
+		step: null
+	}, {
+		name: "bContinue",
+		value: false,
+		required: true,
+		type: PARAMETER_TYPE.BOOLEAN,
+		range: null,
+		step: null
+	}, {
+		name: "bTest",
+		value: false,
+		required: true,
+		type: PARAMETER_TYPE.BOOLEAN,
+		range: null,
+		step: null
+	}, {
+		name: "bMem",
+		value: false,
+		required: true,
+		type: PARAMETER_TYPE.BOOLEAN,
+		range: null,
+		step: null
+	}, {
+		name: "bMonitor",
+		value: false,
+		required: true,
+		type: PARAMETER_TYPE.BOOLEAN,
+		range: null,
+		step: null
+	}],
+	function (context) { // Init()
+	    if (typeof window.tf == "undefined") {
+	      printErrorMessage("Please run the plugin to load Tensorflow first.")
+	      return
+	    }
+
+	    var version = getEAParameter(context, "version")
+			var symbolName = getEAParameter(context, "symbolName")
+	    var timeFrame = getEAParameter(context, "timeFrame")
+	    var iterations = getEAParameter(context, "iterations")
+	    var inputNum = getEAParameter(context, "inputNum")
+	    var hiddenNum = getEAParameter(context, "hiddenNum")
+	    var predictNum = getEAParameter(context, "predictNum")
+	    var bContinue = getEAParameter(context, "bContinue")
+			var bTest = getEAParameter(context, "bTest")
+	    var bMem = getEAParameter(context, "bMem")
+	    var bMonitor = getEAParameter(context, "bMonitor")
+	    var batchSize = getEAParameter(context, "batchSize")
+			var tfModelName = "Fintechee " + symbolName.replace("/", "") + "-" + timeFrame + "-" + inputNum + "-" + hiddenNum + "-" + predictNum + "-" + version
+
+	    context.buildMyCnn = function () {
+	      window.buildCnn(inputNum, inputNum, hiddenNum, inputNum).then(function (tfModel) {
+	        window.tfModel = tfModel
+	      })
+	    }
+
+	    context.trainMyCnn = function () {
+	      printMessage("Start training!")
+
+	      window.trainCnn(window.tfModel, window.tensorSet, iterations, batchSize, bMonitor).then(function () {
+	        printMessage("Training is done!");
+
+	        (async () => {
+	          await window.tfModel.save("localstorage://" + tfModelName)
+	        })()
+
+	        var longCnt = 0
+	        var shortCnt = 0
+	        var longWinCnt = 0
+	        var shortWinCnt = 0
+	        var levelCnt = []
+	        var levelWinCnt = []
+	        var levelProfit = []
+	        var levelLoss = []
+	        var longProfit = 0
+	        var shortProfit = 0
+	        var longLoss = 0
+	        var shortLoss = 0
+
+	        for (var i = 0; i < window.tensorSet.lsCount; i++) {
+	          var input = []
+
+	          for (var j = 0; j < inputNum; j++) {
+	            input.push(window.tensorSet.trainingSetI[i * inputNum + j])
+	          }
+
+	          var output = window.tensorSet.trainingSetO[i * 2]
+
+	          var profit = window.tensorSet.trainingSetP[i]
+
+	          var result = window.tfModel.predict(tf.tensor3d(input, [1, inputNum, 1])).arraySync()[0][0]
+	          var resWin = ((result >= 0.5 ? 1 : 0) == output ? true : false)
+
+	          var idx = Math.floor(Math.floor(result * 100) / Math.floor(100 / 10)) * Math.floor(100 / 10)
+
+	          if (typeof levelCnt[idx] == "undefined") {
+	            levelCnt[idx] = 0
+	            levelWinCnt[idx] = 0
+	            levelProfit[idx] = 0
+	            levelLoss[idx] = 0
+	          }
+
+	          levelCnt[idx]++
+
+	          if (resWin) {
+	            if (output == 1) {
+	              longCnt++
+	              longWinCnt++
+	              longProfit += profit
+	            } else {
+	              shortCnt++
+	              shortWinCnt++
+	              shortProfit += profit
+							}
+	            levelWinCnt[idx]++
+	            levelProfit[idx] += profit
+	          } else {
+	            if (output == 1) {
+	              shortCnt++
+	              shortLoss += profit
+	            } else {
+	              longCnt++
+	              longLoss += profit
+	            }
+	            levelLoss[idx] += profit
+	          }
+	        }
+
+	        printMessage(tfModelName)
+
+	        printMessage("Long: " + longCnt + ", " + (longWinCnt / window.tensorSet.lsCount) + ", " + longProfit + ", " + longLoss + ", " + ((longProfit - longLoss) / longCnt))
+	        printMessage("Short: " + shortCnt + ", " + (shortWinCnt / window.tensorSet.lsCount) + ", " + shortProfit + ", " + shortLoss + ", " + ((shortProfit - shortLoss) / shortCnt))
+
+	        for (var i in levelCnt) {
+	          printMessage(i + ", " + levelCnt[i] + ", " + (levelWinCnt[i] / levelCnt[i]) + ", " + levelProfit[i] + ", " + levelLoss[i] + ", " + ((levelProfit[i] - levelLoss[i]) / levelCnt[i]))
+	        }
+
+	        $("#tfjs-visor-container").hide()
+	      })
+	    }
+
+	    context.testMyCnn = function () {
+	      printMessage("Start testing!")
+
+	      var longCnt = 0
+	      var shortCnt = 0
+	      var longWinCnt = 0
+	      var shortWinCnt = 0
+	      var levelCnt = []
+	      var levelWinCnt = []
+	      var levelProfit = []
+	      var levelLoss = []
+	      var longProfit = 0
+	      var shortProfit = 0
+	      var longLoss = 0
+	      var shortLoss = 0
+
+	      for (var i = 0; i < window.tensorSet.testLsCount; i++) {
+	        var input = []
+
+	        for (var j = 0; j < inputNum; j++) {
+	          input.push(window.tensorSet.testSetI[i * inputNum + j])
+	        }
+
+	        var output = window.tensorSet.testSetO[i * 2]
+
+	        var profit = window.tensorSet.testSetP[i]
+
+	        var result = window.tfModel.predict(tf.tensor3d(input, [1, inputNum, 1])).arraySync()[0][0]
+	        var resWin = ((result >= 0.5 ? 1 : 0) == output ? true : false)
+
+	        var idx = Math.floor(Math.floor(result * 100) / Math.floor(100 / 10)) * Math.floor(100 / 10)
+
+	        if (typeof levelCnt[idx] == "undefined") {
+	          levelCnt[idx] = 0
+	          levelWinCnt[idx] = 0
+	          levelProfit[idx] = 0
+	          levelLoss[idx] = 0
+	        }
+
+	        levelCnt[idx]++
+
+	        if (resWin) {
+	          if (output == 1) {
+	            longCnt++
+	            longWinCnt++
+	            longProfit += profit
+	          } else {
+	            shortCnt++
+	            shortWinCnt++
+	            shortProfit += profit
+	          }
+	          levelWinCnt[idx]++
+	          levelProfit[idx] += profit
+	        } else {
+	          if (output == 1) {
+	            shortCnt++
+	            shortLoss += profit
+	          } else {
+	            longCnt++
+	            longLoss += profit
+	          }
+	          levelLoss[idx] += profit
+	        }
+	      }
+
+	      printMessage(tfModelName)
+
+	      printMessage("Long: " + longCnt + ", " + (longWinCnt / window.tensorSet.testLsCount) + ", " + longProfit + ", " + longLoss + ", " + ((longProfit - longLoss) / longCnt))
+	      printMessage("Short: " + shortCnt + ", " + (shortWinCnt / window.tensorSet.testLsCount) + ", " + shortProfit + ", " + shortLoss + ", " + ((shortProfit - shortLoss) / shortCnt))
+
+	      for (var i in levelCnt) {
+	        printMessage(i + ", " + levelCnt[i] + ", " + (levelWinCnt[i] / levelCnt[i]) + ", " + levelProfit[i] + ", " + levelLoss[i] + ", " + ((levelProfit[i] - levelLoss[i]) / levelCnt[i]))
+	      }
+
+	      printMessage("Testing is done!")
+	    }
+
+			if (bContinue) {
+	      (async () => {
+	        try {
+	          window.tfModel = await window.tf.loadLayersModel("localstorage://" + tfModelName)
+
+	          if (typeof window.tensorSet != "undefined") {
+	            if (bMem) {
+	              if (bTest) {
+	                setTimeout(function () {context.testMyCnn()}, 5000)
+	              } else if (bContinue) {
+	                setTimeout(function () {context.trainMyCnn()}, 5000)
+	              }
+	            }
+	          }
+	        } catch (e) {
+	          popupErrorMessage("Failed to load CNN model.")
+	        }
+	      })()
+	    } else {
+	      context.buildMyCnn()
+	    }
+
+	    var account = getAccount(context, 0)
+	    var brokerName = getBrokerNameOfAccount(account)
+	    var accountId = getAccountIdOfAccount(account)
+
+			context.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, timeFrame)
+	    context.indiHandleMacd = getIndicatorHandle(context, brokerName, accountId, symbolName, timeFrame, "macd", [{
+	      name: "fastEMA",
+	      value: 12
+	    },{
+	      name: "slowEMA",
+	      value: 26
+	    },{
+	      name: "signalSMA",
+	      value: 9
+	    }])
+	  },
+	function (context) { // Deinit()
+	    if (typeof window.tf == "undefined") {
+	      printErrorMessage("Please run the plugin to load Tensorflow first.")
+	      return
+	    }
+
+	    var bMem = getEAParameter(context, "bMem")
+	    if (bMem && typeof window.tensorSet != "undefined") {
+	      return
+	    }
+
+	    var version = getEAParameter(context, "version")
+	    var inputNum = getEAParameter(context, "inputNum")
+	    var predictNum = getEAParameter(context, "predictNum")
+			var bTest = getEAParameter(context, "bTest")
+			var arrOpen = getData(context, context.chartHandle, DATA_NAME.OPEN)
+	    var arrMain = getData(context, context.indiHandleMacd, "main")
+
+	    if (200 >= arrMain.length) throw new Error("No enough data.")
+
+	    var trainingSetI = []
+	    var trainingSetO = []
+	    var trainingSetP = []
+			var longCount = 0
+			var shortCount = 0
+
+			for (var i = 26 + inputNum; i < arrMain.length - predictNum - 1; i++) {
+        var input = []
+        var highVal = 0
+        var lowVal = 9999999999
+
+        for (var j = inputNum - 1; j >= 0; j--) {
+          if (arrMain[i - j] > highVal) {
+            highVal = arrMain[i - j]
+          }
+          if (arrMain[i - j] < lowVal) {
+            lowVal = arrMain[i - j]
+          }
+        }
+
+        var height = highVal - lowVal
+        if (height <= 0) {
+          continue
+        }
+
+        for (var j = inputNum - 1; j >= 0; j--) {
+          input.push((arrMain[i - j] - lowVal) / height)
+        }
+
+        trainingSetI = trainingSetI.concat(input)
+
+        if (arrOpen[i + 1 + predictNum] - arrOpen[i + 1] >= 0) {
+          trainingSetO = trainingSetO.concat([1, 0])
+          longCount++
+          trainingSetP.push(arrOpen[i + 1 + predictNum] - arrOpen[i + 1])
+        } else {
+          trainingSetO = trainingSetO.concat([0, 1])
+          shortCount++
+          trainingSetP.push(arrOpen[i + 1] - arrOpen[i + 1 + predictNum])
+        }
+      }
+
+	    var lsCount = longCount + shortCount
+
+	    if (!bTest) {
+	      var tensorSet = {
+	        lsCount: lsCount,
+	        trainingSetI: trainingSetI,
+	        trainingSetO: trainingSetO,
+	        trainingSetP: trainingSetP,
+	        input: tf.tensor3d(trainingSetI, [lsCount, inputNum, 1]),
+	        output: tf.tensor2d(trainingSetO, [lsCount, 2]),
+	      }
+
+	      if (typeof window.tensorSet == "undefined") {
+	        tensorSet.testLsCount = lsCount
+	        tensorSet.testSetI = trainingSetI
+	        tensorSet.testSetO = trainingSetO
+	        tensorSet.testSetP = trainingSetP
+	        tensorSet.testInput = tf.tensor3d(trainingSetI, [lsCount, inputNum, 1])
+	        tensorSet.testOutput = tf.tensor2d(trainingSetO, [lsCount, 2])
+	      } else {
+	        tensorSet.testLsCount = window.tensorSet.testLsCount
+	        tensorSet.testSetI = window.tensorSet.testSetI
+	        tensorSet.testSetO = window.tensorSet.testSetO
+	        tensorSet.testSetP = window.tensorSet.testSetP
+	        tensorSet.testInput = window.tensorSet.testInput
+	        tensorSet.testOutput = window.tensorSet.testOutput
+	      }
+
+	      window.tensorSet = tensorSet
+
+	      context.trainMyCnn()
+	    } else {
+	      var tensorSet = {
+	        testLsCount: lsCount,
+	        testSetI: trainingSetI,
+	        testSetO: trainingSetO,
+	        testSetP: trainingSetP,
+	        testInput: tf.tensor3d(trainingSetI, [lsCount, inputNum, 1]),
+	        testOutput: tf.tensor2d(trainingSetO, [lsCount, 2])
+	      }
+
+	      if (typeof window.tensorSet == "undefined") {
+	        tensorSet.lsCount = lsCount
+	        tensorSet.trainingSetI = trainingSetI
+	        tensorSet.trainingSetO = trainingSetO
+	        tensorSet.trainingSetP = trainingSetP
+	        tensorSet.input = tf.tensor3d(trainingSetI, [lsCount, inputNum, 1])
+	        tensorSet.output = tf.tensor2d(trainingSetO, [lsCount, 2])
+	      } else {
+	        tensorSet.lsCount = window.tensorSet.lsCount
+	        tensorSet.trainingSetI = window.tensorSet.trainingSetI
+	        tensorSet.trainingSetO = window.tensorSet.trainingSetO
+	        tensorSet.trainingSetP = window.tensorSet.trainingSetP
+	        tensorSet.input = window.tensorSet.input
+	        tensorSet.output = window.tensorSet.output
+	      }
+
+	      window.tensorSet = tensorSet
+
+	      context.testMyCnn()
+	    }
+
+	    printMessage("Training Set or Testing Set: " + longCount + ", " + shortCount)
+	  },
+	function (context) { // OnTick()
+	},
+	function (context) { // OnTransaction()
+	}
+	)
+
+	importBuiltInEA(
+	  "sample_running_cnn_model",
+	  "An EA sample to run neuron model(v1.0)",
+	  [{ // parameters
+	    name: "version",
+	    value: 1,
+	    required: true,
+	    type: PARAMETER_TYPE.NUMBER,
+	    range: [0, 100]
+	  }, {
+	    name: "symbolName",
+	    value: "EUR/USD",
+	    required: true,
+	    type: PARAMETER_TYPE.STRING,
+	    range: null
+	  }, {
+	    name: "timeFrame",
+	    value: "H1",
+	    required: true,
+	    type: PARAMETER_TYPE.STRING,
+	    range: null
+	  }, {
+	    name: "inputNum",
+	    value: 10,
+	    required: true,
+	    type: PARAMETER_TYPE.INTEGER,
+	    range: [1, 100]
+	  }, {
+	    name: "hiddenNum",
+	    value: 20,
+	    required: true,
+	    type: PARAMETER_TYPE.INTEGER,
+	    range: [1, 100]
+	  }, {
+	    name: "predictNum",
+	    value: 10,
+	    required: true,
+	    type: PARAMETER_TYPE.INTEGER,
+	    range: [1, 100]
+	  }, {
+	    name: "volume",
+	    value: 0.01,
+	    required: true,
+	    type: PARAMETER_TYPE.NUMBER,
+	    range: [0.01, 1]
+	  }],
+	  function (context) { // Init()
+	    if (typeof window.tf == "undefined") {
+	      printErrorMessage("Please run the plugin to load Tensorflow first.")
+	      return
+	    }
+
+	    var version = getEAParameter(context, "version")
+	    var symbolName = getEAParameter(context, "symbolName")
+	    var timeFrame = getEAParameter(context, "timeFrame")
+	    var inputNum = getEAParameter(context, "inputNum")
+	    var hiddenNum = getEAParameter(context, "hiddenNum")
+	    var predictNum = getEAParameter(context, "predictNum")
+
+	    context.runMyCnn = function (input) {
+	      if (typeof input == "undefined" || input.length == 0) return -1
+
+	      var result = window.tfModel.predict(tf.tensor3d(input, [1, inputNum, 1])).arraySync()[0][0]
+
+	      printMessage(result)
+
+	      return result
+	    };
+
+	    (async () => {
+				var tfModelName = "Fintechee " + symbolName.replace("/", "") + "-" + timeFrame + "-" + inputNum + "-" + hiddenNum + "-" + predictNum + "-" + version
+
+	      window.tfModel = await tf.loadLayersModel("localstorage://" + tfModelName)
+	    })()
+
+	    var account = getAccount(context, 0)
+	    var brokerName = getBrokerNameOfAccount(account)
+	    var accountId = getAccountIdOfAccount(account)
+
+	    context.chartHandle = getChartHandle(context, brokerName, accountId, symbolName, timeFrame)
+	    context.indiHandleMacd = getIndicatorHandle(context, brokerName, accountId, symbolName, timeFrame, "macd", [{
+	      name: "fastEMA",
+	      value: 12
+	    },{
+	      name: "slowEMA",
+	      value: 26
+	    },{
+	      name: "signalSMA",
+	      value: 9
+	    }])
+
+			context.tradingManager = {
+	      posLong: [],
+	      posShort: [],
+	      getPosInfo: function (brokerNm, accId, symbolNm) {
+	        this.posLong = []
+	        this.posShort = []
+
+	        var cnt = getOpenTradesListLength(context)
+	        for (var i = cnt - 1; i >= 0; i--) {
+	          var openTrade = getOpenTrade(context, i)
+	          var symbol = getSymbolName(openTrade)
+
+	          if (symbol == symbolNm) {
+	            var orderType = getOrderType(openTrade)
+
+	            if (orderType == ORDER_TYPE.OP_BUY) {
+	              this.posLong.push(getTradeId(openTrade))
+	            } else {
+	              this.posShort.push(getTradeId(openTrade))
+	            }
+	          }
+	        }
+	      },
+	      trade: function (brokerNm, accId, symbolNm, odrType, volume, orderNum) {
+	        if (orderNum < 0) return
+
+	        if (orderNum > 0) {
+	          var orderLots = volume * orderNum
+
+	          if (odrType == ORDER_TYPE.OP_BUY) {
+							if (this.posLong.length > 0) {
+								return false
+							}
+
+	            sendOrder(brokerNm, accId, symbolNm, ORDER_TYPE.OP_BUY, 0, 0, Math.round(orderLots * 100) / 100, 0, 0, "", 0, 0)
+	            return true
+	          } else if (odrType == ORDER_TYPE.OP_SELL) {
+							if (this.posShort.length > 0) {
+								return false
+							}
+
+	            sendOrder(brokerNm, accId, symbolNm, ORDER_TYPE.OP_SELL, 0, 0, Math.round(orderLots * 100) / 100, 0, 0, "", 0, 0)
+	            return true
+	          }
+	        } else {
+	          if (odrType == ORDER_TYPE.OP_BUY) {
+	            var bClosed = false
+	            for (var i in this.posLong) {
+	              closeTrade(brokerNm, accId, this.posLong[i], 0, 0)
+	              bClosed = true
+	            }
+	          } else if (odrType == ORDER_TYPE.OP_SELL) {
+	            var bClosed = false
+	            for (var i in this.posShort) {
+	              closeTrade(brokerNm, accId, this.posShort[i], 0, 0)
+	              bClosed = true
+	            }
+	          }
+
+	          if (bClosed) {
+	            return true
+	          }
+	        }
+
+	        return false
+	      }
+	    }
+
+			context.signalManager = {
+	      inputNum: inputNum,
+	      checkCnnSignal: function (arrMain) {
+	        var arrLen = arrMain.length
+
+	        var input = []
+	        var highVal = 0
+	        var lowVal = 9999999999
+
+	        for (var i = this.inputNum + 1; i >= 2; i--) {
+	          if (arrMain[arrLen - i] > highVal) {
+	            highVal = arrMain[arrLen - i]
+	          }
+	          if (arrMain[arrLen - i] < lowVal) {
+	            lowVal = arrMain[arrLen - i]
+	          }
+	        }
+
+	        var height = highVal - lowVal
+	        if (height <= 0) {
+	          return -1
+	        }
+
+					for (var i = this.inputNum + 1; i >= 2; i--) {
+	          input.push((arrMain[arrLen - i] - lowVal) / height)
+	        }
+
+	        var result = window.tfModel.predict(window.tf.tensor3d(input, [1, this.inputNum, 1])).arraySync()[0][0]
+
+	        return result >= 0.5 ? 1 : 0
+	      },
+	      upSl: 0,
+	      downSl: 0,
+	      predictNum: predictNum,
+	      checkCloseSignal: function (currIdx) {
+	        var signal = -1
+
+	        if (this.upSl > 0) {
+	          if (currIdx - this.upSl > this.predictNum) {
+	            signal = 3
+	          }
+	        }
+
+	        if (this.downSl > 0) {
+	          if (currIdx - this.downSl > this.predictNum) {
+	            signal = 2
+	          }
+	        }
+
+	        return signal
+	      }
+	    }
+	  },
+	  function (context) { // Deinit()
+	  },
+	  function (context) { // OnTick()
+	    if (typeof window.tf == "undefined") {
+	      return
+	    }
+
+	    if (window.tfModel == null) return
+	    var arrTime = getData(context, context.chartHandle, DATA_NAME.TIME)
+	    if (typeof context.currTime == "undefined") {
+	      context.currTime = arrTime[arrTime.length - 1]
+	    } else if (context.currTime != arrTime[arrTime.length - 1]) {
+	      context.currTime = arrTime[arrTime.length - 1]
+	    } else {
+	      return
+	    }
+
+	    var account = getAccount(context, 0)
+	    var brokerName = getBrokerNameOfAccount(account)
+	    var accountId = getAccountIdOfAccount(account)
+	    var symbolName = getEAParameter(context, "symbolName")
+
+	    var version = getEAParameter(context, "version")
+	    var inputNum = getEAParameter(context, "inputNum")
+	    var predictNum = getEAParameter(context, "predictNum")
+			var arrClose = getData(context, context.chartHandle, DATA_NAME.CLOSE)
+	    var arrMain = getData(context, context.indiHandleMacd, "main")
+
+	    if (200 >= arrMain.length) throw new Error("No enough data.")
+
+			var account = getAccount(context, 0)
+		  var brokerName = getBrokerNameOfAccount(account)
+		  var accountId = getAccountIdOfAccount(account)
+		  var symbolName = getEAParameter(context, "symbolName")
+		  var volume = getEAParameter(context, "volume")
+
+		  var signal = -1
+			var arrLen =  arrClose.length
+		  var currTick = arrClose[arrLen - 1]
+
+		  context.tradingManager.getPosInfo(brokerName, accountId, symbolName)
+
+		  if (context.signalManager.upSl > 0 || context.signalManager.downSl > 0) {
+		    signal = context.signalManager.checkCloseSignal(arrLen - 1)
+		  }
+
+		  if (signal == -1) {
+		    signal = context.signalManager.checkCnnSignal(arrMain)
+		  }
+
+		  if (signal == 1) {
+		    if (context.tradingManager.trade(brokerName, accountId, symbolName, ORDER_TYPE.OP_BUY, volume, 1)) {
+		      context.signalManager.upSl = arrLen - 1
+		    }
+		  } else if (signal == 0) {
+		    if (context.tradingManager.trade(brokerName, accountId, symbolName, ORDER_TYPE.OP_SELL, volume, 1)) {
+		      context.signalManager.downSl = arrLen - 1
+		    }
+		  } else if (signal == 3) {
+		    if (context.tradingManager.trade(brokerName, accountId, symbolName, ORDER_TYPE.OP_BUY, volume, 0)) {
+		      context.signalManager.upSl = 0
+		    }
+		  } else if (signal == 2) {
+		    if (context.tradingManager.trade(brokerName, accountId, symbolName, ORDER_TYPE.OP_SELL, volume, 0)) {
+		      context.signalManager.downSl = 0
+		    }
+		  }
 	  }
 	)
 
