@@ -8256,7 +8256,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 	"sample_training_cnn_model",
-	"An EA sample to train neuron model(v1.0)",
+	"An EA sample to train neuron model(v1.01)",
 	[{
 		name: "version",
 		value: 1,
@@ -8374,9 +8374,7 @@ function importBuiltInEAs () {
 	      window.trainCnn(window.tfModel, window.tensorSet, iterations, batchSize, bMonitor).then(function () {
 	        printMessage("Training is done!");
 
-	        (async () => {
-	          await window.tfModel.save("localstorage://" + tfModelName)
-	        })()
+					window.saveCnn(window.tfModel, tfModelName)
 
 	        var longCnt = 0
 	        var shortCnt = 0
@@ -8531,23 +8529,24 @@ function importBuiltInEAs () {
 	    }
 
 			if (bContinue) {
-	      (async () => {
-	        try {
-	          window.tfModel = await window.tf.loadLayersModel("localstorage://" + tfModelName)
+        try {
+					window.loadCnn(tfModelName)
+					.then(function (tfModel) {
+						window.tfModel = tfModel
 
-	          if (typeof window.tensorSet != "undefined") {
+						if (typeof window.tensorSet != "undefined") {
 	            if (bMem) {
 	              if (bTest) {
 	                setTimeout(function () {context.testMyCnn()}, 5000)
-	              } else if (bContinue) {
+	              } else {
 	                setTimeout(function () {context.trainMyCnn()}, 5000)
 	              }
 	            }
 	          }
-	        } catch (e) {
-	          popupErrorMessage("Failed to load CNN model.")
-	        }
-	      })()
+					})
+        } catch (e) {
+          popupErrorMessage("Failed to load CNN model.")
+        }
 	    } else {
 	      context.buildMyCnn()
 	    }
@@ -8702,7 +8701,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 	  "sample_running_cnn_model",
-	  "An EA sample to run neuron model(v1.0)",
+	  "An EA sample to run neuron model(v1.01)",
 	  [{ // parameters
 	    name: "version",
 	    value: 1,
@@ -8769,11 +8768,12 @@ function importBuiltInEAs () {
 	      return result
 	    };
 
-	    (async () => {
-				var tfModelName = "Fintechee " + symbolName.replace("/", "") + "-" + timeFrame + "-" + inputNum + "-" + hiddenNum + "-" + predictNum + "-" + version
+			var tfModelName = "Fintechee " + symbolName.replace("/", "") + "-" + timeFrame + "-" + inputNum + "-" + hiddenNum + "-" + predictNum + "-" + version
 
-	      window.tfModel = await tf.loadLayersModel("localstorage://" + tfModelName)
-	    })()
+			window.loadCnn(tfModelName)
+			.then(function (tfModel) {
+				window.tfModel = tfModel
+			})
 
 	    var account = getAccount(context, 0)
 	    var brokerName = getBrokerNameOfAccount(account)
