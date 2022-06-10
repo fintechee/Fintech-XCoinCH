@@ -4297,7 +4297,7 @@ function importBuiltInIndicators () {
 function importBuiltInEAs () {
 	importBuiltInEA(
 		"plugin_for_mql",
-		"mql_plugin to make MQL-based programs runnable on Fintechee(v1.02)",
+		"mql_plugin to make MQL-based programs runnable on Fintechee(v1.03)",
 		[],
 		function (context) { // Init()
 			if (typeof window.pluginForMql != "undefined") {
@@ -5645,6 +5645,7 @@ function importBuiltInEAs () {
 									symbol: getSymbolInfo(brokerName, accountId, symbolName),
 									objs: (typeof localStorage.mqlObjs != "undefined" ? JSON.parse(localStorage.mqlObjs) : []),
 									neuralNetworks: [],
+									bPreventCleanUp: false,
 									lock: false,
 									convertTimeFrame: function () {
 										if (TIME_FRAME.M1 == timeFrame) {
@@ -5681,7 +5682,9 @@ function importBuiltInEAs () {
 							var eaName = getEAName(context)
 							var eaObj = window.mqlEAs[eaName]
 							eaObj.onDeinit(context.uid, 0)
-							delete window.mqlEAsBuffer[context.uid + ""]
+							if (!window.mqlEAsBuffer[context.uid + ""].bPreventCleanUp) {
+								delete window.mqlEAsBuffer[context.uid + ""]
+							}
 						},
 						function (context) { // OnTick()
 							var eaName = getEAName(context)
