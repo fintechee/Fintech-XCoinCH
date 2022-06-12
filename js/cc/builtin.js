@@ -8107,7 +8107,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 	  "plugin_to_load_tensorflow",
-	  "A plugin to load Tensorflow(v1.02)",
+	  "A plugin to load Tensorflow(v1.03)",
 	  [{ // parameters
 	    name: "tfjs",
 	    value: "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js",
@@ -8236,6 +8236,14 @@ function importBuiltInEAs () {
 							})
 						}
 
+						window.runCnn = async function (tfModel, input, inputNum) {
+							try {
+								return tfModel.predict(window.tf.tensor3d(input, [1, inputNum, 1])).arraySync()[0][0]
+							} catch (e) {
+								return -1
+							}
+						}
+
 	          popupMessage("Tensorflow has been loaded successfully!")
 	        }
 	        script2.onerror = function () {
@@ -8259,7 +8267,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 	"sample_training_cnn_model",
-	"An EA sample to train neuron model(v1.01)",
+	"An EA sample to train neuron model(v1.02)",
 	[{
 		name: "version",
 		value: 1,
@@ -8367,17 +8375,21 @@ function importBuiltInEAs () {
 
 	    context.buildMyCnn = function () {
 	      window.buildCnn(inputNum, inputNum, hiddenNum, inputNum).then(function (tfModel) {
-	        window.tfModel = tfModel
+	        context.tfModel = tfModel
 	      })
+	    }
+
+			context.runMyCnn = function (input) {
+	      return window.runCnn(this.tfModel, input, inputNum)
 	    }
 
 	    context.trainMyCnn = function () {
 	      printMessage("Start training!")
 
-	      window.trainCnn(window.tfModel, window.tensorSet, iterations, batchSize, bMonitor).then(function () {
+	      window.trainCnn(this.tfModel, window.tensorSet, iterations, batchSize, bMonitor).then(function () {
 	        printMessage("Training is done!");
 
-					window.saveCnn(window.tfModel, tfModelName)
+					window.saveCnn(context.tfModel, tfModelName)
 
 	        var longCnt = 0
 	        var shortCnt = 0
@@ -8403,8 +8415,8 @@ function importBuiltInEAs () {
 
 	          var profit = window.tensorSet.trainingSetP[i]
 
-	          var result = window.tfModel.predict(tf.tensor3d(input, [1, inputNum, 1])).arraySync()[0][0]
-	          var resWin = ((result >= 0.5 ? 1 : 0) == output ? true : false)
+	          var result = context.runMyCnn(input)
+	          var resWin = (result == -1 ? false : ((result >= 0.5 ? 1 : 0) == output ? true : false))
 
 	          var idx = Math.floor(Math.floor(result * 100) / Math.floor(100 / 10)) * Math.floor(100 / 10)
 
@@ -8481,8 +8493,8 @@ function importBuiltInEAs () {
 
 	        var profit = window.tensorSet.testSetP[i]
 
-	        var result = window.tfModel.predict(tf.tensor3d(input, [1, inputNum, 1])).arraySync()[0][0]
-	        var resWin = ((result >= 0.5 ? 1 : 0) == output ? true : false)
+					var result = this.runMyCnn(input)
+					var resWin = (result == -1 ? false : ((result >= 0.5 ? 1 : 0) == output ? true : false))
 
 	        var idx = Math.floor(Math.floor(result * 100) / Math.floor(100 / 10)) * Math.floor(100 / 10)
 
@@ -8535,7 +8547,7 @@ function importBuiltInEAs () {
         try {
 					window.loadCnn(tfModelName)
 					.then(function (tfModel) {
-						window.tfModel = tfModel
+						context.tfModel = tfModel
 
 						if (typeof window.tensorSet != "undefined") {
 	            if (bMem) {
@@ -8640,8 +8652,8 @@ function importBuiltInEAs () {
 	        trainingSetI: trainingSetI,
 	        trainingSetO: trainingSetO,
 	        trainingSetP: trainingSetP,
-	        input: tf.tensor3d(trainingSetI, [lsCount, inputNum, 1]),
-	        output: tf.tensor2d(trainingSetO, [lsCount, 2]),
+	        input: window.tf.tensor3d(trainingSetI, [lsCount, inputNum, 1]),
+	        output: window.tf.tensor2d(trainingSetO, [lsCount, 2]),
 	      }
 
 	      if (typeof window.tensorSet == "undefined") {
@@ -8649,8 +8661,8 @@ function importBuiltInEAs () {
 	        tensorSet.testSetI = trainingSetI
 	        tensorSet.testSetO = trainingSetO
 	        tensorSet.testSetP = trainingSetP
-	        tensorSet.testInput = tf.tensor3d(trainingSetI, [lsCount, inputNum, 1])
-	        tensorSet.testOutput = tf.tensor2d(trainingSetO, [lsCount, 2])
+	        tensorSet.testInput = window.tf.tensor3d(trainingSetI, [lsCount, inputNum, 1])
+	        tensorSet.testOutput = window.tf.tensor2d(trainingSetO, [lsCount, 2])
 	      } else {
 	        tensorSet.testLsCount = window.tensorSet.testLsCount
 	        tensorSet.testSetI = window.tensorSet.testSetI
@@ -8669,8 +8681,8 @@ function importBuiltInEAs () {
 	        testSetI: trainingSetI,
 	        testSetO: trainingSetO,
 	        testSetP: trainingSetP,
-	        testInput: tf.tensor3d(trainingSetI, [lsCount, inputNum, 1]),
-	        testOutput: tf.tensor2d(trainingSetO, [lsCount, 2])
+	        testInput: window.tf.tensor3d(trainingSetI, [lsCount, inputNum, 1]),
+	        testOutput: window.tf.tensor2d(trainingSetO, [lsCount, 2])
 	      }
 
 	      if (typeof window.tensorSet == "undefined") {
@@ -8678,8 +8690,8 @@ function importBuiltInEAs () {
 	        tensorSet.trainingSetI = trainingSetI
 	        tensorSet.trainingSetO = trainingSetO
 	        tensorSet.trainingSetP = trainingSetP
-	        tensorSet.input = tf.tensor3d(trainingSetI, [lsCount, inputNum, 1])
-	        tensorSet.output = tf.tensor2d(trainingSetO, [lsCount, 2])
+	        tensorSet.input = window.tf.tensor3d(trainingSetI, [lsCount, inputNum, 1])
+	        tensorSet.output = window.tf.tensor2d(trainingSetO, [lsCount, 2])
 	      } else {
 	        tensorSet.lsCount = window.tensorSet.lsCount
 	        tensorSet.trainingSetI = window.tensorSet.trainingSetI
@@ -8704,7 +8716,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 	  "sample_running_cnn_model",
-	  "An EA sample to run neuron model(v1.01)",
+	  "An EA sample to run neuron model(v1.02)",
 	  [{ // parameters
 	    name: "version",
 	    value: 1,
@@ -8764,18 +8776,19 @@ function importBuiltInEAs () {
 	    context.runMyCnn = function (input) {
 	      if (typeof input == "undefined" || input.length == 0) return -1
 
-	      var result = window.tfModel.predict(tf.tensor3d(input, [1, inputNum, 1])).arraySync()[0][0]
+	      var result = window.runCnn(this.tfModel, input, inputNum)
 
 	      printMessage(result)
 
 	      return result
-	    };
+	    }
 
 			var tfModelName = "Fintechee " + symbolName.replace("/", "") + "-" + timeFrame + "-" + inputNum + "-" + hiddenNum + "-" + predictNum + "-" + version
 
+			context.tfModel = null
 			window.loadCnn(tfModelName)
 			.then(function (tfModel) {
-				window.tfModel = tfModel
+				context.tfModel = tfModel
 			})
 
 	    var account = getAccount(context, 0)
@@ -8889,9 +8902,9 @@ function importBuiltInEAs () {
 	          input.push((arrMain[arrLen - i] - lowVal) / height)
 	        }
 
-	        var result = window.tfModel.predict(window.tf.tensor3d(input, [1, this.inputNum, 1])).arraySync()[0][0]
+	        var result = this.runMyCnn(input)
 
-	        return result >= 0.5 ? 1 : 0
+	        return result == -1 ? -1 : (result >= 0.5 ? 1 : 0)
 	      },
 	      upSl: 0,
 	      downSl: 0,
@@ -8922,7 +8935,7 @@ function importBuiltInEAs () {
 	      return
 	    }
 
-	    if (window.tfModel == null) return
+	    if (context.tfModel == null) return
 	    var arrTime = getData(context, context.chartHandle, DATA_NAME.TIME)
 	    if (typeof context.currTime == "undefined") {
 	      context.currTime = arrTime[arrTime.length - 1]
