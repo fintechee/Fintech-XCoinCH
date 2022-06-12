@@ -8223,7 +8223,7 @@ function importBuiltInEAs () {
 							})
 						}
 
-						window.loadCnn = async function (tfModelName) {
+						window.loadCnn = function (tfModelName) {
 							return new Promise(function (resolve, reject) {
 								(async () => {
 									try {
@@ -8236,7 +8236,7 @@ function importBuiltInEAs () {
 							})
 						}
 
-						window.runCnn = async function (tfModel, input, inputNum) {
+						window.runCnn = function (tfModel, input, inputNum) {
 							try {
 								return tfModel.predict(window.tf.tensor3d(input, [1, inputNum, 1])).arraySync()[0][0]
 							} catch (e) {
