@@ -9002,7 +9002,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 		"copy_trading_for_oanda",
-		"An EA to copy trading for Oanda(v1.0)",
+		"An EA to copy trading for Oanda(v1.01)",
 		[],
 		function (context) { // Init()
 		  if (typeof window.oandaOrderApiLoader == "undefined") {
@@ -9289,18 +9289,24 @@ function importBuiltInEAs () {
 		function (context) { // OnTransaction()
 		  if (typeof window.oandaOrderApiLoader != "undefined" && window.oandaOrderApiLoader.bCopyTrading) {
 		    var transType = getLatestTransType(context)
-		    var trade = getLatestTrans(context)
-		    var tradeSymbolName = getSymbolName(trade)
-		    var tradeOrderType = getOrderType(trade)
-		    var tradeLots = getOpenLots(trade)
 
 		    if (transType == "Open Trade") {
+					var trade = getLatestTrans(context)
+			    var tradeSymbolName = getSymbolName(trade)
+			    var tradeOrderType = getOrderType(trade)
+			    var tradeLots = getOpenLots(trade)
+
 		      if (tradeOrderType == ORDER_TYPE.OP_BUY || tradeOrderType == ORDER_TYPE.OP_BUYLIMIT || tradeOrderType == ORDER_TYPE.OP_BUYSTOP) {
 		        window.oandaOrderApiLoader.sendOrder(tradeSymbolName, ORDER_TYPE.OP_BUY, tradeLots)
 		      } else if (tradeOrderType == ORDER_TYPE.OP_SELL || tradeOrderType == ORDER_TYPE.OP_SELLLIMIT || tradeOrderType == ORDER_TYPE.OP_SELLSTOP) {
 		        window.oandaOrderApiLoader.sendOrder(tradeSymbolName, ORDER_TYPE.OP_SELL, tradeLots)
 		      }
 		    } else if (transType == "Trade Closed") {
+					var trade = getLatestTrans(context)
+			    var tradeSymbolName = getSymbolName(trade)
+			    var tradeOrderType = getOrderType(trade)
+			    var tradeLots = getOpenLots(trade)
+
 		      if (tradeOrderType == ORDER_TYPE.OP_BUY || tradeOrderType == ORDER_TYPE.OP_BUYLIMIT || tradeOrderType == ORDER_TYPE.OP_BUYSTOP) {
 		        window.oandaOrderApiLoader.sendOrder(tradeSymbolName, ORDER_TYPE.OP_SELL, tradeLots)
 		      } else if (tradeOrderType == ORDER_TYPE.OP_SELL || tradeOrderType == ORDER_TYPE.OP_SELLLIMIT || tradeOrderType == ORDER_TYPE.OP_SELLSTOP) {
