@@ -440,12 +440,12 @@ var eaStudio = {
     var regexps2 = []
     var regexps3 = []
 
-    regexps1.push(/iTime\s*\([\w\s,\.]*\)/g)
-    regexps1.push(/iOpen\s*\([\w\s,\.]*\)/g)
-    regexps1.push(/iHigh\s*\([\w\s,\.]*\)/g)
-    regexps1.push(/iLow\s*\([\w\s,\.]*\)/g)
-    regexps1.push(/iClose\s*\([\w\s,\.]*\)/g)
-    regexps1.push(/iVolume\s*\([\w\s,\.]*\)/g)
+    regexps1.push(/iTime\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps1.push(/iOpen\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps1.push(/iHigh\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps1.push(/iLow\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps1.push(/iClose\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps1.push(/iVolume\s*\([\w\s,\.\+\*\-]*\)/g)
 
     for (var i in regexps1) {
       var apiCallingMatches = sourceCodes.match(regexps1[i])
@@ -463,8 +463,8 @@ var eaStudio = {
       }
     }
 
-    regexps2.push(/iHighest\s*\([\w\s,\.]*\)/g)
-    regexps2.push(/iLowest\s*\([\w\s,\.]*\)/g)
+    regexps2.push(/iHighest\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps2.push(/iLowest\s*\([\w\s,\.\+\*\-]*\)/g)
 
     for (var i in regexps2) {
       var apiCallingMatches = sourceCodes.match(regexps2[i])
@@ -482,28 +482,29 @@ var eaStudio = {
       }
     }
 
-    regexps3.push(/iAC\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iADX\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iAlligator\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iAO\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iATR\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iBearsPower\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iBands\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iBullsPower\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iCCI\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iCustom\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iDeMarker\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iEnvelopes\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iFractals\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iIchimoku\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iMA\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iMACD\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iMomentum\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iRSI\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iRVI\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iSAR\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iStochastic\s*\([\w\s,\.]*\)/g)
-    regexps3.push(/iWPR\s*\([\w\s,\.]*\)/g)
+    regexps3.push(/iAC\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iADX\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iAlligator\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iAO\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iATR\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iBearsPower\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iBands\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iBullsPower\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iCCI\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iCustom\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iDeMarker\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iEnvelopes\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iFractals\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iIchimoku\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iMA\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iMACD\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iMFI\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iMomentum\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iRSI\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iRVI\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iSAR\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iStochastic\s*\([\w\s,\.\+\*\-]*\)/g)
+    regexps3.push(/iWPR\s*\([\w\s,\.\+\*\-]*\)/g)
 
     for (var i in regexps3) {
       var apiCallingMatches = sourceCodes.match(regexps3[i])

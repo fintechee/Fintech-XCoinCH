@@ -10,6 +10,108 @@ function isInteger (number) {
 		!isNaN(parseInt(number, 10))
 }
 
+function getHighestOnArray (dataInput, dataOutput, calculatedLength, period) {
+	var i = calculatedLength
+
+	if (calculatedLength > 0) {
+		i--
+	} else {
+		for (var j = 0; j < period - 1; j++) {
+			dataOutput[j] = 0
+		}
+
+		i = period - 1
+	}
+
+	var highest = -Number.MAX_VALUE
+
+	for (var j = i - period + 1; j < i; j++) {
+		if (dataInput[j] > highest) {
+			highest = dataInput[j]
+		}
+	}
+
+	for (var j = i; j < dataInput.length; j++) {
+		if (dataInput[j] > highest) {
+			highest = dataInput[j]
+		}
+		dataOutput[j] = highest
+		if (dataInput[j - period + 1] == highest) {
+			highest = -Number.MAX_VALUE
+
+			for (var k = j - period + 1 + 1; k <= j; k++) {
+				if (dataInput[k] > highest) {
+					highest = dataInput[k]
+				}
+			}
+		}
+	}
+}
+
+function getLowestOnArray (dataInput, dataOutput, calculatedLength, period) {
+	var i = calculatedLength
+
+	if (calculatedLength > 0) {
+		i--
+	} else {
+		for (var j = 0; j < period - 1; j++) {
+			dataOutput[j] = 0
+		}
+
+		i = period - 1
+	}
+
+	var lowest = Number.MAX_VALUE
+
+	for (var j = i - period + 1; j < i; j++) {
+		if (dataInput[j] < lowest) {
+			lowest = dataInput[j]
+		}
+	}
+
+	for (var j = i; j < dataInput.length; j++) {
+		if (dataInput[j] < lowest) {
+			lowest = dataInput[j]
+		}
+		dataOutput[j] = lowest
+		if (dataInput[j - period + 1] == lowest) {
+			lowest = Number.MAX_VALUE
+
+			for (var k = j - period + 1 + 1; k <= j; k++) {
+				if (dataInput[k] < lowest) {
+					lowest = dataInput[k]
+				}
+			}
+		}
+	}
+}
+
+function sumOnArray (dataInput, dataOutput, calculatedLength, period) {
+	var i = calculatedLength
+
+	if (calculatedLength > 0) {
+		i--
+	} else {
+		for (var j = 0; j < period - 1; j++) {
+			dataOutput[j] = 0
+		}
+
+		i = period - 1
+	}
+
+	var sum = 0
+
+	for (var j = i - period + 1; j < i; j++) {
+		sum += dataInput[j]
+	}
+
+	for (var j = i; j < dataInput.length; j++) {
+		sum += dataInput[j]
+		dataOutput[j] = sum
+		sum -= dataInput[j - period + 1]
+	}
+}
+
 function sma (dataInput, dataOutput, calculatedLength, period) {
 	var i = calculatedLength
 
@@ -3660,13 +3762,22 @@ function importBuiltInIndicators () {
 	}],
 	WHERE_TO_RENDER.SEPARATE_WINDOW)
 
-	importBuiltInIndicator("mfi", "Market Facilitation Index(v1.0)", function (context) {
+	importBuiltInIndicator("mfi", "Market Facilitation Index(v1.01)", function (context) {
 		var dataInputHigh = getDataInput(context, 0)
 		var dataInputLow = getDataInput(context, 1)
 		var dataInputVol = getDataInput(context, 2)
 		var dataOutput = getDataOutput(context, "mfi")
+		var dataOutputH = getDataOutput(context, "highestTmp")
+		var dataOutputL = getDataOutput(context, "lowestTmp")
+		var dataOutputV = getDataOutput(context, "volSumTmp")
+		var period = getIndiParameter(context, "period")
 
 		var calculatedLength = getCalculatedLength(context)
+
+		getHighestOnArray(dataInputHigh, dataOutputH, calculatedLength, period)
+		getLowestOnArray(dataInputLow, dataOutputL, calculatedLength, period)
+		sumOnArray(dataInputVol, dataOutputV, calculatedLength, period)
+
 		var i = calculatedLength
 
 		if (i != 0) {
@@ -3674,15 +3785,21 @@ function importBuiltInIndicators () {
 		}
 
 		while (i < dataInputVol.length) {
-			if (dataInputVol[i] == 0) {
+			if (dataOutputV[i] == 0) {
 				dataOutput[i] = 0
 			} else {
-				dataOutput[i] = (dataInputHigh[i] - dataInputLow[i]) / dataInputVol[i]
+				dataOutput[i] = (dataOutputH[i] - dataOutputL[i]) / dataOutputV[i]
 			}
 
 			i++
 		}
-	},[],
+	},[{
+    name: "period",
+    value: 1,
+    required: false,
+    type: PARAMETER_TYPE.INTEGER,
+    range: [1, 100]
+	}],
 	[{
     name: DATA_NAME.HIGH,
     index: 0
@@ -3698,6 +3815,15 @@ function importBuiltInIndicators () {
 		visible: true,
 		renderType: RENDER_TYPE.HISTOGRAM,
 		color: "steelblue"
+	},{
+		name: "highestTmp",
+		visible: false
+	},{
+		name: "lowestTmp",
+		visible: false
+	},{
+		name: "volSumTmp",
+		visible: false
 	}],
 	WHERE_TO_RENDER.SEPARATE_WINDOW)
 
@@ -4297,7 +4423,7 @@ function importBuiltInIndicators () {
 function importBuiltInEAs () {
 	importBuiltInEA(
 		"plugin_for_mql",
-		"mql_plugin to make MQL-based programs runnable on Fintechee(v1.03)",
+		"mql_plugin to make MQL-based programs runnable on Fintechee(v1.04)",
 		[],
 		function (context) { // Init()
 			if (typeof window.pluginForMql != "undefined") {
@@ -5169,6 +5295,22 @@ function importBuiltInEAs () {
 									var arr = getDataFromIndi(obj.context, indiHandle, md)
 									return arr[arr.length - shift - 1]
 								}, "diiii")
+								var jiMFIInit = Module.addFunction(function (uid, symbol, timeframe, period) {
+									var obj = window.mqlIndicatorsBuffer[uid + ""]
+									var symbolName = window.mqlIndicators[obj.name].module.UTF8ToString(symbol)
+									var timeFrm = window.mqlIndicators[obj.name].module.UTF8ToString(timeframe)
+									symbolName = symbolName == "" ? obj.symbolName : symbolName
+									timeFrm = timeFrm == "0" ? obj.timeFrame : timeFrm
+									return getIndicatorHandleFromIndi(obj.context, symbolName, timeFrm, "mfi", [{
+										name: "period",
+										value: period
+									}])
+								}, "iiiiiiii")
+								var jiMFI = Module.addFunction(function (uid, indiHandle, shift) {
+									var obj = window.mqlIndicatorsBuffer[uid + ""]
+									var arr = getDataFromIndi(obj.context, indiHandle, "mfi")
+									return arr[arr.length - shift - 1]
+								}, "diiii")
 								var jiMomentumInit = Module.addFunction(function (uid, symbol, timeframe, period, applied_price) {
 									var obj = window.mqlIndicatorsBuffer[uid + ""]
 									var symbolName = window.mqlIndicators[obj.name].module.UTF8ToString(symbol)
@@ -5421,6 +5563,8 @@ function importBuiltInEAs () {
 									setjiMAOnArray: Module.cwrap("setjiMAOnArray", null, ["number"]),
 									setjiMACDInit: Module.cwrap("setjiMACDInit", null, ["number"]),
 									setjiMACD: Module.cwrap("setjiMACD", null, ["number"]),
+									setjiMFIInit: Module.cwrap("setjiMFIInit", null, ["number"]),
+									setjiMFI: Module.cwrap("setjiMFI", null, ["number"]),
 									setjiMomentumInit: Module.cwrap("setjiMomentumInit", null, ["number"]),
 									setjiMomentum: Module.cwrap("setjiMomentum", null, ["number"]),
 									setjiMomentumOnArray: Module.cwrap("setjiMomentumOnArray", null, ["number"]),
@@ -5495,6 +5639,8 @@ function importBuiltInEAs () {
 								window.mqlIndicators[definition.name].setjiMAOnArray(jiMAOnArray)
 								window.mqlIndicators[definition.name].setjiMACDInit(jiMACDInit)
 								window.mqlIndicators[definition.name].setjiMACD(jiMACD)
+								window.mqlIndicators[definition.name].setjiMFIInit(jiMFIInit)
+								window.mqlIndicators[definition.name].setjiMFI(jiMFI)
 								window.mqlIndicators[definition.name].setjiMomentumInit(jiMomentumInit)
 								window.mqlIndicators[definition.name].setjiMomentum(jiMomentum)
 								window.mqlIndicators[definition.name].setjiMomentumOnArray(jiMomentumOnArray)
@@ -6559,6 +6705,22 @@ function importBuiltInEAs () {
 									var arr = getData(obj.context, indiHandle, md)
 									return arr[arr.length - shift - 1]
 								}, "diiii")
+								var jiMFIInit = Module.addFunction(function (uid, symbol, timeframe, period) {
+									var obj = window.mqlEAsBuffer[uid + ""]
+									var symbolName = window.mqlEAs[obj.name].module.UTF8ToString(symbol)
+									var timeFrm = window.mqlEAs[obj.name].module.UTF8ToString(timeframe)
+									symbolName = symbolName == "" ? obj.symbolName : symbolName
+									timeFrm = timeFrm == "0" ? obj.timeFrame : timeFrm
+									return getIndicatorHandle(obj.context, obj.brokerName, obj.accountId, symbolName, timeFrm, "mfi", [{
+										name: "period",
+										value: period
+									}])
+								}, "iiiiiiii")
+								var jiMFI = Module.addFunction(function (uid, indiHandle, shift) {
+									var obj = window.mqlEAsBuffer[uid + ""]
+									var arr = getData(obj.context, indiHandle, "mfi")
+									return arr[arr.length - shift - 1]
+								}, "diiii")
 								var jiMomentumInit = Module.addFunction(function (uid, symbol, timeframe, period, applied_price) {
 									var obj = window.mqlEAsBuffer[uid + ""]
 									var symbolName = window.mqlEAs[obj.name].module.UTF8ToString(symbol)
@@ -6896,6 +7058,8 @@ function importBuiltInEAs () {
 									setjiMAOnArray: Module.cwrap("setjiMAOnArray", null, ["number"]),
 									setjiMACDInit: Module.cwrap("setjiMACDInit", null, ["number"]),
 									setjiMACD: Module.cwrap("setjiMACD", null, ["number"]),
+									setjiMFIInit: Module.cwrap("setjiMFIInit", null, ["number"]),
+									setjiMFI: Module.cwrap("setjiMFI", null, ["number"]),
 									setjiMomentumInit: Module.cwrap("setjiMomentumInit", null, ["number"]),
 									setjiMomentum: Module.cwrap("setjiMomentum", null, ["number"]),
 									setjiMomentumOnArray: Module.cwrap("setjiMomentumOnArray", null, ["number"]),
@@ -6999,6 +7163,8 @@ function importBuiltInEAs () {
 								window.mqlEAs[definition.name].setjiMAOnArray(jiMAOnArray)
 								window.mqlEAs[definition.name].setjiMACDInit(jiMACDInit)
 								window.mqlEAs[definition.name].setjiMACD(jiMACD)
+								window.mqlEAs[definition.name].setjiMFIInit(jiMFIInit)
+								window.mqlEAs[definition.name].setjiMFI(jiMFI)
 								window.mqlEAs[definition.name].setjiMomentumInit(jiMomentumInit)
 								window.mqlEAs[definition.name].setjiMomentum(jiMomentum)
 								window.mqlEAs[definition.name].setjiMomentumOnArray(jiMomentumOnArray)
