@@ -8433,7 +8433,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 	"sample_training_cnn_model",
-	"An EA sample to train neuron model(v1.03)",
+	"An EA sample to train neuron model(v1.04)",
 	[{
 		name: "version",
 		value: 1,
@@ -8775,8 +8775,8 @@ function importBuiltInEAs () {
 
 			for (var i = 26 + inputNum; i < arrMain.length - predictNum - 1; i++) {
         var input = []
-        var highVal = 0
-        var lowVal = 9999999999
+        var highVal = -Number.MAX_VALUE
+        var lowVal = Number.MAX_VALUE
 
         for (var j = inputNum - 1; j >= 0; j--) {
           if (arrMain[i - j] > highVal) {
@@ -8881,7 +8881,7 @@ function importBuiltInEAs () {
 
 	importBuiltInEA(
 	  "sample_running_cnn_model",
-	  "An EA sample to run neuron model(v1.03)",
+	  "An EA sample to run neuron model(v1.04)",
 	  [{ // parameters
 	    name: "version",
 	    value: 1,
@@ -9049,8 +9049,8 @@ function importBuiltInEAs () {
 	        var arrLen = arrMain.length
 
 	        var input = []
-	        var highVal = 0
-	        var lowVal = 9999999999
+	        var highVal = -Number.MAX_VALUE
+	        var lowVal = Number.MAX_VALUE
 
 	        for (var i = this.inputNum + 1; i >= 2; i--) {
 	          if (arrMain[arrLen - i] > highVal) {
