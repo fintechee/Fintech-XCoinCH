@@ -17,6 +17,7 @@ var eaStudio = {
       } else {
         variable = subParts.split("[")
         if (variable.length > 1) {
+          variable[0] = subParts.replace(";", "")
           variable[1] = ";"
           variable.push("a")
         } else {
@@ -261,6 +262,7 @@ var eaStudio = {
       var params = ""
       var globalVars = ""
       var globalVarsNoParams = ""
+      var globalArr = ""
       var constants = ""
 
       for (var i in op) {
@@ -303,6 +305,11 @@ var eaStudio = {
               globalVarsNoParams += "    " + o.name + " = " + o.value + ";\n"
             }
           }
+          if (o.type == "a") {
+            if (o.dataType == "int" || o.dataType == "long" || o.dataType == "bool" || o.dataType == "string" || o.dataType == "float" || o.dataType == "double") {
+              globalArr += o.dataType + " " + o.name + ";\n"
+            }
+          }
         } else if (o.op == "c") {
           constants += o.line + "\n"
         }
@@ -329,6 +336,7 @@ var eaStudio = {
       params: params,
       globalVars: globalVars,
       globalVarsNoParams: globalVarsNoParams, // custom indicator should use GlobalVariable API series instead of using global variables because all the same indicators share one module env.
+      globalArr: globalArr,
       datainput: "Time, 0\nVolume, 1\nOpen, 2\nHigh, 3\nLow, 4\nClose, 5",
       dataoutput: dataoutput,
       sourceBody: sourceBody.join("\n")
@@ -697,6 +705,7 @@ var eaStudio = {
   	var params = generatedStructure.params.split("\n")
     var globalVars = generatedStructure.globalVars.split("\n")
     var globalVarsNoParams = generatedStructure.globalVarsNoParams
+    var globalArr = generatedStructure.globalArr
 
   	var parsedParams = this.parseParams(params)
     var parsedGlobalVars = this.parseParams(globalVars)
@@ -717,6 +726,7 @@ var eaStudio = {
   	    template2 += "string " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (' = "' + parsedGlobalVars[i].value + '"') : "") + ";\n"
   	  }
   	}
+    template2 += globalArr
 
   	var template3 = "\n" +
   	'extern "C" {\n\n' +
