@@ -254,6 +254,7 @@ var eaStudio = {
 
       var params = ""
       var globalVars = ""
+      var globalVarsNoParams = ""
       var constants = ""
 
       for (var i in op) {
@@ -290,6 +291,12 @@ var eaStudio = {
               globalVars += o.name + "," + "Number" + ",false," + o.value + "," + o.value + "," + o.value + "\n"
             }
           }
+
+          if (o.type == "g") {
+            if (o.dataType == "int" || o.dataType == "long" || o.dataType == "bool" || o.dataType == "string" || o.dataType == "float" || o.dataType == "double") {
+              globalVarsNoParams += "    " + o.name + " = " + o.value + ";\n"
+            }
+          }
         } else if (o.op == "c") {
           constants += o.line + "\n"
         }
@@ -315,6 +322,7 @@ var eaStudio = {
       constants: constants,
       params: params,
       globalVars: globalVars,
+      globalVarsNoParams: globalVarsNoParams, // custom indicator should use GlobalVariable API series instead of using global variables because all the same indicators share one module env.
       datainput: "Time, 0\nVolume, 1\nOpen, 2\nHigh, 3\nLow, 4\nClose, 5",
       dataoutput: dataoutput,
       sourceBody: sourceBody.join("\n")
@@ -344,8 +352,8 @@ var eaStudio = {
   	  var obj = {
   	    name: pm[0].replaceAll("~", ", "),
   	    type: pm1,
-  	    required: pm[2] == 'true' ? true : false,
-  	    value: this.isInteger(pm3) ? parseInt(pm3) : (this.isNumeric(pm3) ? parseFloat(pm3) : (pm3 == 'true' ? true : (pm3 == 'false' ? false : (pm3 == 'null' ? null : (pm1 == 'String' ? pm3.slice(1,-1) : pm3))))),
+  	    required: pm[2] == "true" ? true : false,
+  	    value: this.isInteger(pm3) ? parseInt(pm3) : (this.isNumeric(pm3) ? parseFloat(pm3) : (pm3 == "true" ? true : (pm3 == "false" ? false : (pm3 == "null" ? null : (pm1 == "String" ? pm3.slice(1,-1) : pm3))))),
   	    range: null
   	  }
   	  parsedParams.push(obj)
@@ -374,7 +382,7 @@ var eaStudio = {
   	  var dout = dataoutput[i].split(",")
   	  var obj = {
   	    name: dout[0].trim(),
-  	    visible: dout[1].trim().toLowerCase() == 'true' ? true : false,
+  	    visible: dout[1].trim().toLowerCase() == "true" ? true : false,
   	    renderType: dout[2].trim(),
   	    color: dout[3].trim()
   	  }
@@ -386,19 +394,19 @@ var eaStudio = {
   generateOnInitSourceCodes: function (sourceCodes) {
     var onInitMatch = sourceCodes.match(/OnInit/g)
     var onInitSourceCodes =
-    'EMSCRIPTEN_KEEPALIVE\n' +
-    'void onInit (int uid) {\n' +
-    ((onInitMatch != null && onInitMatch.length > 0) ? '  OnInit();\n' : '') +
-    '}\n'
+    "EMSCRIPTEN_KEEPALIVE\n" +
+    "void onInit (int uid) {\n" +
+    ((onInitMatch != null && onInitMatch.length > 0) ? "  OnInit();\n" : "") +
+    "}\n"
     return onInitSourceCodes
   },
   generateOnDeinitSourceCodes: function (sourceCodes) {
     var onDeinitMatch = sourceCodes.match(/OnDeinit/g)
     var onDeinitSourceCodes =
-    'EMSCRIPTEN_KEEPALIVE\n' +
-    'void onDeinit (int uid, const int reason) {\n' +
-    ((onDeinitMatch != null && onDeinitMatch.length > 0) ? '  OnDeinit(reason);\n' : '') +
-    '}\n'
+    "EMSCRIPTEN_KEEPALIVE\n" +
+    "void onDeinit (int uid, const int reason) {\n" +
+    ((onDeinitMatch != null && onDeinitMatch.length > 0) ? "  OnDeinit(reason);\n" : "") +
+    "}\n"
     return onDeinitSourceCodes
   },
   convertTOHLCV: function (sourceCodes) {
@@ -559,91 +567,91 @@ var eaStudio = {
 
     var template1 = constants
 
-  	var template2 = '\n'
+  	var template2 = "\n"
   	for (var i in parsedGlobalVars) {
-  	  if (parsedGlobalVars[i].type == 'Integer') {
-  	    template2 += 'int ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
-  	  } else if (parsedGlobalVars[i].type == 'Number') {
-  	    template2 += 'double ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
-  	  } else if (parsedGlobalVars[i].type == 'Boolean') {
-  	    template2 += 'bool ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
-  	  } else if (parsedGlobalVars[i].type == 'String') {
-  	    template2 += 'string ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (' = "' + parsedGlobalVars[i].value + '"') : "") + ';\n'
+  	  if (parsedGlobalVars[i].type == "Integer") {
+  	    template2 += "int " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ";\n"
+  	  } else if (parsedGlobalVars[i].type == "Number") {
+  	    template2 += "double " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ";\n"
+  	  } else if (parsedGlobalVars[i].type == "Boolean") {
+  	    template2 += "bool " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ";\n"
+  	  } else if (parsedGlobalVars[i].type == "String") {
+  	    template2 += "string " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (' = "' + parsedGlobalVars[i].value + '"') : "") + ";\n"
   	  }
   	}
 
-  	var template3 = '\n'
+  	var template3 = "\n"
 
-  	var template4 = ''
+  	var template4 = ""
   	for (var i in parsedOutput) {
-  	  template4 += 'double* ' + parsedOutput[i].name + ';\n'
+  	  template4 += "double* " + parsedOutput[i].name + ";\n"
   	}
 
-  	var template5 = '\nint OnCalculate (const int rates_total,\n' +
-  	'                 const int prev_calculated,\n'
+  	var template5 = "\nint OnCalculate (const int rates_total,\n" +
+  	"                 const int prev_calculated,\n"
 
-  	var template6 = ''
+  	var template6 = ""
   	for (var i in parsedInput) {
-  	  template6 += '                 const double* ' + parsedInput[i].name + ',\n'
+  	  template6 += "                 const double* " + parsedInput[i].name + ",\n"
   	}
   	template6 = template6.slice(0, -2)
 
-  	var template7 = ');\n\n' +
+  	var template7 = ");\n\n" +
   	'extern "C" {\n\n' +
-  	'EMSCRIPTEN_KEEPALIVE\n' +
-  	'void onCalc (int uid, int rates_total, int prev_calculated, int barNum, double point, int digits) {\n' +
-  	'  iFintecheeUID = uid;\n' +
-  	'  Bars = barNum;\n' +
-  	'  Point = point;\n' +
-  	'  Digits = digits;\n\n' +
-  	'  if (paramInputOutputList.find(uid) != paramInputOutputList.end()) {\n'
+  	"EMSCRIPTEN_KEEPALIVE\n" +
+  	"void onCalc (int uid, int rates_total, int prev_calculated, int barNum, double point, int digits) {\n" +
+  	"  iFintecheeUID = uid;\n" +
+  	"  Bars = barNum;\n" +
+  	"  Point = point;\n" +
+  	"  Digits = digits;\n\n" +
+  	"  if (paramInputOutputList.find(uid) != paramInputOutputList.end()) {\n"
 
-  	var template8 = ''
+  	var template8 = ""
   	for (var i in parsedParams) {
-  	  if (parsedParams[i].type == 'Integer') {
-  	    template8 += '    ' + parsedParams[i].name + ' = paramInputOutputList[uid].paramList[' + i + '].paramInt;\n'
-  	  } else if (parsedParams[i].type == 'Number') {
-  	    template8 += '    ' + parsedParams[i].name + ' = paramInputOutputList[uid].paramList[' + i + '].paramDouble;\n'
-  	  } else if (parsedParams[i].type == 'Boolean') {
-  	    template8 += '    ' + parsedParams[i].name + ' = paramInputOutputList[uid].paramList[' + i + '].paramBool;\n'
-  	  } else if (parsedParams[i].type == 'String') {
-  	    template8 += '    ' + parsedParams[i].name + ' = paramInputOutputList[uid].paramList[' + i + '].paramString;\n'
+  	  if (parsedParams[i].type == "Integer") {
+  	    template8 += "    " + parsedParams[i].name + " = paramInputOutputList[uid].paramList[" + i + "].paramInt;\n"
+  	  } else if (parsedParams[i].type == "Number") {
+  	    template8 += "    " + parsedParams[i].name + " = paramInputOutputList[uid].paramList[" + i + "].paramDouble;\n"
+  	  } else if (parsedParams[i].type == "Boolean") {
+  	    template8 += "    " + parsedParams[i].name + " = paramInputOutputList[uid].paramList[" + i + "].paramBool;\n"
+  	  } else if (parsedParams[i].type == "String") {
+  	    template8 += "    " + parsedParams[i].name + " = paramInputOutputList[uid].paramList[" + i + "].paramString;\n"
   	  }
   	}
 
-  	var template9 = ''
+  	var template9 = ""
   	for (var i in parsedInput) {
-  	  template9 += '    double* ' + parsedInput[i].name + ' = paramInputOutputList[uid].dataInputList[' + i + '].buffer;\n'
+  	  template9 += "    double* " + parsedInput[i].name + " = paramInputOutputList[uid].dataInputList[" + i + "].buffer;\n"
   	}
 
-  	var template10 = ''
+  	var template10 = ""
   	for (var i in parsedOutput) {
-  	  template10 += '    ' + parsedOutput[i].name + ' = paramInputOutputList[uid].dataOutputList[' + i + '].buffer;\n'
+  	  template10 += "    " + parsedOutput[i].name + " = paramInputOutputList[uid].dataOutputList[" + i + "].buffer;\n"
   	}
 
-  	var template11 = '\n' +
-  	'    OnCalculate(rates_total, prev_calculated, '
+  	var template11 = "\n" +
+  	"    OnCalculate(rates_total, prev_calculated, "
 
-  	var template12 = ''
+  	var template12 = ""
   	for (var i in parsedInput) {
-  	  template12 += parsedInput[i].name + ', '
+  	  template12 += parsedInput[i].name + ", "
   	}
   	template12 = template12.slice(0, -2)
 
-  	var template13 = ');\n' +
-  	'  }\n' +
-  	'}\n\n' +
-  	'}\n\n' +
-  	'int OnCalculate(const int rates_total,\n' +
-  	'                const int prev_calculated,\n'
+  	var template13 = ");\n" +
+  	"  }\n" +
+  	"}\n\n" +
+  	"}\n\n" +
+  	"int OnCalculate(const int rates_total,\n" +
+  	"                const int prev_calculated,\n"
 
-  	var template14 = ''
+  	var template14 = ""
   	for (var i in parsedInput) {
-  	  template14 += '                const double* ' + parsedInput[i].name + ',\n'
+  	  template14 += "                const double* " + parsedInput[i].name + ",\n"
   	}
   	template14 = template14.slice(0, -2)
 
-  	var template15 = ')\n'
+  	var template15 = ")\n"
 
   	var newSourcecode = template + template1 + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10 +
   	                 template11 + template12 + template13 + template14 + template15 + generatedStructure.sourceBody
@@ -655,7 +663,7 @@ var eaStudio = {
   		parameters: parsedParams,
   		dataInput: parsedInput,
   		dataOutput: parsedOutput,
-  		whereToRender: separatewindow ? 'SEPARATE_WINDOW' : 'CHART_WINDOW'
+  		whereToRender: separatewindow ? "SEPARATE_WINDOW" : "CHART_WINDOW"
   	}
 
     return {
@@ -682,6 +690,7 @@ var eaStudio = {
     var constants = generatedStructure.constants
   	var params = generatedStructure.params.split("\n")
     var globalVars = generatedStructure.globalVars.split("\n")
+    var globalVarsNoParams = generatedStructure.globalVarsNoParams
 
   	var parsedParams = this.parseParams(params)
     var parsedGlobalVars = this.parseParams(globalVars)
@@ -690,55 +699,56 @@ var eaStudio = {
 
     var template1 = constants
 
-  	var template2 = '\n'
+  	var template2 = "\n"
   	for (var i in parsedGlobalVars) {
-  	  if (parsedGlobalVars[i].type == 'Integer') {
-  	    template2 += 'int ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
-  	  } else if (parsedGlobalVars[i].type == 'Number') {
-  	    template2 += 'double ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
-  	  } else if (parsedGlobalVars[i].type == 'Boolean') {
-  	    template2 += 'bool ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ';\n'
-  	  } else if (parsedGlobalVars[i].type == 'String') {
-  	    template2 += 'string ' + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (' = "' + parsedGlobalVars[i].value + '"') : "") + ';\n'
+  	  if (parsedGlobalVars[i].type == "Integer") {
+  	    template2 += "int " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ";\n"
+  	  } else if (parsedGlobalVars[i].type == "Number") {
+  	    template2 += "double " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ";\n"
+  	  } else if (parsedGlobalVars[i].type == "Boolean") {
+  	    template2 += "bool " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (" = " + parsedGlobalVars[i].value) : "") + ";\n"
+  	  } else if (parsedGlobalVars[i].type == "String") {
+  	    template2 += "string " + parsedGlobalVars[i].name + (parsedGlobalVars[i].value != null ? (' = "' + parsedGlobalVars[i].value + '"') : "") + ";\n"
   	  }
   	}
 
-  	var template3 = '\n' +
+  	var template3 = "\n" +
   	'extern "C" {\n\n' +
     this.generateOnInitSourceCodes(sourceCode) +
     this.generateOnDeinitSourceCodes(sourceCode) +
-    'EMSCRIPTEN_KEEPALIVE\n' +
-  	'void onTick (int uid, int barNum, double ask, double bid, double point, int digits) {\n' +
-  	'  iFintecheeUID = uid;\n' +
-  	'  Bars = barNum;\n' +
-  	'  Ask = ask;\n' +
-  	'  Bid = bid;\n' +
-  	'  Point = point;\n' +
-  	'  Digits = digits;\n\n' +
-  	'  if (paramHandleList[uid].bInit) {\n' +
-  	'    if (paramHandleList.find(uid) != paramHandleList.end()) {\n'
+    "EMSCRIPTEN_KEEPALIVE\n" +
+  	"void onTick (int uid, int barNum, double ask, double bid, double point, int digits) {\n" +
+  	"  iFintecheeUID = uid;\n" +
+  	"  Bars = barNum;\n" +
+  	"  Ask = ask;\n" +
+  	"  Bid = bid;\n" +
+  	"  Point = point;\n" +
+  	"  Digits = digits;\n\n" +
+  	"  if (paramHandleList[uid].bInit) {\n" +
+  	"    if (paramHandleList.find(uid) != paramHandleList.end()) {\n"
 
-  	var template4 = ''
+  	var template4 = ""
   	for (var i in parsedParams) {
-  	  if (parsedParams[i].type == 'Integer') {
-  	    template4 += '      ' + parsedParams[i].name + ' = paramHandleList[uid].paramList[' + i + '].paramInt;\n'
-  	  } else if (parsedParams[i].type == 'Number') {
-  	    template4 += '      ' + parsedParams[i].name + ' = paramHandleList[uid].paramList[' + i + '].paramDouble;\n'
-  	  } else if (parsedParams[i].type == 'Boolean') {
-  	    template4 += '      ' + parsedParams[i].name + ' = paramHandleList[uid].paramList[' + i + '].paramBool;\n'
-  	  } else if (parsedParams[i].type == 'String') {
-  	    template4 += '      ' + parsedParams[i].name + ' = paramHandleList[uid].paramList[' + i + '].paramString;\n'
+  	  if (parsedParams[i].type == "Integer") {
+  	    template4 += "      " + parsedParams[i].name + " = paramHandleList[uid].paramList[" + i + "].paramInt;\n"
+  	  } else if (parsedParams[i].type == "Number") {
+  	    template4 += "      " + parsedParams[i].name + " = paramHandleList[uid].paramList[" + i + "].paramDouble;\n"
+  	  } else if (parsedParams[i].type == "Boolean") {
+  	    template4 += "      " + parsedParams[i].name + " = paramHandleList[uid].paramList[" + i + "].paramBool;\n"
+  	  } else if (parsedParams[i].type == "String") {
+  	    template4 += "      " + parsedParams[i].name + " = paramHandleList[uid].paramList[" + i + "].paramString;\n"
   	  }
   	}
 
-  	var template5 = '    }\n' +
+  	var template5 = "    }\n" +
     this.generateApiCallingSourceCodes(sourceCode) +
-  	'    paramHandleList[uid].bInit = false;\n' +
-  	'  } else {\n' +
-      '    OnTick();\n' +
-  	'  }\n' +
-  	'}\n\n' +
-  	'}\n'
+    globalVarsNoParams +
+  	"    paramHandleList[uid].bInit = false;\n" +
+  	"  } else {\n" +
+      "    OnTick();\n" +
+  	"  }\n" +
+  	"}\n\n" +
+  	"}\n"
 
   	var newSourcecode = template + template1 + template2 + template3 + template4 + template5 + generatedStructure.sourceBody
 
