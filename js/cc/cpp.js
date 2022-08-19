@@ -15,12 +15,18 @@ var eaStudio = {
         variable[1] = ";"
         variable.push("a")
       } else {
-        variable = subParts.split("=")
-        if (variable.length == 1) {
-          variable[0] = variable[0].replace(";", "")
+        variable = subParts.split("[")
+        if (variable.length > 1) {
           variable[1] = ";"
+          variable.push("a")
+        } else {
+          variable = subParts.split("=")
+          if (variable.length == 1) {
+            variable[0] = variable[0].replace(";", "")
+            variable[1] = ";"
+          }
+          variable.push("g")
         }
-        variable.push("g")
       }
     }
 
