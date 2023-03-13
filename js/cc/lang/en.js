@@ -189,6 +189,7 @@ var dict = {
     rHTL11: 'ID',
     rHTL12: 'Account',
     rHTL13: 'Bet / Pip',
+    rHTL14: 'Commission',
     rTFRL1: 'Broker',
     rTFRL2: 'ID',
     rTFRL3: 'Payment ID',

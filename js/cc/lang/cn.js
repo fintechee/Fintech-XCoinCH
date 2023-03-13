@@ -189,6 +189,7 @@ var dict = {
     rHTL11: '编号',
     rHTL12: '账户',
     rHTL13: '投注 / 点',
+    rHTL14: '手续费',
     rTFRL1: '经纪商',
     rTFRL2: '编号',
     rTFRL3: '支付编号',
