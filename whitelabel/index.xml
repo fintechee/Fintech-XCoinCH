@@ -6,10 +6,6 @@
     <description>Recent content in White Label on XCOINCH | Clearing House to facilitate the exchange of cryptocurrencies</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Copyright &amp;copy; 2020 XCOINCH Powered by [Fintechee](https://www.fintechee.com)</copyright>
-    
-	<atom:link href="https://www.xcoinch.com/whitelabel/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>Copyright &amp;copy; 2020 XCOINCH Powered by [Fintechee](https://www.fintechee.com)</copyright><atom:link href="https://www.xcoinch.com/whitelabel/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
